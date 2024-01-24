@@ -3,9 +3,8 @@ import Link from 'next/link'
 
 const NavBar = () => {
     const links = [
-        { name: 'Termékek', href: '/' },
+        { name: 'Termékek', href: '/products' },
         { name: 'Fórum', href: '/forum' },
-
     ]
 
     return (
