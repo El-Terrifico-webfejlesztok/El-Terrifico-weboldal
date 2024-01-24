@@ -3,6 +3,7 @@ import React from 'react'
 interface User {
     id: number;
     name: string;
+    email: string;
 }
 
 const UserPage = async () => {
@@ -15,19 +16,29 @@ const UserPage = async () => {
         // { next: { revalidate: 10 } }
 
         // Don't use cache at all
-        {cache: 'no-store'}
-         )
+        { cache: 'no-store' }
+    )
     const users: User[] = await res.json();
 
     return (
         <>
-            <p> we WILL print it out</p>
             <p>{new Date().toLocaleTimeString()}</p>
-            <ul>
-                {users.map(user =>
-                    <li key={user.id}>{user.name}</li>)}
-            </ul>
-            <div>UserPage</div>
+            <table className='table table-fixed'>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {users.map(user =>
+                        <tr key={user.id}>
+                            <td>{user.name}</td>
+                            <td>{user.email}</td>
+                        </tr>)}
+                </tbody>
+
+            </table>
         </>
     )
 }

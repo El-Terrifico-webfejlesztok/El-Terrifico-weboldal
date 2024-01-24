@@ -7,7 +7,10 @@ export default function Home() {
     <>
       <main><p>Hello World!</p></main>
       <Link href="/users">Link to users</Link>
+      <br />
+      <Link href="/product">Link to products</Link>
       <ProductCard />
+      
     </>
   );
 }

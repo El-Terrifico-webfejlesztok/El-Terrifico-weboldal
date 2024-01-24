@@ -8,6 +8,7 @@
   --background-end-rgb: 255, 255, 255;
 }
 
+/* Dark mode configuration, currently unused
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;
@@ -18,17 +19,12 @@
 
 body {
   color: rgb(var(--foreground-rgb));
-  padding: 1rem;
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background-color: white;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+.text-balance {
+  @layer utilities {
+  text-wrap: balance;
 }
+}
+*/
