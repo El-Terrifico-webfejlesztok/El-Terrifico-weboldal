@@ -7,7 +7,7 @@ import { usePathname } from 'next/navigation'
 const NavBar = () => {
     // Jelenlegi útvonal lekérdezése
     const currentPath = usePathname();
- 
+
     // Itt lehet megadni a navbar linkeket
     const links = [
         // name: Amit kiír, href: Ahova vezet
@@ -21,19 +21,19 @@ const NavBar = () => {
             <ul className='flex space-x-6'>
                 {links.map(link =>
 
-                    <li><Link
-                        key={link.href}
+                    <li key={link.href}><Link
+
                         className=
 
-                            // Hogyha a jelenlegi oldal egyenlő azzal amire a menüpont mutat, akkor sötétebb a szöveg
-                            {`${link.href === currentPath ? 'text-zinc-900' : 'text-zinc-500'}
+                        // Hogyha a jelenlegi oldal egyenlő azzal amire a menüpont mutat, akkor sötétebb a szöveg
+                        {`${link.href === currentPath ? 'text-zinc-900' : 'text-zinc-500'}
 
                             // További stílusok
                             hover:text-zinc-800 transition-colors`}
-                           
+
                         href={link.href}>
                         {link.name}
-                        </Link></li>
+                    </Link></li>
                 )}
             </ul>
         </nav>
