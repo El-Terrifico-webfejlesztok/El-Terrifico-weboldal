@@ -12,12 +12,18 @@ datasource db {
 
 // Ez csak egy példa, előbb megtervezzük az adatbázist AZTÁN importáljuk ide
 model Product {
-  id          Int      @id @default(autoincrement())
-  title       String   @db.VarChar(255)
-  description String   @db.Text
+  id          Int       @id @default(autoincrement())
+  title       String    @db.VarChar(255)
+  description String    @db.Text
+  price       Float
   remaining   Int
-  uploadedAt  DateTime @default(now())
+  imageURL    String?   @db.VarChar(255)
+  uploadedAt  DateTime  @default(now())
+  lastUpdated DateTime?
+  isActive    Boolean   @default(true)
 }
 
-
 // npx prisma format - Formázza ezt a fájlt
+
+// !!! npx prisma generate - újragenerálja a klines fájlt !!!
+// Ha frissül a séma, akkor ezt futtatni kell.
