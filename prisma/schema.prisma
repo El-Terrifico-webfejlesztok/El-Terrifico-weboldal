@@ -9,3 +9,15 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
+// Ez csak egy példa, előbb megtervezzük az adatbázist AZTÁN importáljuk ide
+model Product {
+  id          Int      @id @default(autoincrement())
+  title       String   @db.VarChar(255)
+  description String   @db.Text
+  remaining   Int
+  uploadedAt  DateTime @default(now())
+}
+
+
+// npx prisma format - Formázza ezt a fájlt
