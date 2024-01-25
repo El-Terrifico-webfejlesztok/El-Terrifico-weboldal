@@ -7,6 +7,9 @@
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
 }
+p {
+  text-align: justify;
+}
 
 /* Dark mode configuration, currently unused
 @media (prefers-color-scheme: dark) {
