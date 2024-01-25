@@ -20,6 +20,7 @@ const NavBar = () => {
             <Link href='/'><img src="favicon.ico" alt="" className='max-h-10' /></Link>
             <ul className='flex space-x-6'>
                 {links.map(link =>
+
                     <li><Link
                         key={link.href}
                         className=
@@ -29,10 +30,10 @@ const NavBar = () => {
 
                             // További stílusok
                             hover:text-zinc-800 transition-colors`}
-                            
+                           
                         href={link.href}>
                         {link.name}
-                    </Link></li>
+                        </Link></li>
                 )}
             </ul>
         </nav>
