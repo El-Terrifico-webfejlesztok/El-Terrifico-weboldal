@@ -1,7 +1,7 @@
 function Koszonto() {
   return (
     <div className="reszek">
-      <h1 className="text-5xl text-success font-bold text-center mb-10 mt-8">
+      <h1 className="text-5xl text-green-500 font-bold text-center mb-10 mt-8">
         Köszöntelek Amigo!
       </h1>
       <p className="text-center mb-5">
@@ -15,11 +15,11 @@ function Koszonto() {
         </a>{" "}
         <i>Helyben fogyasztásra</i> is van lehetőség, de a nagy népszerűség
         miatt asztalt foglalani nem lehet. Az érdekes, egyedi {" "}
-        <a href="#etterem" className=" text-red-500">
+        <a href="#etterem" className=" text-green-500">
          étterem történetet
         </a>{" "}
         , valamint a {" "}
-        <a href="#taco" className="text-green-500">
+        <a href="#taco" className="text-white">
          taco történetét
         </a>{" "}
         megtalálod lejjebb.

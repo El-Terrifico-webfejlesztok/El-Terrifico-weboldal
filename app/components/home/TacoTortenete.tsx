@@ -12,7 +12,7 @@ function TacoTortenete () {
       />
     </div>
     <div className="md:w-2/4">
-      <h1 className="text-4xl text-green-500 font-bold text-center mb-4 mt-4">
+      <h1 className="text-4xl text-white font-bold text-center mb-4 mt-4">
         A taco
       </h1>
       <p className="mx-4 my-2">

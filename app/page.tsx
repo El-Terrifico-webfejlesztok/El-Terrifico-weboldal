@@ -4,6 +4,7 @@ import Bemutatkozas from "./components/home/Bemutatkozas";
 import Informaciok from "./components/home/Informaciok";
 import EtteremTortenete from "./components/home/EtteremTortente";
 import TacoTortenete from "./components/home/TacoTortenete";
+import Videok from "./components/home/Videok";
 import "./Home.css";
 
 export default function Home() {
@@ -15,6 +16,7 @@ export default function Home() {
     <Informaciok />
     <EtteremTortenete />
     <TacoTortenete />
+    <Videok />
     </>
   );
 }

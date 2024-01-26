@@ -3,7 +3,7 @@ import Image from "next/image"
 function EtteremTortenete () {
     return (<div id="etterem" className="md:flex reszek">
     <div className="md:w-2/4">
-      <h1 className="text-4xl text-red-500 font-bold text-center mb-4 mt-4">
+      <h1 className="text-4xl text-green-500 font-bold text-center mb-4 mt-4">
         Az étterem története
       </h1>
       <p className="mx-4 my-2">
