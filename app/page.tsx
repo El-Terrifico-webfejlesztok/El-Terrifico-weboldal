@@ -60,7 +60,7 @@ export default function Home() {
           </p>
         </div>
         <Image
-          src="/Séf.jpg"
+          src="/Sef.jpg"
           className="w-1/3 border-solid"
           alt="Sergio Michel Pérez Mendoza"
           width={300}
