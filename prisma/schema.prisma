@@ -1,0 +1,29 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// Ez csak egy példa, előbb megtervezzük az adatbázist AZTÁN importáljuk ide
+model Product {
+  id          Int       @id @default(autoincrement())
+  title       String    @db.VarChar(255)
+  description String    @db.Text
+  price       Float
+  remaining   Int
+  imageURL    String?   @db.VarChar(255)
+  uploadedAt  DateTime  @default(now())
+  lastUpdated DateTime?
+  isActive    Boolean   @default(true)
+}
+
+// npx prisma format - Formázza ezt a fájlt
+
+// !!! npx prisma generate - újragenerálja a klines fájlt !!!
+// Ha frissül a séma, akkor ezt futtatni kell.
