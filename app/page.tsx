@@ -152,8 +152,8 @@ export default function Home() {
             étkezéseikhez. Az első taco, ahogy ma ismerjük, valószínűleg a 18.
             században jelent meg, amikor a spanyolok és a mexikóiak kezdtek
             különböző hozzávalókat kombinálni a kenyérszerű lepényekbe. A taco
-            neve valószínűleg a spanyol "taco" szóból származik, ami szó szerint
-            "lepényt" vagy "dugót" jelent. A taco népszerűsége folyamatosan
+            neve valószínűleg a spanyol taco szóból származik, ami szó szerint
+            lepényt vagy dugót jelent. A taco népszerűsége folyamatosan
             nőtt, és az évszázadok során változatosabb és gazdagabb ízekkel lett
             gazdagabb. A kialakult konyhaművészet sokféle húst, halat, zöldséget
             és szószokat hozott létre, amelyek mindenki számára elérhetővé
