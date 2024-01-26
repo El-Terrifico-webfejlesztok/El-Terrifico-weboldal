@@ -5,18 +5,20 @@ import Informaciok from "./components/home/Informaciok";
 import EtteremTortenete from "./components/home/EtteremTortente";
 import TacoTortenete from "./components/home/TacoTortenete";
 import Videok from "./components/home/Videok";
+import Ajanlatok from "./components/home/Ajanlatok";
 import "./Home.css";
 
 export default function Home() {
   return (
     <>
-    <FigyelemFel />
-    <Koszonto />
-    <Bemutatkozas />
-    <Informaciok />
-    <EtteremTortenete />
-    <TacoTortenete />
-    <Videok />
+      <FigyelemFel />
+      <Koszonto />
+      <Bemutatkozas />
+      <Informaciok />
+      <Ajanlatok />
+      <EtteremTortenete />
+      <TacoTortenete />
+      <Videok />
     </>
   );
 }
