@@ -10,6 +10,9 @@
 p {
   text-align: justify;
 }
+body {
+  background: url('/Hatter.jpg');
+}
 
 /* Dark mode configuration, currently unused
 @media (prefers-color-scheme: dark) {

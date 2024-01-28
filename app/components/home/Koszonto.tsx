@@ -1,6 +1,6 @@
 function Koszonto() {
   return (
-    <div className="reszek">
+    <div className="reszekKoszonto">
       <h1 className="text-5xl text-green-500 font-bold text-center mb-10 mt-8">
         Köszöntelek Amigo!
       </h1>
