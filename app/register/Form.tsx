@@ -2,7 +2,7 @@
 
 import React, { FormEvent, useState } from 'react'
 
-const form = () => {
+const Form = () => {
     const [button, setButton] = useState('btn btn-big')
     const [buttonText, setFeedbackText] = useState('Register')
 
@@ -74,4 +74,4 @@ const form = () => {
     )
 }
 
-export default form
+export default Form
