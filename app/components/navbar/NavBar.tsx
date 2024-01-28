@@ -7,7 +7,6 @@ import SearchBar from './SearchBar'; // Import the SearchBar component
 import ProfileButton from './ProfileButton';
 import Cart from './Cart';
 import LoadingBar from './LoadingBar';
-import Image from 'next/image';
 
 const NavBar = () => {
     const currentPath = usePathname();
