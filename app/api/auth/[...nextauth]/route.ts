@@ -24,19 +24,20 @@ const handler = NextAuth({
 
             credentials: {
                 email: {},
-                password: {}
+                password: {},
+                name: {}
             },
             async authorize(credentials, req) {
 
                 const validation = loginSchema.safeParse(credentials);
-                console.log(credentials)
-                console.log(validation)
+                //console.log(credentials)
+                //console.log(validation)
                 if (!validation.success) {
                     return null
                 }
 
                 else {
-                    console.log(credentials?.email)
+                    //console.log(credentials?.email)
 
                     const User = await prisma.user.findUnique({
                         where: {
@@ -46,14 +47,17 @@ const handler = NextAuth({
 
                     // If the user exists...
                     if (User !== null) {
-                        console.log(User)
-
+                        //console.log(User)
+                        // Hashelt jelszó összehasonlítása a beírttal
                         const passwordCorrect = await compare(credentials?.password || "", User?.hashedPassword)
-                        console.log(passwordCorrect)
+                        //console.log(passwordCorrect)
+
+                        // Ha helyes a jelszó engedjük a bejelentkezést
                         if (passwordCorrect) {
                             return {
                                 id: String(User.id),
                                 email: User.email,
+                                name: User.username
                             };
                         }
                         else {

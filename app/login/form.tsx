@@ -3,7 +3,7 @@
 import { signIn } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import React, { FormEvent, useState } from 'react'
+import React, { FormEvent } from 'react'
 
 const Form = () => {
     const router = useRouter();
@@ -16,8 +16,6 @@ const Form = () => {
             password: formData.get('password'),
             redirect: false,
         })
-
-        console.log(response)
 
         // Sikeres bejelentkezésnél átirányít a főoldalra
         if (!response?.error) {
