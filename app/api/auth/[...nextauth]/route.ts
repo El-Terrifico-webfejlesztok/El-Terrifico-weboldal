@@ -52,7 +52,7 @@ const handler = NextAuth({
                         console.log(passwordCorrect)
                         if (passwordCorrect) {
                             return {
-                                id: User.id,
+                                id: String(User.id),
                                 email: User.email,
                             };
                         }
