@@ -5,6 +5,7 @@ import React, { FormEvent, useState } from 'react'
 const RegisterPage = () => {
     const [button, setButton] = useState('btn btn-big')
     const [buttonText, setFeedbackText] = useState('Register')
+    
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         // formdata
@@ -50,12 +51,12 @@ const RegisterPage = () => {
                 <input required type="email" name="email" placeholder="bestfood@terrifico.com" className={formstyle} />            </label>
             <label className="form-control w-full max-w-s">
                 <div className="label">
-                    <span className="label-text">Username*</span>
+                    <span className="label-text">Felhasználónév*</span>
                 </div>
                 <input required type="text" name="username" placeholder="Tasty123" className={formstyle} />            </label>
             <label className="form-control w-full max-w-s">
                 <div className="label">
-                    <span className="label-text">Password*</span>
+                    <span className="label-text">Jelszó*</span>
                 </div>
                 <input required type="password" name="password" placeholder="Super_spicy_password" className={formstyle} />            </label>
             <button type='submit' className={button}>{buttonText}</button>

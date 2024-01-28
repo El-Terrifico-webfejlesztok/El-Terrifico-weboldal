@@ -1,52 +1,70 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import prisma from "@/prisma/client";
+import { compare } from 'bcrypt';
+import { z } from 'zod';
+
+// bejelentkezési séma
+const loginSchema = z.object({
+    // A beérkező adat struktúrája ennek meg kell hogy feleljen:
+    email: z.string().min(1, { message: "Az E-mail mező kötelező" }).max(255, { message: "Az E-mail maximum 255 karakter hosszú lehet" }).email({ message: "Hibás E-mail formátum" }),
+    password: z.string().min(4, { message: "A jelszónak legalább 4 karakter hosszúnak kell lennie" }),
+});
+
 // Next-Auth beállítások.
 const handler = NextAuth({
+    session: {
+        strategy: "jwt",
+    },
     providers: [
         // Jelenlegi beállítsá szerint E-mail és password használata van
         CredentialsProvider({
 
-            // The name to display on the sign in form (e.g. 'Sign in with...')
             name: 'Credentials',
 
-            // The credentials is used to generate a suitable form on the sign in page.
-            // You can specify whatever fields you are expecting to be submitted.
-            // e.g. domain, username, password, 2FA token, etc.
-            // You can pass any HTML attribute to the <input> tag through the object.
             credentials: {
                 email: {},
                 password: {}
             },
             async authorize(credentials, req) {
-                // You need to provide your own logic here that takes the credentials
-                // submitted and returns either a object representing a user or value
-                // that is false/null if the credentials are invalid.
-                // e.g. return { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
-                // You can also use the `req` object to obtain additional parameters
-                // (i.e., the request IP address)
 
-                /*
-                const res = await fetch("/your/endpoint", {
-                    method: 'POST',
-                    body: JSON.stringify(credentials),
-                    headers: { "Content-Type": "application/json" }
-                })
-                const user = await res.json()
-                */
-                const user = { id: "1", username: "Example", email: "example@test.com" }
-
-                // If no error and we have user data, return it
-                if (
-                    //res.ok && (this would be to check if the resonse is OK)
-                    user) {
-                    return user
-                }
-                // Return null if user data could not be retrieved
-                else {
+                const validation = loginSchema.safeParse(credentials);
+                console.log(credentials)
+                console.log(validation)
+                if (!validation.success) {
                     return null
                 }
 
+                else {
+                    console.log(credentials?.email)
+
+                    const User = await prisma.user.findUnique({
+                        where: {
+                            email: credentials?.email
+                        },
+                    });
+
+                    // If the user exists...
+                    if (User !== null) {
+                        console.log(User)
+
+                        const passwordCorrect = await compare(credentials?.password || "", User?.hashedPassword)
+                        console.log(passwordCorrect)
+                        if (passwordCorrect) {
+                            return {
+                                id: User.id,
+                                email: User.email,
+                            };
+                        }
+                        else {
+                            return null
+                        }
+                    }
+                    // Else...
+                    else {
+                        return null
+                    }
+                }
             }
         })
     ]
