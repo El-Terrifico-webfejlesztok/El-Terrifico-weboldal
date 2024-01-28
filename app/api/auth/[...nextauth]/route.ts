@@ -1,6 +1,6 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-
+import prisma from "@/prisma/client";
 // Next-Auth beállítások.
 const handler = NextAuth({
     providers: [
@@ -15,8 +15,8 @@ const handler = NextAuth({
             // e.g. domain, username, password, 2FA token, etc.
             // You can pass any HTML attribute to the <input> tag through the object.
             credentials: {
-                email: { label: "E-mail", type: "text", placeholder: "example@example.com" },
-                password: { label: "Password", type: "password" }
+                email: {},
+                password: {}
             },
             async authorize(credentials, req) {
                 // You need to provide your own logic here that takes the credentials
@@ -34,7 +34,7 @@ const handler = NextAuth({
                 })
                 const user = await res.json()
                 */
-               const user = {id: "1", username: "Example", email: "example@test.com"}
+                const user = { id: "1", username: "Example", email: "example@test.com" }
 
                 // If no error and we have user data, return it
                 if (
@@ -43,8 +43,13 @@ const handler = NextAuth({
                     return user
                 }
                 // Return null if user data could not be retrieved
-                return null
+                else {
+                    return null
+                }
+
             }
         })
     ]
 })
+
+export { handler as GET, handler as POST }

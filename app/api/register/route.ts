@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
         });
 
         if (existingUser) {
-            return NextResponse.json({ error: 'User with this email already exists' }, { status: 400 });
+            return NextResponse.json({ error: 'Már létezik ilyen e-mail címmel fiók' }, { status: 400 });
         }
 
         const newUser = await prisma.user.create({
@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
         });
 
         return NextResponse.json(newUser, { status: 201 });
-    } catch (error:any) {
+    } catch (error: any) {
         console.error("Error during registration:", error.errors || error.message);
         return NextResponse.json('Error during registration', { status: 500 });
     }
