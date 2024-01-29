@@ -11,10 +11,12 @@ const Form = () => {
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        // Töltés effekt a gombon
+        setButton("loading loading-dots loading-lg mx-auto");
         // formdata
         const formData = new FormData(e.currentTarget);
         // Send the request to the server with the data
-        setButton("loading loading-dots loading-lg mx-auto");
+
 
 
         if (formData.get('password') !== formData.get('passwordverify')) {
