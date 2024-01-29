@@ -4,6 +4,8 @@ import Link from 'next/link'
 import { signOut } from 'next-auth/react'
 import { useSession } from 'next-auth/react'
 
+/* Átírtam az Image src-t, adtam neki height, width, csak mert nem akart ezek miatt menni az oldal- Barni */
+
 const ProfileButton = () => {
 
     const pfp = "https://webstockreview.net/images/food-clipart-taco-18.png"

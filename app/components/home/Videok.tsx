@@ -20,7 +20,7 @@ function Videok() {
       <div className="md:flex ">
         <div className="md:w-2/4 flex items-center justify-center mb-8">
           <FlipKartya
-            szoveg="Ettől, azért én is megijedtem."
+            szoveg="Ettől azért én is megijedtem."
             video="/Franco3.mp4"
           />
         </div>

@@ -1,7 +1,7 @@
 function FigyelemFel() {
   return (
     <div
-      className="bg-cover bg-center h-screen flex items-center justify-center reszek"
+      className="bg-cover bg-center h-screen flex items-center justify-center"
       style={{ backgroundImage: "url('/HomeKep.jpg')" }}
     >
       <h1 className="text-4xl text-black font-bold bg-green-500 inline-block p-2 text-center">

@@ -2,14 +2,14 @@ import KartyaAjanlat from "./KartyaAjanlat";
 
 function Ajanlatok() {
   return (
-    <>
+    <div className="reszek">
       <h1 className="text-4xl text-green-500 font-bold text-center mb-4 mt-4">
         Ajánlataink:
       </h1>
-      <div className="md:flex reszek">
+      <div className="md:flex">
         <div className="md:w-1/3 my-8 flex items-center justify-center">
           <KartyaAjanlat
-            back="bg-green-500"
+            back="bg-green-500 ajanlatKerekit"
             alt="Burger"
             kep="/HomeBurgerRajz.jpg"
             cim="Burgerek"
@@ -17,7 +17,7 @@ function Ajanlatok() {
         </div>
         <div className="md:w-1/3 my-8 flex items-center justify-center">
           <KartyaAjanlat
-            back="bg-white"
+            back="bg-white ajanlatKerekit"
             alt="Taco"
             kep="/HomeTacoRajz.jpg"
             cim="Tacok"
@@ -25,14 +25,14 @@ function Ajanlatok() {
         </div>
         <div className="md:w-1/3 my-8 flex items-center justify-center">
           <KartyaAjanlat
-            back="bg-red-500"
+            back="bg-red-400 ajanlatKerekit"
             alt="Pizza"
             kep="/HomePizzaRajz.jpg"
             cim="Pizzák"
           />
         </div>
       </div>
-    </>
+    </div>
   );
 }
 export default Ajanlatok;
