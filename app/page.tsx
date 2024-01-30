@@ -10,7 +10,7 @@ import "./Home.css";
 
 export default function Home() {
   return (
-    <>
+    <div className="fooldal">
       <FigyelemFel />
       <Koszonto />
       <Bemutatkozas />
@@ -19,6 +19,6 @@ export default function Home() {
       <EtteremTortenete />
       <TacoTortenete />
       <Videok />
-    </>
+    </div>
   );
 }
