@@ -6,28 +6,28 @@ function Ajanlatok() {
       <h1 className="text-4xl text-green-500 font-bold text-center mb-4 mt-4">
         Ajánlataink:
       </h1>
-      <div className="md:flex">
-        <div className="md:w-1/3 my-8 flex items-center justify-center">
+      <div className="lg:flex">
+        <div className="lg:w-1/3 my-8 flex items-center justify-center">
           <KartyaAjanlat
             back="bg-green-500 ajanlatKerekit"
             alt="Burger"
-            kep="/HomeBurgerRajz.jpg"
+            kep="/HomeBurgerRajz.JPG"
             cim="Burgerek"
           />
         </div>
-        <div className="md:w-1/3 my-8 flex items-center justify-center">
+        <div className="lg:w-1/3 my-8 flex items-center justify-center">
           <KartyaAjanlat
             back="bg-white ajanlatKerekit"
             alt="Taco"
-            kep="/HomeTacoRajz.jpg"
+            kep="/HomeTacoRajz.JPG"
             cim="Tacok"
           />
         </div>
-        <div className="md:w-1/3 my-8 flex items-center justify-center">
+        <div className="lg:w-1/3 my-8 flex items-center justify-center">
           <KartyaAjanlat
             back="bg-red-400 ajanlatKerekit"
             alt="Pizza"
-            kep="/HomePizzaRajz.jpg"
+            kep="/HomePizzaRajz.JPG"
             cim="Pizzák"
           />
         </div>
