@@ -17,9 +17,9 @@ const FlipKartya = ({ video, szoveg }: props) => {
 
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
 
-  const handleVideoClick = (event) => {
+  const handleVideoClick = (event: React.MouseEvent) => {
     // Check if the click is on the controller (e.g., a button)
-    if (!event.target.classList.contains("controller")) {
+    if (event.target instanceof Element && !event.target.classList.contains("controller")) {
       // Prevent the default video behavior (play/pause)
       event.preventDefault();
 
