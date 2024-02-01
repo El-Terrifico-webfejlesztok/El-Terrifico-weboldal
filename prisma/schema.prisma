@@ -13,65 +13,77 @@ datasource db {
 // Ez csak egy példa, előbb megtervezzük az adatbázist AZTÁN importáljuk ide
 
 model User {
-  id             Int    @id @default(autoincrement())
+  // Adatok
+  id             Int     @id @default(autoincrement())
   username       String
-  email          String @unique
+  email          String  @unique
   hashedPassword String
+  isActive       Boolean @default(true)
+  role           String
 
-  firstName String
-  lastName  String
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
+  // Kapcsolatok
   orders            Order[]
   reviews           Review[]
   shippingAddresses ShippingAddress[]
+
+  // Timestampek
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  Payment   Payment[]
 }
 
 model Product {
-
-  imageURL    String?   @db.VarChar(255)
-  uploadedAt  DateTime  @default(now())
-  lastUpdated DateTime?
-}
-
-model Product {
+  // Adatok
   id          Int               @id @default(autoincrement())
   name        String
   description String
   price       Decimal
-  remaining   Int
-
-  isActive    Boolean   @default(true)
+  stock       Int
+  isActive    Boolean           @default(true)
+  // Kapcsolatok
   imageUrls   ProductImage[]
   categories  ProductCategory[]
-  reviews    Review[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  reviews     Review[]
+  // Timestampek
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+  OrderItem   OrderItem[]
 }
 
 model Category {
-  id        Int               @id @default(autoincrement())
-  name      String
+  id   Int    @id @default(autoincrement())
+  name String @unique
+
   createdAt DateTime          @default(now())
   updatedAt DateTime          @updatedAt
   products  ProductCategory[]
 }
 
 model Order {
-  id                Int             @id @default(autoincrement())
-  totalPrice        Decimal
-  createdAt         DateTime        @default(now())
-  updatedAt         DateTime        @updatedAt
-  user              User
-  userID            Int
-  orderItems        OrderItem[]
-  shippingAddress   ShippingAddress
-  shippingAddressID Int
-  payment           Payment
-  paymentID         String
+  id         Int     @id @default(autoincrement())
+  totalPrice Decimal
+
+  User            User?             @relation(fields: [userId], references: [id])
+  userId          Int?
+  Payment         Payment[]
+  OrderItem       OrderItem[]
+  ShippingAddress ShippingAddress[]
+
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+}
+
+model Payment {
+  id        String   @id
+  user      User     @relation(fields: [userId], references: [id])
+  userID    Int
+  order     Order    @relation(fields: [orderId], references: [id])
+  orderID   Int
+  amount    Decimal
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    Int
+  orderId   Int
 }
 
 model OrderItem {
@@ -80,10 +92,12 @@ model OrderItem {
   pricePerItem Decimal
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
-  order        Order
+  order        Order    @relation(fields: [orderId], references: [id])
   orderID      Int
-  product      Product
+  product      Product  @relation(fields: [productId], references: [id])
   productID    Int
+  orderId      Int
+  productId    Int
 }
 
 model Review {
@@ -92,10 +106,12 @@ model Review {
   comment   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  user      User
+  user      User     @relation(fields: [userId], references: [id])
   userID    Int
-  product   Product
+  product   Product  @relation(fields: [productId], references: [id])
   productID Int
+  userId    Int
+  productId Int
 }
 
 model ShippingAddress {
@@ -105,25 +121,16 @@ model ShippingAddress {
   streetAddress String
   city          String
   state         String
-  zipCode       String
+  postalCode    String
   country       String
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
-  user          User
+  user          User     @relation(fields: [userId], references: [id])
   userID        Int
-  order         Order
+  order         Order    @relation(fields: [orderId], references: [id])
   orderID       Int
-}
-
-model Payment {
-  id        String   @id
-  user      User
-  userID    Int
-  order     Order
-  orderID   Int
-  amount    Decimal
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  userId        Int
+  orderId       Int
 }
 
 model ProductImage {
@@ -131,11 +138,13 @@ model ProductImage {
   imageUrl  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  product   Product
+  product   Product  @relation(fields: [productId], references: [id])
   productID Int
+  productId Int
 }
 
 model ProductCategory {
+  id         Int      @id @default(autoincrement())
   productID  Int
   categoryID Int
   product    Product  @relation(fields: [productID], references: [id])
