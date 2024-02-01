@@ -7,10 +7,10 @@ interface props {
 function SzuroCheckbox({ cim }: props) {
   return (
     <div>
-      <div className="form-control items-end">
-        <label className="label cursor-pointer">
-          <span className="label-text mr-3">{cim}</span>
-          <input type="checkbox" className="checkbox mr-6" />
+      <div className="form-control">
+        <label className="label cursor-pointer ">
+          <span className="label-text lg:ml-24 md:ml-20">{cim}</span>
+          <input type="checkbox" className="checkbox lg:mr-24 md:mr-20" />
         </label>
       </div>
     </div>

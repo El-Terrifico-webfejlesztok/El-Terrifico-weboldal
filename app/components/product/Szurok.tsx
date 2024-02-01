@@ -9,7 +9,7 @@ function Szurok() {
 
   if (isCollepsed == true) {
     return (
-      <div className="sm:flex items-center justify-center mt-7">
+      <div className="flex items-center justify-center mt-7">
         <a
           className="link link-accent"
           onClick={() => {
@@ -24,7 +24,7 @@ function Szurok() {
   if (isCollepsed == false) {
     return (
       <>
-        <div className="sm:flex items-center justify-center mt-7">
+        <div className="flex items-center justify-center mt-7">
           <a
             className="link link-accent"
             onClick={() => {
@@ -35,37 +35,43 @@ function Szurok() {
           </a>
         </div>
         <div className={styles.szurodoboz}>
-          <div>
-            <SzuroCheckbox cim="Burger" />
-            <SzuroCheckbox cim="Taco" />
-            <SzuroCheckbox cim="Pizza" />
-            <SzuroCheckbox cim="Szószok" />
-            <SzuroCheckbox cim="Üditőital" />
-          </div>
+          <div className="sm:flex">
+            <div className="sm:w-1/3 items-center justify-center">
+              <h1 className=" text-center text-2xl text-black font-bold mb-4 mt-4">Árak</h1>
+              <div className="text-center">
+                <div className="label items-center justify-center">
+                  <span className="label-text">Minimum ár</span>
+                </div>
+                <input
+                  type="number"
+                  placeholder="Min ár"
+                  className=" input-bordered mb-8 w-28"
+                  min={0}
+                />
+                <div className="label items-center justify-center">
+                  <span className="label-text">Maximum ár</span>
+                </div>
+                <input
+                  type="number"
+                  placeholder="Max ár"
+                  className=" input-bordered w-28"
+                  min={2}
+                />
+              </div>
+            </div>
 
-          <div>
-            <div className="form-control items-start justify-start">
-              <div className="label">
-                <span className="label-text">Minimum ár</span>
+            <div className="sm:w-1/3">
+              <h1 className="flex justify-center text-center text-2xl text-black font-bold mb-4 mt-4">Kategóriák</h1>
+              <div >
+                <SzuroCheckbox cim="Burger" />
+                <SzuroCheckbox cim="Taco" />
+                <SzuroCheckbox cim="Pizza" />
+                <SzuroCheckbox cim="Szószok" />
+                <SzuroCheckbox cim="Üditőital" />
               </div>
-              <input
-                type="number"
-                placeholder="0"
-                className="input input-bordered"
-                min={0}
-              />
             </div>
-            <div className="form-control items-start justify-start">
-              <div className="label">
-                <span className="label-text">Maximum ár</span>
-              </div>
-              <input
-                type="number"
-                placeholder="2000"
-                className="input input-bordered"
-                min={2}
-              />
-            </div>
+
+            <div className="md:w-1/3"></div>
           </div>
         </div>
       </>
