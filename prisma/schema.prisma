@@ -11,23 +11,135 @@ datasource db {
 }
 
 // Ez csak egy példa, előbb megtervezzük az adatbázist AZTÁN importáljuk ide
+
+model User {
+  id             Int    @id @default(autoincrement())
+  username       String
+  email          String @unique
+  hashedPassword String
+
+  firstName String
+  lastName  String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  orders            Order[]
+  reviews           Review[]
+  shippingAddresses ShippingAddress[]
+}
+
 model Product {
-  id          Int       @id @default(autoincrement())
-  title       String    @db.VarChar(255)
-  description String    @db.Text
-  price       Float
-  remaining   Int
+
   imageURL    String?   @db.VarChar(255)
   uploadedAt  DateTime  @default(now())
   lastUpdated DateTime?
-  isActive    Boolean   @default(true)
 }
 
-model User {
-  id       Int      @id @default(autoincrement())
-  username String
-  email    String   @unique
-  hashedPassword String
+model Product {
+  id          Int               @id @default(autoincrement())
+  name        String
+  description String
+  price       Decimal
+  remaining   Int
+
+  isActive    Boolean   @default(true)
+  imageUrls   ProductImage[]
+  categories  ProductCategory[]
+  reviews    Review[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Category {
+  id        Int               @id @default(autoincrement())
+  name      String
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+  products  ProductCategory[]
+}
+
+model Order {
+  id                Int             @id @default(autoincrement())
+  totalPrice        Decimal
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  user              User
+  userID            Int
+  orderItems        OrderItem[]
+  shippingAddress   ShippingAddress
+  shippingAddressID Int
+  payment           Payment
+  paymentID         String
+}
+
+model OrderItem {
+  id           Int      @id @default(autoincrement())
+  quantity     Int
+  pricePerItem Decimal
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  order        Order
+  orderID      Int
+  product      Product
+  productID    Int
+}
+
+model Review {
+  id        Int      @id @default(autoincrement())
+  rating    Int
+  comment   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User
+  userID    Int
+  product   Product
+  productID Int
+}
+
+model ShippingAddress {
+  id            Int      @id @default(autoincrement())
+  firstName     String
+  lastName      String
+  streetAddress String
+  city          String
+  state         String
+  zipCode       String
+  country       String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  user          User
+  userID        Int
+  order         Order
+  orderID       Int
+}
+
+model Payment {
+  id        String   @id
+  user      User
+  userID    Int
+  order     Order
+  orderID   Int
+  amount    Decimal
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ProductImage {
+  id        Int      @id @default(autoincrement())
+  imageUrl  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  product   Product
+  productID Int
+}
+
+model ProductCategory {
+  productID  Int
+  categoryID Int
+  product    Product  @relation(fields: [productID], references: [id])
+  category   Category @relation(fields: [categoryID], references: [id])
 }
 
 // npx prisma format - Formázza ezt a fájlt
