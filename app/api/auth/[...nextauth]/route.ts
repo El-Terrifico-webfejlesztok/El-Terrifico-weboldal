@@ -49,7 +49,7 @@ const handler = NextAuth({
                     if (User !== null) {
                         //console.log(User)
                         // Hashelt jelszó összehasonlítása a beírttal
-                        const passwordCorrect = await compare(credentials?.password || "", User?.hashedPassword)
+                        const passwordCorrect = await compare(credentials?.password || "", User?.password)
                         //console.log(passwordCorrect)
 
                         // Ha helyes a jelszó engedjük a bejelentkezést

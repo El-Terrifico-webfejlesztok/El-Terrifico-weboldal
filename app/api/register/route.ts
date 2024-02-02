@@ -8,7 +8,7 @@ const registerSchema = z.object({
     // A beérkező adat struktúrája ennek meg kell hogy feleljen:
     username: z.string().min(3, { message: "A felhasználónévnek legalább 3 karakternek kell lennie" }).max(30, { message: "A felhasználónév maximum 30 karakter lehet" }),
     email: z.string().min(1, { message: "Az E-mail mező kötelező" }).max(255, { message: "Az E-mail maximum 255 karakter hosszú lehet" }).email({ message: "Hibás E-mail formátum" }),
-    password: z.string().min(4, { message: "A jelszónak legalább 4 karakter hosszúnak kell lennie" }),
+    password: z.string().min(8, { message: "A jelszónak legalább 8 karakter hosszúnak kell lennie" }).max(255, { message: "A jelszó maximum 255 karakter hoszzú lehet" }),
 });
 
 // Ha jön egy POST request akkor...
@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
         // validáljuk a regisztrációs adatokat
         const validation = registerSchema.safeParse(body);
 
-        // ha sikertelen elküldjük az okokat
+        // ha sikertelen elküldjük az okot (vagy okokat)
         if (!validation.success) {
             return NextResponse.json(validation.error.errors, { status: 400 });
         }
@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
             data: {
                 username,
                 email,
-                hashedPassword,
+                password: hashedPassword
             },
         });
         // visszaküldjük a siker jelét

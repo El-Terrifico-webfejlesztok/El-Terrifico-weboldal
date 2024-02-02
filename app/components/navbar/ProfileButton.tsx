@@ -28,7 +28,7 @@ const ProfileButton = () => {
                             <span className="badge badge-success">Új</span>
                         </Link>
                     </li>
-                    <li><Link href='/profile/settings'>Beállítások</Link></li>
+                    <li><Link href='/profile'>Beállítások</Link></li>
                     <li><span onClick={() => { signOut() }}>Kijelentkezés</span></li>
                     <li>
                         <label className="flex cursor-pointer gap-2">

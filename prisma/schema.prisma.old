@@ -1,0 +1,154 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// Ez csak egy példa, előbb megtervezzük az adatbázist AZTÁN importáljuk ide
+
+model User {
+  // Adatok
+  id             Int     @id @default(autoincrement())
+  username       String
+  email          String  @unique
+  hashedPassword String
+  isActive       Boolean @default(true)
+  role           String
+
+  // Kapcsolatok
+  orders            Order[]
+  reviews           Review[]
+  shippingAddresses ShippingAddress[]
+
+  // Timestampek
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  Payment   Payment[]
+}
+
+model Product {
+  // Adatok
+  id          Int               @id @default(autoincrement())
+  name        String
+  description String
+  price       Decimal
+  stock       Int
+  isActive    Boolean           @default(true)
+  // Kapcsolatok
+  imageUrls   ProductImage[]
+  categories  ProductCategory[]
+  reviews     Review[]
+  // Timestampek
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+  OrderItem   OrderItem[]
+}
+
+model Category {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+  products  ProductCategory[]
+}
+
+model Order {
+  id         Int     @id @default(autoincrement())
+  totalPrice Decimal
+
+  User            User?             @relation(fields: [userId], references: [id])
+  userId          Int?
+  Payment         Payment[]
+  OrderItem       OrderItem[]
+  ShippingAddress ShippingAddress[]
+
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+}
+
+model Payment {
+  id        String   @id
+  user      User     @relation(fields: [userId], references: [id])
+  userID    Int
+  order     Order    @relation(fields: [orderId], references: [id])
+  orderID   Int
+  amount    Decimal
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    Int
+  orderId   Int
+}
+
+model OrderItem {
+  id           Int      @id @default(autoincrement())
+  quantity     Int
+  pricePerItem Decimal
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  order        Order    @relation(fields: [orderId], references: [id])
+  orderID      Int
+  product      Product  @relation(fields: [productId], references: [id])
+  productID    Int
+  orderId      Int
+  productId    Int
+}
+
+model Review {
+  id        Int      @id @default(autoincrement())
+  rating    Int
+  comment   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id])
+  userID    Int
+  product   Product  @relation(fields: [productId], references: [id])
+  productID Int
+  userId    Int
+  productId Int
+}
+
+model ShippingAddress {
+  id            Int      @id @default(autoincrement())
+  firstName     String
+  lastName      String
+  streetAddress String
+  city          String
+  state         String
+  postalCode    String
+  country       String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  user          User     @relation(fields: [userId], references: [id])
+  userID        Int
+  order         Order    @relation(fields: [orderId], references: [id])
+  orderID       Int
+  userId        Int
+  orderId       Int
+}
+
+model ProductImage {
+  id        Int      @id @default(autoincrement())
+  imageUrl  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  product   Product  @relation(fields: [productId], references: [id])
+  productID Int
+  productId Int
+}
+
+model ProductCategory {
+  id         Int      @id @default(autoincrement())
+  productID  Int
+  categoryID Int
+  product    Product  @relation(fields: [productID], references: [id])
+  category   Category @relation(fields: [categoryID], references: [id])
+}
+
+
