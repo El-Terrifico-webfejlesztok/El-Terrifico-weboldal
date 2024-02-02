@@ -1,0 +1,13 @@
+.szurodoboz {
+  border: 4px dashed black;
+  width: 70%;
+  margin: auto;
+  margin-top: 10px;
+}
+
+.ardoboz {
+  margin-bottom: 8;
+  width: 112px;
+  border: 2px solid grey;
+  border-radius: 4px;
+}
