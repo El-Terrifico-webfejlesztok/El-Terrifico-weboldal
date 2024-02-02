@@ -15,7 +15,7 @@ const ProfilePage = () => {
     return (
         <div className='mx-auto max-w-4xl mt-4'>
             <div className='flex space-x-4'>
-                <img src={user.image} alt="" />
+                <img src="" alt="" />
                 <h1 className="text-2xl font-bold mb-4">{user.name}</h1>
             </div>
             <div className="space-y-4">

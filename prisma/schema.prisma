@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,150 +7,135 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// Ez csak egy példa, előbb megtervezzük az adatbázist AZTÁN importáljuk ide
-
 model User {
-  // Adatok
-  id             Int     @id @default(autoincrement())
-  username       String
-  email          String  @unique
-  hashedPassword String
-  isActive       Boolean @default(true)
-  role           String
-
-  // Kapcsolatok
-  orders            Order[]
-  reviews           Review[]
-  shippingAddresses ShippingAddress[]
-
-  // Timestampek
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  Payment   Payment[]
+  id              Int               @id @default(autoincrement()) @db.UnsignedInt
+  username        String            @db.VarChar(30)
+  email           String            @unique(map: "email") @db.VarChar(255)
+  password        String            @db.VarChar(255)
+  is_active       Boolean           @default(true)
+  role            User_role         @default(user)
+  created_at      DateTime          @default(now()) @db.Timestamp(0)
+  Order           Order[]
+  Payment         Payment?
+  Review          Review[]
+  ShippingAddress ShippingAddress[]
 }
 
 model Product {
-  // Adatok
-  id          Int               @id @default(autoincrement())
-  name        String
-  description String
-  price       Decimal
-  stock       Int
-  isActive    Boolean           @default(true)
-  // Kapcsolatok
-  imageUrls   ProductImage[]
-  categories  ProductCategory[]
-  reviews     Review[]
-  // Timestampek
-  createdAt   DateTime          @default(now())
-  updatedAt   DateTime          @updatedAt
-  OrderItem   OrderItem[]
+  id                  Int                   @id @default(autoincrement()) @db.UnsignedInt
+  name                String                @unique(map: "name_is_unique") @db.VarChar(250)
+  description         String?               @db.Text
+  price               Decimal               @db.Decimal(10, 2)
+  stock               Int
+  is_active           Boolean               @default(true)
+  created_at          DateTime              @default(now()) @db.Timestamp(0)
+  updated_at          DateTime?             @default(now()) @db.Timestamp(0)
+  ProductCategoryLink ProductCategoryLink[]
+  ProductImage        ProductImage[]
+  Review              Review[]
 }
 
 model Category {
-  id   Int    @id @default(autoincrement())
-  name String @unique
-
-  createdAt DateTime          @default(now())
-  updatedAt DateTime          @updatedAt
-  products  ProductCategory[]
+  id                  Int                   @id @default(autoincrement()) @db.UnsignedInt
+  name                String                @unique(map: "name") @db.VarChar(250)
+  ProductCategoryLink ProductCategoryLink[]
 }
 
 model Order {
-  id         Int     @id @default(autoincrement())
-  totalPrice Decimal
-
-  User            User?             @relation(fields: [userId], references: [id])
-  userId          Int?
-  Payment         Payment[]
+  id              Int             @id @default(autoincrement()) @db.UnsignedInt
+  user_id         Int             @db.UnsignedInt
+  shipping_id     Int             @db.UnsignedInt
+  total_price     Decimal         @db.Decimal(10, 2)
+  created_at      DateTime        @default(now()) @db.Timestamp(0)
+  updated_at      DateTime?       @default(now()) @db.Timestamp(0)
+  ShippingAddress ShippingAddress @relation(fields: [shipping_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_shipping_id")
+  User            User            @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_id")
   OrderItem       OrderItem[]
-  ShippingAddress ShippingAddress[]
+  Payment         Payment[]
 
-  createdAt       DateTime          @default(now())
-  updatedAt       DateTime          @updatedAt
+  @@index([shipping_id], map: "fk_shipping_id")
+  @@index([user_id], map: "fk_user_id")
 }
 
 model Payment {
-  id        String   @id
-  user      User     @relation(fields: [userId], references: [id])
-  userID    Int
-  order     Order    @relation(fields: [orderId], references: [id])
-  orderID   Int
-  amount    Decimal
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  userId    Int
-  orderId   Int
+  id       Int     @id @default(autoincrement()) @db.UnsignedInt
+  user_id  Int     @unique(map: "unique_user_payment") @db.UnsignedInt
+  order_id Int     @db.UnsignedInt
+  amount   Decimal @db.Decimal(10, 2)
+  status   String? @db.VarChar(250)
+  Order    Order   @relation(fields: [order_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_order_id_payment")
+  User     User    @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_id_payment")
+
+  @@index([order_id], map: "fk_order_id_payment")
 }
 
 model OrderItem {
-  id           Int      @id @default(autoincrement())
-  quantity     Int
-  pricePerItem Decimal
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  order        Order    @relation(fields: [orderId], references: [id])
-  orderID      Int
-  product      Product  @relation(fields: [productId], references: [id])
-  productID    Int
-  orderId      Int
-  productId    Int
+  id       Int     @id @default(autoincrement()) @db.UnsignedInt
+  order_id Int     @db.UnsignedInt
+  name     String  @db.VarChar(250)
+  quantity Int     @db.UnsignedInt
+  price    Decimal @db.Decimal(10, 2)
+  Order    Order   @relation(fields: [order_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_order_id_item")
+
+  @@unique([order_id, name], map: "unique_order_item")
 }
 
 model Review {
-  id        Int      @id @default(autoincrement())
-  rating    Int
-  comment   String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  user      User     @relation(fields: [userId], references: [id])
-  userID    Int
-  product   Product  @relation(fields: [productId], references: [id])
-  productID Int
-  userId    Int
-  productId Int
+  id         Int       @id @default(autoincrement()) @db.UnsignedInt
+  rating     Int       @db.UnsignedInt
+  comment    String?   @db.Text
+  user_id    Int       @db.UnsignedInt
+  product_id Int       @db.UnsignedInt
+  created_at DateTime  @default(now()) @db.Timestamp(0)
+  updated_at DateTime? @default(now()) @db.Timestamp(0)
+  Product    Product   @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "product_id_fk_review")
+  User       User      @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "user_id_fk_review")
+
+  @@index([product_id], map: "product_id_fk_review")
+  @@index([user_id], map: "user_id_fk_review")
 }
 
 model ShippingAddress {
-  id            Int      @id @default(autoincrement())
-  firstName     String
-  lastName      String
-  streetAddress String
-  city          String
-  state         String
-  postalCode    String
-  country       String
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  user          User     @relation(fields: [userId], references: [id])
-  userID        Int
-  order         Order    @relation(fields: [orderId], references: [id])
-  orderID       Int
-  userId        Int
-  orderId       Int
+  id                 Int       @id @default(autoincrement()) @db.UnsignedInt
+  user_id            Int?      @db.UnsignedInt
+  recipient_name     String?   @db.VarChar(255)
+  street_address     String    @db.VarChar(255)
+  country            String?   @db.VarChar(50)
+  city               String?   @db.VarChar(100)
+  state              String?   @db.VarChar(50)
+  postal_code        String    @db.VarChar(20)
+  is_default_address Int?      @default(1) @db.TinyInt
+  created_at         DateTime  @default(now()) @db.Timestamp(0)
+  updated_at         DateTime? @default(now()) @db.Timestamp(0)
+  Order              Order[]
+  User               User?     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "user_id_fk_shipping")
+
+  @@index([user_id], map: "user_id_fk_shipping")
 }
 
 model ProductImage {
-  id        Int      @id @default(autoincrement())
-  imageUrl  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  product   Product  @relation(fields: [productId], references: [id])
-  productID Int
-  productId Int
+  id         Int      @id @default(autoincrement()) @db.UnsignedInt
+  image_path String   @db.VarChar(250)
+  product_id Int      @db.UnsignedInt
+  created_at DateTime @default(now()) @db.Timestamp(0)
+  Product    Product  @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product_id")
+
+  @@index([product_id], map: "fk_product_id")
 }
 
-model ProductCategory {
-  id         Int      @id @default(autoincrement())
-  productID  Int
-  categoryID Int
-  product    Product  @relation(fields: [productID], references: [id])
-  category   Category @relation(fields: [categoryID], references: [id])
+model ProductCategoryLink {
+  id          Int      @id @default(autoincrement()) @db.UnsignedInt
+  product_id  Int      @db.UnsignedInt
+  category_id Int      @db.UnsignedInt
+  Category    Category @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "category_id_fk")
+  Product     Product  @relation(fields: [product_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "product_id_fk")
+
+  @@index([category_id], map: "category_id_fk")
+  @@index([product_id], map: "product_id_fk")
 }
 
-// npx prisma format - Formázza ezt a fájlt
-
-// !!! npx prisma generate - újragenerálja a klines fájlt !!!
-// Ha frissül a séma, akkor ezt futtatni kell.
-
-// npx prisma migrate dev - Beírja az adatbázisba a jelenlegi konfigot
+enum User_role {
+  user
+  admin
+  moderator
+}

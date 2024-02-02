@@ -1,0 +1,103 @@
+// Use DBML to define your database structure
+// Docs: https://dbml.dbdiagram.io/docs
+
+Table User {
+  id          Int       [pk, increment]
+  username    String
+  email       String    [unique]
+  password String
+  is_active    Boolean   [default: true]
+  role        String
+  created_at   DateTime  [default: `now()`]
+}
+
+Table Product {
+  id          Int       [pk, increment]
+  name        String
+  description String
+  price       Decimal
+  stock       Int
+  is_active    Boolean   [default: true]
+  created_at   DateTime  [default: `now()`]
+  updated_at   DateTime  
+}
+
+Table Category {
+  id          Int       [pk, increment]
+  name        String    [unique]
+}
+
+Table Order {
+  id          Int       [pk, increment]
+  shipping_id Int []
+  total_price  Decimal
+  user_id      Int
+  created_at   DateTime  [default: `now()`]
+  updated_at   DateTime 
+}
+
+Table Payment {
+  id          Int    [pk]
+  user_id      Int
+  order_id    Int
+  amount      Decimal
+  status string
+}
+
+Table OrderItem {
+  id           Int       [pk, increment]
+  order_id      Int
+  name         String 
+  quantity     Int
+  price Decimal
+}
+
+Table Review {
+  id           Int       [pk, increment]
+  rating       Int
+  comment      String
+  user_id       Int
+  product_id    Int
+  created_at    DateTime  [default: `now()`]
+  updated_at    DateTime  
+}
+
+Table ShippingAddress {
+  id                Int       [pk, increment]
+  user_id           Int       
+  recipient_name   String
+  street_address    String
+  country           String
+  city              String
+  state             String
+  postal_code       String
+  is_default_address Boolean   [default: true]
+  created_at        DateTime  [default: `now()`]
+  updated_at        DateTime  [default: `now()`] 
+}
+
+Table ProductImage {
+  id           Int       [pk, increment]
+  image_path     String
+  product_id    Int
+  created_at    DateTime  [default: `now()`]
+}
+
+Table ProductCategory {
+  id           Int       [pk, increment]
+  product_id    Int
+  categoryId   Int
+}
+
+// Relationships
+Ref: User.id < Payment.user_id
+Ref: User.id < Order.user_id
+Ref: Order.id - Payment.order_id
+Ref: Order.id < OrderItem.order_id
+Ref: Product.id < ProductImage.product_id
+Ref: Product.id < ProductCategory.product_id
+Ref: Category.id < ProductCategory.categoryId
+Ref: User.id < Review.user_id
+Ref: Product.id < Review.product_id
+Ref: User.id < ShippingAddress.user_id
+Ref:  ShippingAddress.id < Order.shipping_id

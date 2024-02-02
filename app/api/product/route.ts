@@ -29,10 +29,10 @@ export async function POST(request: NextRequest) {
         const newProduct = await prisma.product.create({
             data: {
                 // Itt a kimenő adat található
-                title: body.title,
+                name: body.title,
                 description: body.description,
                 price: body.price,
-                remaining: body.count,
+                stock: body.count,
             }
         });
 
