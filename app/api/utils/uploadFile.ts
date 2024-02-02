@@ -1,3 +1,4 @@
+/*
 import fs from 'fs';
 import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
@@ -8,7 +9,7 @@ if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir);
 }
 
-export function uploadFile(file) {
+export function uploadFile(file: File) {
   const fileName = `${uuidv4()}-${file.name}`;
   const filePath = path.join(uploadDir, fileName);
 
@@ -27,3 +28,4 @@ export function uploadFile(file) {
     file.pipe(fileStream);
   });
 }
+*/
