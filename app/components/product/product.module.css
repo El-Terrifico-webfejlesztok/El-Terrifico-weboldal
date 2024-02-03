@@ -1,8 +1,10 @@
 .szurodoboz {
   border: 4px dashed black;
-  width: 70%;
+  width: 50%;
   margin: auto;
   margin-top: 10px;
+  margin-bottom: 70px;
+  background-color: chocolate;
 }
 
 .ardoboz {
@@ -11,3 +13,25 @@
   border: 2px solid grey;
   border-radius: 4px;
 }
+
+.kartya {
+  width: 85%;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+/* styles/likeButton.module.css */
+
+.likeButton {
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.liked {
+  color: red; /* Change the color when liked */
+}
+
+/*likebutton vége*/

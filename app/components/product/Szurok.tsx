@@ -14,7 +14,7 @@ function Szurok() {
       <>
         <div className="flex items-center justify-center mt-7">
           <a
-            className="link link-accent"
+            className="link link-accent mb-16"
             onClick={() => {
               setIsCollepsed(!isCollepsed);
             }}
@@ -41,7 +41,7 @@ function Szurok() {
         <div className={styles.szurodoboz}>
           <div className="sm:flex">
             <div className="sm:w-1/3 items-center justify-center pb-3">
-              <h1 className=" text-center text-2xl text-black font-bold mb-4 mt-4">
+              <h1 className=" text-center text-1xl text-black font-bold mb-4 mt-4">
                 Árak
               </h1>
               <div className="text-center">
@@ -51,7 +51,7 @@ function Szurok() {
             </div>
 
             <div className="sm:w-1/3 sm:border-x-4 sm:border-y-0 border-y-4 border-x-0 pb-3">
-              <h1 className="flex justify-center text-center text-2xl text-black font-bold mb-4 mt-4">
+              <h1 className="flex justify-center text-center text-1xl text-black font-bold mb-4 mt-4">
                 Kategóriák
               </h1>
               <div>
@@ -64,7 +64,7 @@ function Szurok() {
             </div>
 
             <div className="sm:w-1/3 items-center justify-center pb-3">
-              <h1 className="flex justify-center text-center text-2xl text-black font-bold mb-4 mt-4">
+              <h1 className="flex justify-center text-center text-1xl text-black font-bold mb-4 mt-4">
                 Értékelés
               </h1>
               <div className="text-center">

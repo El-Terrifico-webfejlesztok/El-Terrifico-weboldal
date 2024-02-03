@@ -10,7 +10,7 @@ interface props {
 
 function SzuroAr({placeh, minertek, cim}: props) {
   return (
-    <>
+    <div className='mb-10'>
       <div className="label items-center justify-center">
         <span className="label-text">{cim}</span>
       </div>
@@ -20,7 +20,7 @@ function SzuroAr({placeh, minertek, cim}: props) {
         className={styles.ardoboz}
         min={minertek}
       />
-    </>
+    </div>
   );
 }
 export default SzuroAr;
