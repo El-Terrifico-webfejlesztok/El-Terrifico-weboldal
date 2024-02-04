@@ -28,7 +28,6 @@ const handler = NextAuth({
                 name: {}
             },
             // Így kell működő kódot írni, watch and learn:
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
             async authorize(credentials, req) {
 
