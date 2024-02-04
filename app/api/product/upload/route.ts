@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
     const session = await getServerSession();
 
     // If the user is not authenticated, return an unauthorized response
-    if (!session) {
+    if (session?.user?.role !== 'admin') {
       return NextResponse.json('Unauthorized', { status: 401 });
     }
 

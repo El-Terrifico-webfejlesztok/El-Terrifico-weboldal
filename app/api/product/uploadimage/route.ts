@@ -1,9 +1,18 @@
 import prisma from "@/prisma/client";
 import { writeFile } from "fs/promises";
 import { NextRequest, NextResponse } from 'next/server';
+import { getServerSession } from "next-auth";
 
 export async function POST(req: NextRequest) {
   try {
+    // Get the user's session
+    const session = await getServerSession();
+
+    // If the user is not authenticated, return an unauthorized response
+    if (session?.user?.role !== 'admin') {
+      return NextResponse.json('Unauthorized', { status: 401 });
+    }
+
     const formData = await req.formData();
 
     const product_id = formData.get('product_id');
@@ -11,7 +20,7 @@ export async function POST(req: NextRequest) {
     console.log(file)
     console.log(formData)
     console.log(product_id)
-    
+
     if (!file || product_id === null) {
       return NextResponse.json('Product ID or file is not present in the form data', { status: 400 });
     }
@@ -33,8 +42,8 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(imageUpload, { status: 201 });
   } catch (error) {
-    console.error('Error during file upload:', error);
-    return NextResponse.json('Error during file upload', { status: 500 });
+    console.error('Error during image upload:', error);
+    return NextResponse.json('Error during image upload', { status: 500 });
   }
 }
 
