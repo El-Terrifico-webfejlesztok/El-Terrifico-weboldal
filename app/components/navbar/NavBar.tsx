@@ -38,7 +38,7 @@ const NavBar = () => {
             </ul>
 
             <div className="ml-auto flex items-center gap-5"> {/* ml-auto jobbra rakja az komponenseket */}
-                <SearchBar />
+                {/*<SearchBar />*/}
                 <Cart />
                 <ProfileButton />
             </div>
