@@ -1,12 +1,10 @@
 // https://reacthustle.com/blog/extend-user-session-nextauth-typescript
 // Ne kérdezd hogy működik, csak fogadd el. (Valószínűleg ehhez tudni kéne legalább egy kicsi typescriptet)
 import { DefaultSession, DefaultUser } from "next-auth";
-export enum Role {
-  user = "user",
-  admin = "admin",
-}
+import { User_role } from "@prisma/client";
+
 interface IUser extends DefaultUser {
-  role?: Role;
+  role?: User_role;
 }
 declare module "next-auth" {
   interface User extends IUser {}

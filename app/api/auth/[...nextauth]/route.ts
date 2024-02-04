@@ -27,8 +27,7 @@ const handler = NextAuth({
                 password: {},
                 name: {}
             },
-            // Így kell működő kódot írni, watch and learn:
-            // @ts-ignore
+
             async authorize(credentials, req) {
 
                 const validation = loginSchema.safeParse(credentials);
@@ -41,7 +40,7 @@ const handler = NextAuth({
                 else {
                     //console.log(credentials?.email)
 
-                    const User = await prisma.user.findUnique({
+                    const User = await prisma.user.findFirst({
                         where: {
                             email: credentials?.email
                         },
