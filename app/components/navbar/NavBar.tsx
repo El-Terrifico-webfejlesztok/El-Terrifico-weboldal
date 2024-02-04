@@ -17,7 +17,7 @@ const NavBar = () => {
     ];
 
     return (
-        <nav className='navbar bg-lime-100 border-b px-5 h-16 flex items-center shadow-md sticky top-0 z-50 gap-4'>
+        <nav className='navbar bg-base-200 px-5 h-16 flex items-center shadow-md sticky top-0 z-50 gap-4'>
             <LoadingBar />
             <Link href='/' className='mr-4'>
                 <img src="Sombrero.png" alt="Logo" className='max-h-10 cursor-pointer' />
