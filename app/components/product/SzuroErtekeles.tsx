@@ -7,9 +7,9 @@ interface props {
 import { useState } from "react";
 
 function SzuroErtekeles({ cim }: props) {
-  const [rating, setRating] = useState(0);
+  const [rating, setRating] = useState<number>(0);
 
-  const handleRatingChange = (newRating) => {
+  const handleRatingChange = (newRating: number) => {
     setRating(newRating);
   };
 
