@@ -15,6 +15,19 @@ const FlipKartya = ({ video, szoveg }: props) => {
     setIsFlipped(!isFlipped);
   };
 
+  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+
+  const handleVideoClick = (event: React.MouseEvent) => {
+    // Check if the click is on the controller (e.g., a button)
+    if (event.target instanceof Element && !event.target.classList.contains("controller")) {
+      // Prevent the default video behavior (play/pause)
+      event.preventDefault();
+
+      // Toggle the play state of the video
+      setIsVideoPlaying(!isVideoPlaying);
+    }
+  };
+
   return (
     <div
       className={`flip-card ${isFlipped ? "clicked" : ""}`}
@@ -25,7 +38,13 @@ const FlipKartya = ({ video, szoveg }: props) => {
           <h1>{szoveg}</h1>
         </div>
         <div className="flip-card-back">
-          <video id="myVideo" controls loop>
+          <video
+            id="myVideo"
+            controls
+            loop
+            onClick={handleVideoClick}
+            controlsList="nodownload nofullscreen"
+          >
             <source src={video} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
