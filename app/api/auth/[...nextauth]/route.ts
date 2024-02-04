@@ -27,6 +27,9 @@ const handler = NextAuth({
                 password: {},
                 name: {}
             },
+            // Így kell működő kódot írni, watch and learn:
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
             async authorize(credentials, req) {
 
                 const validation = loginSchema.safeParse(credentials);
@@ -77,21 +80,21 @@ const handler = NextAuth({
     // https://reacthustle.com/blog/extend-user-session-nextauth-typescript
     callbacks: {
         async jwt({ token, user }) {
-          /* Step 1: update the token based on the user object */
-          if (user) {
-            // console.log(user.role)
-            token.role = user.role;
-          }
-          return token;
+            /* Step 1: update the token based on the user object */
+            if (user) {
+                // console.log(user.role)
+                token.role = user.role;
+            }
+            return token;
         },
         async session({ session, token }) {
-          /* Step 2: update the session.user based on the token object */
-          if (token && session.user) {
-            session.user.role = token.role;
-          }
-          return session;
+            /* Step 2: update the session.user based on the token object */
+            if (token && session.user) {
+                session.user.role = token.role;
+            }
+            return session;
         },
-      },
+    },
 })
 
 export { handler as GET, handler as POST }
