@@ -57,7 +57,8 @@ const handler = NextAuth({
                             return {
                                 id: String(User.id),
                                 email: User.email,
-                                name: User.username
+                                name: User.username,
+                                role: User.role
                             };
                         }
                         else {
@@ -71,7 +72,26 @@ const handler = NextAuth({
                 }
             }
         })
-    ]
+    ],
+    // This is complete magic, nothing works except this:
+    // https://reacthustle.com/blog/extend-user-session-nextauth-typescript
+    callbacks: {
+        async jwt({ token, user }) {
+          /* Step 1: update the token based on the user object */
+          if (user) {
+            // console.log(user.role)
+            token.role = user.role;
+          }
+          return token;
+        },
+        async session({ session, token }) {
+          /* Step 2: update the session.user based on the token object */
+          if (token && session.user) {
+            session.user.role = token.role;
+          }
+          return session;
+        },
+      },
 })
 
 export { handler as GET, handler as POST }

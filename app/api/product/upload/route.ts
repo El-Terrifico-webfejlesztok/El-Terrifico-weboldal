@@ -1,6 +1,7 @@
 import prisma from "@/prisma/client";
 import { z } from 'zod';
 import { NextRequest, NextResponse } from 'next/server';
+import { getServerSession } from "next-auth";
 
 const uploadProductSchema = z.object({
   name: z.string().min(1).max(255),
@@ -11,6 +12,14 @@ const uploadProductSchema = z.object({
 
 export async function POST(req: NextRequest) {
   try {
+    // Get the user's session
+    const session = await getServerSession();
+
+    // If the user is not authenticated, return an unauthorized response
+    if (!session) {
+      return NextResponse.json('Unauthorized', { status: 401 });
+    }
+
     const body = await req.json();
 
     const validation = uploadProductSchema.safeParse(body);
