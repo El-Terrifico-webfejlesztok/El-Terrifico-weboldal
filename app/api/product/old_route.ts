@@ -4,10 +4,10 @@ import prisma from "@/prisma/client";
 
 const uploadProductSchema = z.object({
     // itt kell meghatározni a beérkező adat struktúráját
-    title: z.string().min(1).max(255),
+    name: z.string().min(1).max(255),
     description: z.string().min(1),
     price: z.number(),
-    count: z.number(),
+    stock: z.number(),
 });
 
 // Ha jön egy POST request a servernek akkor...

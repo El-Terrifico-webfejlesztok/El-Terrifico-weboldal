@@ -1,16 +1,123 @@
 'use client'
-import React from 'react'
-import {useSession, getSession} from "next-auth/react"
+import { useState } from 'react'
+
+const UploadProduct = () => {
+  const [name, setName] = useState('')
+  const [description, setDescription] = useState('')
+  const [price, setPrice] = useState(0)
+  const [stock, setStock] = useState(0)
+  const [message, setMessage] = useState('')
+  const [image, setImage] = useState<File>()
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+
+    if (!image) {
+      throw new Error('Nincs kép kiválasztva');
+    }
+
+    try {
+      const response = await fetch('/api/product/upload', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name,
+          description,
+          price,
+          stock,
+        }),
+      })
+
+      const responseBody = await response.json();
+
+      if (!response.ok) {
+        setMessage(responseBody.message);
+        return;
+      }
+      
+
+      const formData = new FormData();
+      formData.append('file', image);
+      formData.append('product_id', responseBody.id);
+
+      const imageResponse = await fetch('/api/product/uploadimage', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const imageData = await imageResponse.json();
 
 
 
-const UploadPage = () => {
-    const {data: session, status} = useSession()
-    console.log(session, status)
+    } catch (error) {
+      console.error('A szerver nem érhető el', error)
+      setMessage('A szerver nem érhető el')
+    }
+  }
+
+  const inputlook = 'input input-bordered w-full max-w-xs'
 
   return (
-    <>testing</>
+    <div>
+      <h1>Upload Product</h1>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label htmlFor="name">Name:</label>
+          <input
+            className={inputlook}
+            type="text"
+            id="name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </div>
+        <div>
+          <label htmlFor="description">Description:</label>
+          <textarea
+            id="description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+        </div>
+        <div>
+          <label htmlFor="price">Price:</label>
+          <input
+            className={inputlook}
+            type="number"
+            id="price"
+            step="0.01"
+            value={price}
+            onChange={(e) => setPrice(Number(e.target.value))}
+          />
+        </div>
+        <div>
+          <label htmlFor="stock">Stock:</label>
+          <input
+            className={inputlook}
+            type="number"
+            id="stock"
+            value={stock}
+            onChange={(e) => setStock(Number(e.target.value))}
+          />
+        </div>
+
+        <input
+          className='file-input file-input-bordered'
+          type="file"
+          name='file'
+          onChange={(e) => setImage(e.target.files?.[0])}
+        />
+        <button className='btn' type="submit">Upload</button>
+
+
+
+
+      </form>
+      {message && <p>{message}</p>}
+    </div>
   )
 }
 
-export default UploadPage
+export default UploadProduct
