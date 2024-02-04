@@ -1,15 +1,15 @@
 .szurodoboz {
   border: 4px dashed black;
-  width: 50%;
+  width: 60%;
   margin: auto;
   margin-top: 10px;
   margin-bottom: 70px;
-  background-color: chocolate;
+  background-color: burlywood;
 }
 
 .ardoboz {
   margin-bottom: 8;
-  width: 112px;
+  width: 90px;
   border: 2px solid grey;
   border-radius: 4px;
 }
