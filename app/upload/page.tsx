@@ -59,7 +59,7 @@ const UploadProduct = () => {
         setMessage([...message, imageData]);
         return;
       }
- 
+
       setMessage([...message, "Képek feltöltve"]);
       const imageMessage: string = ['ID: ', imageData.id, 'Útvonal: ', imageData.image_path].join('');
 
@@ -129,7 +129,12 @@ const UploadProduct = () => {
 
 
         <div className="mockup-code min-h-96 max-w-lg mt-4" >
-          {message.map(mes => <pre data-prefix=">"><code>{mes}</code></pre>)}
+          {/*Ezt még javítani kéne, a key nem egyedi mindíg. */}
+          {message.map(mes =>
+            <pre key={message.length} data-prefix=">">
+              <code>{mes}</code>
+            </pre>
+          )}
         </div>
 
       </form>

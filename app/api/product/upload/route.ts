@@ -2,7 +2,7 @@ import prisma from "@/prisma/client";
 import { z } from 'zod';
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from "next-auth";
-import { authOptions } from "../../auth/[...nextauth]/route";
+import { authOptions } from "../../auth/[...nextauth]/auth";
 
 const uploadProductSchema = z.object({
   name: z.string().min(1).max(255),
