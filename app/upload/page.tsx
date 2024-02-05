@@ -6,14 +6,17 @@ const UploadProduct = () => {
   const [description, setDescription] = useState('')
   const [price, setPrice] = useState(0)
   const [stock, setStock] = useState(0)
-  const [message, setMessage] = useState('')
+  const [message, setMessage] = useState(['Welcome, administrator.'])
   const [image, setImage] = useState<File>()
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+
     event.preventDefault()
+    setMessage([...message, 'Feltöltés..']);
 
     if (!image) {
-      throw new Error('Nincs kép kiválasztva');
+      setMessage([...message, 'Nincs kép kiválasztva']);
+      return
     }
 
     try {
@@ -33,10 +36,15 @@ const UploadProduct = () => {
       const responseBody = await response.json();
 
       if (!response.ok) {
-        setMessage(responseBody.message);
+        setMessage([...message, responseBody]);
         return;
       }
-      
+      setMessage([...message, "Termék létrehozva"]);
+
+      // Sajnos a javascript ilyeneket hoz ki az emberből:
+      const productMessage: string = ['ID: ', responseBody.id, 'Name: ', responseBody.name].join('');
+
+      setMessage([...message, productMessage]);
 
       const formData = new FormData();
       formData.append('file', image);
@@ -46,22 +54,30 @@ const UploadProduct = () => {
         method: 'POST',
         body: formData,
       });
-
       const imageData = await imageResponse.json();
+      if (!imageResponse.ok) {
+        setMessage([...message, imageData]);
+        return;
+      }
+ 
+      setMessage([...message, "Képek feltöltve"]);
+      const imageMessage: string = ['ID: ', imageData.id, 'Útvonal: ', imageData.image_path].join('');
 
-
+      setMessage([...message, imageMessage]);
+      setMessage([...message, imageData.created_at])
+      setMessage([...message, "A termék és a kép sikeresen feltöltve"])
 
     } catch (error) {
       console.error('A szerver nem érhető el', error)
-      setMessage('A szerver nem érhető el')
+      setMessage([...message, 'A szerver nem érhető el']);
     }
   }
 
   const inputlook = 'input input-bordered w-full max-w-xs'
 
   return (
-    <div>
-      <h1>Upload Product</h1>
+    <div className='flex mx-auto justify-center max-w-2xl pt-5'>
+
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="name">Name:</label>
@@ -112,10 +128,11 @@ const UploadProduct = () => {
         <button className='btn' type="submit">Upload</button>
 
 
-
+        <div className="mockup-code min-h-96 max-w-lg mt-4" >
+          {message.map(mes => <pre data-prefix=">"><code>{mes}</code></pre>)}
+        </div>
 
       </form>
-      {message && <p>{message}</p>}
     </div>
   )
 }
