@@ -7,8 +7,8 @@ const Links = () => {
     const currentPath = usePathname();
 
     const links = [
-        { name: 'Products', href: '/products' },
-        { name: 'Forum', href: '/forum' },
+        { name: 'Termékek', href: '/products' },
+        { name: 'Fórum', href: '/forum' },
     ];
 
   return (
