@@ -12,7 +12,7 @@ const UploadProduct = () => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 
     event.preventDefault()
-    setMessage([...message, 'Feltöltés..']);
+    setMessage(['Feltöltés..']);
 
     if (!image) {
       setMessage([...message, 'Nincs kép kiválasztva']);
