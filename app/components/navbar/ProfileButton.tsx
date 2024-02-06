@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { signOut } from 'next-auth/react'
 import { useSession } from 'next-auth/react'
@@ -7,14 +7,20 @@ import { useSession } from 'next-auth/react'
 /* Átírtam az Image src-t, adtam neki height, width, csak mert nem akart ezek miatt menni az oldal- Barni */
 
 const ProfileButton = () => {
-
-    const pfp = "https://webstockreview.net/images/food-clipart-taco-18.png"
-
+    const [pfp, setPFP] = useState('https://webstockreview.net/images/food-clipart-taco-18.png')
     const { data: session, status, update } = useSession()
     // Session update oldal betöltéskor
     useEffect(() => {
         update()
     }, [])
+
+    useEffect(() => {
+        if (session?.user?.image != null) {
+            setPFP(session?.user?.image!)
+        }
+    }, [session?.user?.image!])
+    // Placeholder profilkép ha nincs megadva a sessionben
+
 
     if (status === "authenticated") {
 

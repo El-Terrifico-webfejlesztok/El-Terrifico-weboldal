@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
   }
   catch (error) {
     console.error('Error during product upload:', error);
-    return NextResponse.json('Error during product upload', { status: 500 });
+    return NextResponse.json(`Hiba a termék feltöltése közben`, { status: 500 });
   }
 };
 
