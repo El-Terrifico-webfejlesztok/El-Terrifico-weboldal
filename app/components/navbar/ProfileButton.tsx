@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { useEffect } from 'react'
 import Link from 'next/link'
 import { signOut } from 'next-auth/react'
 import { useSession } from 'next-auth/react'
@@ -10,9 +10,14 @@ const ProfileButton = () => {
 
     const pfp = "https://webstockreview.net/images/food-clipart-taco-18.png"
 
-    const { data: session, status } = useSession()
+    const { data: session, status, update } = useSession()
+    // Session update oldal betöltéskor
+    useEffect(() => {
+        update()
+    }, [])
 
     if (status === "authenticated") {
+
         return (
             <div className="dropdown dropdown-end">
                 <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">

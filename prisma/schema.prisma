@@ -137,5 +137,4 @@ model ProductCategoryLink {
 enum User_role {
   user
   admin
-  moderator
 }
