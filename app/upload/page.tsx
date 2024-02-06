@@ -129,9 +129,9 @@ const UploadProduct = () => {
 
 
         <div className="mockup-code min-h-96 max-w-lg mt-4" >
-          {/*Ezt még javítani kéne, a key nem egyedi mindíg. */}
-          {message.map(mes =>
-            <pre key={message.length} data-prefix=">">
+          {/*Ezt még javítani kéne, a key nem egyedi mindíg. Emiatt bugos*/}
+          {message.map((mes, index) =>
+            <pre key={index} data-prefix=">">
               <code>{mes}</code>
             </pre>
           )}
