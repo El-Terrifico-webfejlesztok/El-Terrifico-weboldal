@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import NavBar from "./components/navbar/NavBar";
+import Footer from "./components/footer/Footer";
 // sessionok
 import { getServerSession } from "next-auth";
 import SessionProvider from "./components/SessionProvider";
@@ -25,6 +26,7 @@ export default async function RootLayout({ children, }: Readonly<{ children: Rea
         <SessionProvider session={session}>
           <NavBar />
           <main>{children}</main>
+          <Footer />
         </SessionProvider>
       </body>
 

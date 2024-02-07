@@ -5,7 +5,7 @@ CREATE TABLE `User` (
     `email` VARCHAR(255) NOT NULL,
     `password` VARCHAR(255) NOT NULL,
     `is_active` BOOLEAN NOT NULL DEFAULT true,
-    `role` ENUM('user', 'admin', 'moderator') NOT NULL DEFAULT 'user',
+    `role` ENUM('user', 'admin') NOT NULL DEFAULT 'user',
     `created_at` TIMESTAMP(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
 
     UNIQUE INDEX `email`(`email`),
