@@ -73,14 +73,14 @@ const UploadProduct = () => {
     }
   }
 
-  const inputlook = 'input input-bordered w-full max-w-xs'
+  const inputlook = 'input input-bordered w-full'
 
   return (
-    <div className='flex mx-auto justify-center max-w-2xl pt-5'>
+    <div className='mx-auto justify-center max-w-lg pt-5'>
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className='flex flex-col gap-3 mx-auto mt-12 p-2'>
         <div>
-          <label htmlFor="name">Name:</label>
+          <label className='form-control' htmlFor="name">Name:</label>
           <input
             className={inputlook}
             type="text"
@@ -90,33 +90,37 @@ const UploadProduct = () => {
           />
         </div>
         <div>
-          <label htmlFor="description">Description:</label>
+          <label className='form-control' htmlFor="description">Description:</label>
           <textarea
+            className='w-full'
+            rows={6}
             id="description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
         </div>
-        <div>
-          <label htmlFor="price">Price:</label>
-          <input
-            className={inputlook}
-            type="number"
-            id="price"
-            step="0.01"
-            value={price}
-            onChange={(e) => setPrice(Number(e.target.value))}
-          />
-        </div>
-        <div>
-          <label htmlFor="stock">Stock:</label>
-          <input
-            className={inputlook}
-            type="number"
-            id="stock"
-            value={stock}
-            onChange={(e) => setStock(Number(e.target.value))}
-          />
+        <div className='flex space-x-2'>
+          <div>
+            <label className='form-control' htmlFor="price">Price:</label>
+            <input
+              className={inputlook}
+              type="number"
+              id="price"
+              step="0.01"
+              value={price}
+              onChange={(e) => setPrice(Number(e.target.value))}
+            />
+          </div>
+          <div>
+            <label className='form-control' htmlFor="stock">Stock:</label>
+            <input
+              className={inputlook}
+              type="number"
+              id="stock"
+              value={stock}
+              onChange={(e) => setStock(Number(e.target.value))}
+            />
+          </div>
         </div>
 
         <input
@@ -128,7 +132,7 @@ const UploadProduct = () => {
         <button className='btn' type="submit">Upload</button>
 
 
-        <div className="mockup-code min-h-96 max-w-lg mt-4" >
+        <div className="mockup-code min-h-96 mt-4" >
           {/*Ezt még javítani kéne, a key nem egyedi mindíg. Emiatt bugos*/}
           {message.map((mes, index) =>
             <pre key={index} data-prefix=">">
