@@ -1,14 +1,38 @@
 'use client'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import ImageUploader from '../components/upload/imageuploader';
+import CategorySelector from '../components/upload/CategorySelector';
 
 const UploadProduct = () => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState(0);
   const [stock, setStock] = useState(0);
-  const [message, setMessage] = useState(['Welcome, administrator.']);
+  const [categories, setCategories] = useState<string[]>([]); // Array to store selected categories
+  const [message, setMessage] = useState(['Welcome home, such as it is.']);
   const [formImages, setFormImages] = useState<File[]>();
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+
+  // Fetch categories from the server when the component mounts
+  useEffect(() => {
+    // Fetch categories and set them in state
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch('/api/product/categories'); // Replace with your actual API endpoint for fetching categories
+        const categoriesData = await response.json();
+
+        if (response.ok) {
+          setCategories(categoriesData);
+        } else {
+          console.error('Error fetching categories:', categoriesData);
+        }
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -31,6 +55,7 @@ const UploadProduct = () => {
           description,
           price,
           stock,
+          categories, // Include selected categories in the request
         }),
       });
 
@@ -65,7 +90,7 @@ const UploadProduct = () => {
         setMessage([...message, `ID: ${imageData.id}, Útvonal: ${imageData.image_path}`]);
         setMessage([...message, imageData.created_at]);
       }
-      setMessage([...message, 'A termék és a kép sikeresen feltöltve']);
+      setMessage([...message, 'A termék és a képek sikeresen feltöltve']);
     } catch (error) {
       console.error('A szerver nem érhető el', error);
       setMessage([...message, 'A szerver nem érhető el']);
@@ -77,6 +102,10 @@ const UploadProduct = () => {
   const handleImageChange = async (Images: File[]) => {
     setFormImages(Images);
     console.log('Form Images:', formImages);
+  };
+
+  const handleCategoriesChange = (categories: string[]) => {
+    setSelectedCategories(categories);
   };
 
   return (
@@ -99,7 +128,7 @@ const UploadProduct = () => {
             Description:
           </label>
           <textarea
-            className='w-full'
+            className='w-full textarea textarea-bordered'
             rows={6}
             id='description'
             value={description}
@@ -133,7 +162,9 @@ const UploadProduct = () => {
             />
           </div>
         </div>
+        <CategorySelector onCategoriesChange={handleCategoriesChange} />
         <ImageUploader onImagesChange={handleImageChange} />
+
         <button className='btn btn-primary' type='submit'>
           Upload
         </button>
