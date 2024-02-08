@@ -12,6 +12,7 @@ model User {
   username        String            @db.VarChar(30)
   email           String            @unique(map: "email") @db.VarChar(255)
   password        String            @db.VarChar(255)
+  image           String?           @db.VarChar(255)
   is_active       Boolean           @default(true)
   role            User_role         @default(user)
   created_at      DateTime          @default(now()) @db.Timestamp(0)
@@ -137,5 +138,4 @@ model ProductCategoryLink {
 enum User_role {
   user
   admin
-  moderator
 }

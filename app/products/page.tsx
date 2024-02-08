@@ -1,20 +1,24 @@
+import Kartya from "../components/product/Kartya";
 import SearchBarPro from "../components/product/SearchBarPro";
 import SearchButton from "../components/product/SearchButton";
 import Szurok from "../components/product/Szurok";
+import styles from "./productPage.module.css";
 
 const ProductList = () => {
   return (
-    <>
-      <div className="sm:flex items-center justify-center pt-40">
+    <div className={styles.productoldal}>
+      <div className="flex items-center justify-center">
+        <h1 className={styles.focim}>Termékeink</h1>
+      </div>
+      <div className="flex items-center justify-center pt-28">
         <SearchBarPro /> <SearchButton />
       </div>
-      <div className="sm:flex items-center justify-center mt-7">
-        <a className="link link-accent">
-          <h1>Részletes keresés</h1>
-        </a>
-        <Szurok />
+      <Szurok />
+      <div className={styles.kartyak}>
+        <Kartya />
+        <Kartya />
       </div>
-    </>
+    </div>
   );
 };
 

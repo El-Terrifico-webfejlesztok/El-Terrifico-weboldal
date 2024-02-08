@@ -20,7 +20,7 @@ const ProfilePage = () => {
             </div>
             <div className="space-y-4">
                 <div>
-                    <strong>Name:</strong>
+                    <strong>Jogosultság:</strong> {user.role}
                 </div>
                 <div>
                     <strong>Email:</strong> {user.email}
