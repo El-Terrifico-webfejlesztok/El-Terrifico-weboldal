@@ -30,13 +30,13 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(validation.error.errors, { status: 400 });
     }
 
-    // Create or find categories
+    // Fetch or create categories and store them in an array
     const categories = await Promise.all(
       body.categories.map(async (categoryName: string) => {
         const existingCategory = await prisma.category.findUnique({
           where: { name: categoryName },
         });
-
+        console.log(existingCategory)
         if (existingCategory) {
           return existingCategory;
         }
@@ -57,7 +57,7 @@ export async function POST(req: NextRequest) {
         stock: body.stock,
         ProductCategoryLink: {
           create: categories.map((category) => ({
-            category_id: category.id,
+            category_id: category.id, // Access individual category object for ID
           })),
         },
       },

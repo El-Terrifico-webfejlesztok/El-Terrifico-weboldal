@@ -36,14 +36,14 @@ const CategorySelector: React.FC<CategorySelectorProps> = ({ onCategoriesChange 
 
         // Update the checked list based on the current state
         const updatedCheckedCategories = isCategorySelected
-            ? checkedCategories.filter((c) => c !== category) // If selected, remove from the checked list
-            : [...checkedCategories, category]; // If not selected, add to the checked list
+            ? checkedCategories.filter((c) => c !== category)
+            : [...checkedCategories, category];
 
         setCheckedCategories(updatedCheckedCategories);
         onCategoriesChange(updatedCheckedCategories);
 
         // Log the updated checked categories for testing
-        console.log('Updated Checked Categories:', updatedCheckedCategories);
+        // console.log('Updated Checked Categories:', updatedCheckedCategories);
     };
 
     const handleNewCategoryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,19 +51,28 @@ const CategorySelector: React.FC<CategorySelectorProps> = ({ onCategoriesChange 
     };
 
     const handleAddCategory = () => {
-        // Add the new category to the displayed list and the checked list if it doesn't already exist
-        if (newCategory.trim() !== '' && !displayedCategories.includes(newCategory.trim())) {
-            const updatedDisplayedCategories = [...displayedCategories, newCategory.trim()];
-            const updatedCheckedCategories = [...checkedCategories, newCategory.trim()];
-
-            setDisplayedCategories(updatedDisplayedCategories);
-            setCheckedCategories(updatedCheckedCategories);
-            onCategoriesChange(updatedCheckedCategories);
-            setNewCategory('');
-
-            // Log the updated checked categories for testing
-            console.log('Updated Checked Categories:', updatedCheckedCategories);
+        // Check for empty category
+        if (!newCategory) {
+            console.error('New category cannot be empty.');
+            return;
         }
+
+        // Check for duplicate category
+        if (displayedCategories.some((c) => c.trim() === newCategory.trim())) {
+            console.error('Category already exists.');
+            return;
+        }
+
+        // Add the new category to the displayed and checked lists
+        const updatedDisplayedCategories = [...displayedCategories, newCategory];
+        const updatedCheckedCategories = [...checkedCategories, newCategory];
+
+        setDisplayedCategories(updatedDisplayedCategories);
+        setCheckedCategories(updatedCheckedCategories);
+        onCategoriesChange(updatedCheckedCategories);
+
+        // Clear the new category input
+        setNewCategory('');
     };
 
     const handleNewCategoryKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {

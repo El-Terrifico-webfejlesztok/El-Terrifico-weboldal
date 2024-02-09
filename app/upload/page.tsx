@@ -8,31 +8,9 @@ const UploadProduct = () => {
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState(0);
   const [stock, setStock] = useState(0);
-  const [categories, setCategories] = useState<string[]>([]); // Array to store selected categories
-  const [message, setMessage] = useState(['Welcome home, such as it is.']);
+  const [message, setMessage] = useState<string[]>(['Welcome home, such as it is.']);
   const [formImages, setFormImages] = useState<File[]>();
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-
-  // Fetch categories from the server when the component mounts
-  useEffect(() => {
-    // Fetch categories and set them in state
-    const fetchCategories = async () => {
-      try {
-        const response = await fetch('/api/product/categories'); // Replace with your actual API endpoint for fetching categories
-        const categoriesData = await response.json();
-
-        if (response.ok) {
-          setCategories(categoriesData);
-        } else {
-          console.error('Error fetching categories:', categoriesData);
-        }
-      } catch (error) {
-        console.error('Error fetching categories:', error);
-      }
-    };
-
-    fetchCategories();
-  }, []);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -44,6 +22,7 @@ const UploadProduct = () => {
     }
 
     try {
+      console.log(selectedCategories)
       // Send product data to create a new product
       const response = await fetch('/api/product/upload', {
         method: 'POST',
@@ -55,7 +34,7 @@ const UploadProduct = () => {
           description,
           price,
           stock,
-          categories, // Include selected categories in the request
+          categories: selectedCategories,
         }),
       });
 
@@ -88,7 +67,7 @@ const UploadProduct = () => {
 
         setMessage([...message, 'Kép sikeresen feltöltve']);
         setMessage([...message, `ID: ${imageData.id}, Útvonal: ${imageData.image_path}`]);
-        setMessage([...message, imageData.created_at]);
+        setMessage([...message, imageData.created_a]);
       }
       setMessage([...message, 'A termék és a képek sikeresen feltöltve']);
     } catch (error) {
@@ -106,6 +85,7 @@ const UploadProduct = () => {
 
   const handleCategoriesChange = (categories: string[]) => {
     setSelectedCategories(categories);
+    console.log(selectedCategories)
   };
 
   return (
@@ -135,7 +115,7 @@ const UploadProduct = () => {
             onChange={(e) => setDescription(e.target.value)}
           />
         </div>
-        <div className='flex space-x-2'>
+        <div className='flex space-x-2 justify-between'>
           <div>
             <label className='form-control' htmlFor='price'>
               Price:
