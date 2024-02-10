@@ -6,7 +6,7 @@ const Footer = () => {
 
   return (
     <footer>
-      <div className="flex mx-6">
+      <div className="flex justify-evenly mx-6">
         <div className="m-2 mx-20 font-medium">
           <h3 className="font-bold text-xl">Kapcsolataink</h3>
           <p>Email: el.terrifico@gmail.com</p>
