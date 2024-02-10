@@ -1,3 +1,5 @@
+/* Nem kell már */
+
 function SearchBarPro() {
   return (
     <div className="flex items-center">

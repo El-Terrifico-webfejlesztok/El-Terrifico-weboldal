@@ -14,7 +14,7 @@ function Szurok() {
       <>
         <div className="flex items-center justify-center mt-7">
           <a
-            className="link link-accent mb-16"
+            className="link link-info mb-16 text-green-700"
             onClick={() => {
               setIsCollepsed(!isCollepsed);
             }}
@@ -30,7 +30,7 @@ function Szurok() {
       <>
         <div className="flex items-center justify-center mt-7">
           <a
-            className="link link-accent"
+            className="link link-info text-green-700"
             onClick={() => {
               setIsCollepsed(!isCollepsed);
             }}
@@ -39,7 +39,7 @@ function Szurok() {
           </a>
         </div>
         <div className={styles.szurodoboz}>
-          <div className="sm:flex">
+          <div className="sm:flex bg-orange-300">
             <div className="sm:w-1/4 items-center justify-center pb-3">
               <h1 className=" text-center text-1xl text-black font-bold mb-4 mt-4">
                 Árak
