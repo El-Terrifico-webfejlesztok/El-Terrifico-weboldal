@@ -5,8 +5,16 @@ import Szurok from "../components/product/Szurok";
 import styles from "./productPage.module.css";
 import { useState, useEffect } from "react";
 
+
+interface Product {
+  name: string;
+  description: string;
+  categories: string[];
+  price: number;
+}
+
 const ProductList = () => {
-  const [data, setData] = useState([{ id: 65 }]);
+  const [data, setData] = useState<Product[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
