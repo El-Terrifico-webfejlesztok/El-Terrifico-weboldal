@@ -1,5 +1,7 @@
 "use client";
 
+/*Nem kell már */
+
 import { useState } from "react";
 import styles from "./product.module.css";
 

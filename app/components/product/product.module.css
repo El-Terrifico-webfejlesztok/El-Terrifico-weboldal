@@ -17,6 +17,8 @@
   width: 85%;
   margin-top: 10px;
   margin-bottom: 20px;
+  border: 5px white solid;
+  border-radius: 16px;
 }
 
 /* styles/likeButton.module.css */

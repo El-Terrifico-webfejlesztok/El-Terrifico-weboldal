@@ -1,17 +1,16 @@
 import KartyaCheckbox from "./KartyaCheckbox";
 import KartyaErtekeles from "./KartyaErtekeles";
 import KartyaKosarba from "./KartyaKosarba";
-import KartyaTetszik from "./KartyaTetszik";
 import styles from "./product.module.css";
 
 interface props {
-  title: string,
-  description: string,
-  category: string,
-  price: number
+  title: string;
+  description: string;
+  category?: string[];
+  price: number;
 }
 
-function Kartya({title, description, category, price}: props) {
+const Kartya: React.FC<props> = ({ title, description, category = [], price }) => {
   return (
     <div className={styles.kartya}>
       <div className="card lg:card-side bg-base-100 shadow-xl">
@@ -26,7 +25,9 @@ function Kartya({title, description, category, price}: props) {
             </div>
             <div className="sm:w-1/4 ml-10 mr-10 mb-8">
               <h2 className=" text-1xl text-black font-bold">Kategória:</h2>
-              <KartyaCheckbox name={category} />
+              {category.map((part, index) => (
+                <KartyaCheckbox key={index} name={part} />
+              ))}
             </div>
           </div>
 
@@ -36,7 +37,7 @@ function Kartya({title, description, category, price}: props) {
             </div>
             <div className="sm:w-1/4 mb-6 text-center">
               <h1>Ár:</h1>
-              <p className="text-center">{price}</p>
+              <p className="text-center">{price} Ft</p>
             </div>
             <div className="sm:w-1/4 mb-6 text-center">
               <h1>Értékelés:</h1>
@@ -46,16 +47,11 @@ function Kartya({title, description, category, price}: props) {
               <KartyaErtekeles />
               <button className="btn btn-sm mt-2 text-center">Értékelem</button>
             </div>
-            <div className="sm:w-1/4 mb-6 text-center">
-              <KartyaTetszik />
-            </div>
           </div>
         </div>
-        <figure>
-          <img src="/HomeTaco.jpg" alt="Taco" className=" h-80 w-auto" />
-        </figure>
+          <img src="/HomeTaco.jpg" alt="Taco" className=" rounded-xl max-h-fit sm:w-96 max-w mx-auto" />
       </div>
     </div>
   );
-}
+};
 export default Kartya;

@@ -7,9 +7,6 @@ import { useState, useEffect } from "react";
 
 const ProductList = () => {
   const [data, setData] = useState([{ id: 65 }]);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [filteredObjects, setFilteredObjects] = useState([]);
-  const [searchEmpty, setSearchEmpty] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,22 +25,6 @@ const ProductList = () => {
     fetchData();
   }, []);
 
-  const handleSearchChange = (event) => {
-    const query = document.getElementById("search").value;
-    if (query != "") {
-      setSearchEmpty(false);
-    }
-    setSearchQuery(query);
-    filterObjects(query);
-  };
-
-  const filterObjects = (query) => {
-    const filtered = data.filter((obj) =>
-      obj.name.toLowerCase().includes(query.toLowerCase())
-    );
-    setFilteredObjects(filtered);
-  };
-
   return (
     <div className={styles.productoldal}>
       <div className="flex items-center justify-center">
@@ -52,43 +33,28 @@ const ProductList = () => {
       <div className="flex items-center justify-center pt-28">
         <div className="flex items-center">
           <input
-            id="search"
             type="text"
             placeholder="Keresés..."
             className="border rounded-md p-2 focus:outline-none focus:ring focus:border-lime-700 lg:w-96 md:w-80 sm:w-72 w-40 inline-block"
           />
         </div>
-        <button
-          className="btn btn-xs sm:btn-sm md:btn-md btn-outline btn-success inline-block h-12"
-          onClick={handleSearchChange}
-        >
+        <button className="btn btn-xs sm:btn-sm md:btn-md btn-outline btn-success inline-block h-12">
           Keresés
         </button>
       </div>
       <Szurok />
       <div className={styles.kartyak}>
-        {searchEmpty
-          ? data.map((item) => (
-              <Kartya
-                title={item.name}
-                description={item.description}
-                category={item.categories}
-                price={item.price}
-              />
-            ))
-          : filteredObjects.map((item) => (
-              <Kartya
-                title={item.name}
-                description={item.description}
-                category={item.categories}
-                price={item.price}
-              />
-            ))}
+        {data.map((item) => (
+          <Kartya
+            title={item.name}
+            description={item.description}
+            category={item.categories}
+            price={item.price}
+          />
+        ))}
       </div>
     </div>
   );
 };
-
-/*<pre>{JSON.stringify(data, null, 2)}</pre>*/
 
 export default ProductList;
