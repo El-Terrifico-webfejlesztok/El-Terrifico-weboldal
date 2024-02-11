@@ -1,14 +1,16 @@
 'use client'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import ImageUploader from '../components/upload/imageuploader';
+import CategorySelector from '../components/upload/CategorySelector';
 
 const UploadProduct = () => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState(0);
   const [stock, setStock] = useState(0);
-  const [message, setMessage] = useState(['Welcome, administrator.']);
+  const [message, setMessage] = useState<string[]>(['Welcome home, such as it is.']);
   const [formImages, setFormImages] = useState<File[]>();
+  const [selectedCategories, setSelectedCategories] = useState<string[]>();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -20,6 +22,7 @@ const UploadProduct = () => {
     }
 
     try {
+      console.log(selectedCategories)
       // Send product data to create a new product
       const response = await fetch('/api/product/upload', {
         method: 'POST',
@@ -31,6 +34,7 @@ const UploadProduct = () => {
           description,
           price,
           stock,
+          categories: selectedCategories,
         }),
       });
 
@@ -63,9 +67,9 @@ const UploadProduct = () => {
 
         setMessage([...message, 'Kép sikeresen feltöltve']);
         setMessage([...message, `ID: ${imageData.id}, Útvonal: ${imageData.image_path}`]);
-        setMessage([...message, imageData.created_at]);
+        setMessage([...message, imageData.created_a]);
       }
-      setMessage([...message, 'A termék és a kép sikeresen feltöltve']);
+      setMessage([...message, 'A termék és a képek sikeresen feltöltve']);
     } catch (error) {
       console.error('A szerver nem érhető el', error);
       setMessage([...message, 'A szerver nem érhető el']);
@@ -77,6 +81,11 @@ const UploadProduct = () => {
   const handleImageChange = async (Images: File[]) => {
     setFormImages(Images);
     console.log('Form Images:', formImages);
+  };
+
+  const handleCategoriesChange = (categories: string[]) => {
+    setSelectedCategories(categories);
+    console.log(selectedCategories)
   };
 
   return (
@@ -99,14 +108,14 @@ const UploadProduct = () => {
             Description:
           </label>
           <textarea
-            className='w-full'
+            className='w-full textarea textarea-bordered'
             rows={6}
             id='description'
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
         </div>
-        <div className='flex space-x-2'>
+        <div className='flex space-x-2 justify-between'>
           <div>
             <label className='form-control' htmlFor='price'>
               Price:
@@ -133,7 +142,9 @@ const UploadProduct = () => {
             />
           </div>
         </div>
+        <CategorySelector onCategoriesChange={handleCategoriesChange} />
         <ImageUploader onImagesChange={handleImageChange} />
+
         <button className='btn btn-primary' type='submit'>
           Upload
         </button>

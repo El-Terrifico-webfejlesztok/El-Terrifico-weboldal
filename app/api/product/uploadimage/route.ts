@@ -18,9 +18,9 @@ export async function POST(req: NextRequest) {
 
     const product_id = formData.get('product_id');
     const file = formData.get('file') as unknown as File;
-    console.log(file)
-    console.log(formData)
-    console.log(product_id)
+    //console.log(file)
+    //console.log(formData)
+    //console.log(product_id)
 
     if (!file || product_id === null) {
       return NextResponse.json('Product ID or file is not present in the form data', { status: 400 });

@@ -9,25 +9,25 @@ const Links = () => {
     const links = [
         { name: 'Termékek', href: '/products' },
         { name: 'Fórum', href: '/forum' },
+        { name: 'Rólunk', href: '/aboutus' },
     ];
 
-    const linkclass = 'px-3 transition-colors btn transition-all '
+    const linkclass = ''
 
     return (
-
-        <ul className='flex space-x-2'>
+        <>
             {links.map(link => (
                 <li key={link.href}>
                     <Link
                         href={link.href}
-                        className={`${link.href === currentPath ? 'btn-active' : 'btn-ghost'
+                        className={`${link.href === currentPath ? 'active' : ''
                             } ${linkclass} `}
                     >
                         {link.name}
                     </Link>
                 </li>
             ))}
-        </ul>
+        </>
     )
 }
 
