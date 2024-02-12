@@ -45,8 +45,8 @@ function Szurok() {
                 Árak
               </h1>
               <div className="text-center">
-                <SzuroAr cim="Minimum ár (HUF):" minertek={0} placeh="0" />
-                <SzuroAr cim="Maximum ár (HUF):" minertek={2} placeh="2" />
+                <SzuroAr name="minPrice" cim="Minimum ár (HUF):" minertek={0} placeh="0" />
+                <SzuroAr name="maxPrice" cim="Maximum ár (HUF):" minertek={2} placeh="2" />
               </div>
             </div>
 
@@ -55,11 +55,11 @@ function Szurok() {
                 Kategóriák
               </h1>
               <div>
-                <SzuroCheckbox cim="Burger" />
-                <SzuroCheckbox cim="Taco" />
-                <SzuroCheckbox cim="Pizza" />
-                <SzuroCheckbox cim="Szószok" />
-                <SzuroCheckbox cim="Üditőital" />
+                <SzuroCheckbox name='category' cim="Burger" />
+                <SzuroCheckbox name='category' cim="Taco" />
+                <SzuroCheckbox name='category' cim="Pizza" />
+                <SzuroCheckbox name='category' cim="Szószok" />
+                <SzuroCheckbox name='category' cim="Üditőital" />
               </div>
             </div>
 
@@ -77,7 +77,7 @@ function Szurok() {
                 Kedvenceim
               </h1>
               <div>
-                <SzuroCheckbox cim="Kedvelt" />
+                <SzuroCheckbox name='liked' cim="Kedvelt" />
               </div>
             </div>
           </div>
