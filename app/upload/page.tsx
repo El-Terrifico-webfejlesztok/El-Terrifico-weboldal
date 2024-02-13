@@ -21,6 +21,11 @@ const UploadProduct = () => {
       return;
     }
 
+    if (!selectedCategories) {
+      setMessage([...message, 'Nincs kategória kiválasztva']);
+      return;
+    }
+
     try {
       console.log(selectedCategories)
       // Send product data to create a new product
@@ -41,7 +46,7 @@ const UploadProduct = () => {
       const responseBody = await response.json();
 
       if (!response.ok) {
-        setMessage([...message, responseBody]);
+        setMessage([...message, JSON.stringify(responseBody)]);
         return;
       }
 
@@ -61,7 +66,7 @@ const UploadProduct = () => {
         const imageData = await imageResponse.json();
 
         if (!imageResponse.ok) {
-          setMessage([...message, imageData]);
+          setMessage([...message, JSON.stringify(imageData)]);
           return;
         }
 
