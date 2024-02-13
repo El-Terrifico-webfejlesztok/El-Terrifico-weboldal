@@ -12,14 +12,14 @@ function Szurok() {
   if (isCollepsed == true) {
     return (
       <>
-        <div className="flex items-center justify-center mt-7">
+        <div className="flex items-center justify-center mt-3">
           <a
             className="link link-info mb-16 text-green-700"
             onClick={() => {
               setIsCollepsed(!isCollepsed);
             }}
           >
-            <h1>Részletes keresés</h1>
+            <h1 className="btn">Részletes keresés</h1>
           </a>
         </div>
       </>
@@ -28,14 +28,14 @@ function Szurok() {
   if (isCollepsed == false) {
     return (
       <>
-        <div className="flex items-center justify-center mt-7">
+        <div className="flex items-center justify-center mt-3">
           <a
             className="link link-info text-green-700"
             onClick={() => {
               setIsCollepsed(!isCollepsed);
             }}
           >
-            <h1>Részletes keresés</h1>
+            <h1 className="btn btn-success">Részletes keresés</h1>
           </a>
         </div>
         <div className={styles.szurodoboz}>

@@ -105,7 +105,9 @@ export async function GET(req: NextRequest) {
       created_at: product.created_at,
       updated_at: product.updated_at,
       categories: product.ProductCategoryLink.map(link => link.Category.name),
-      images: product.ProductImage.map(link => link.image_path)
+      // A képhez hozzácsatoljuk az URL-t, így nem kell a kliens oldalon szórakozni vele
+      // Az .env file-ban be kell hogy állítva legyen az URL hogy működjön ez.
+      images: product.ProductImage.map(link => `${process.env.URL}/${link.image_path}`)
     }));
     console.log(flattenedProducts)
 

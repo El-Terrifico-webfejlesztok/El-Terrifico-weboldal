@@ -1,3 +1,4 @@
+import Carousel from "../Carousel";
 import KartyaCheckbox from "./KartyaCheckbox";
 import KartyaErtekeles from "./KartyaErtekeles";
 import KartyaKosarba from "./KartyaKosarba";
@@ -8,9 +9,12 @@ interface props {
   description: string;
   category?: string[];
   price: number;
+  // Lista benne képútvonalakkal
+  // Pl ['https://terrifico.zapto.org/public/product_images/picture1.png', 'https://terrifico.zapto.org/public/product_images/Taco.jpg']
+  images: string[];
 }
 
-const Kartya: React.FC<props> = ({ title, description, category = [], price }) => {
+const Kartya: React.FC<props> = ({ title, description, category = [], price, images }) => {
   return (
     <div className={styles.kartya}>
       <div className="card lg:card-side bg-base-100 shadow-xl">
@@ -49,7 +53,13 @@ const Kartya: React.FC<props> = ({ title, description, category = [], price }) =
             </div>
           </div>
         </div>
-          <img src="/HomeTaco.jpg" alt="Taco" className=" rounded-xl max-h-fit sm:w-96 max-w mx-auto" />
+        {/**Carousel a képeknek */}
+        <div className="rounded-xl min-w-96 w-1/4 h-96 lg:card-side mx-auto">
+          {/*images.map((image, index) => (
+            <img src={image} alt="Termék kép" className=" rounded-xl h-full sm:w-96 w-full mx-auto object-cover" />
+          ))*/}
+          <Carousel images={images} title={title}></Carousel>
+        </div>
       </div>
     </div>
   );

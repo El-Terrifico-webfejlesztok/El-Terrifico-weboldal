@@ -13,6 +13,7 @@ interface Product {
   name: string;
   description: string;
   categories: string[];
+  images: string[];
   price: number;
 }
 interface ProductFilter {
@@ -112,14 +113,14 @@ const ProductList = () => {
         <h1 className={styles.focim}>Termékeink</h1>
       </div>
       <form onSubmit={handleSubmit}>
-        <div className="flex items-center justify-center pt-28">
+        <div className="flex items-center justify-center pt-28 join">
           <input
             type="text"
             name="name"
             placeholder="Keresés..."
-            className="border rounded-md p-2 focus:outline-none focus:ring focus:border-lime-700 lg:w-96 md:w-80 sm:w-72 w-40 inline-block"
+            className="join-item border rounded-md p-2 focus:outline-none focus:ring focus:border-lime-700 w-3/4 max-w-96 inline-block"
           />
-          <button className="btn btn-xs sm:btn-sm md:btn-md btn-success inline-block h-12 w-24">
+          <button className="join-item btn btn-xs sm:btn-sm md:btn-md btn-success inline-block h-12 w-24">
             <p className={loading ? "loading" : ""}>Keresés</p>
           </button>
         </div>
@@ -134,6 +135,7 @@ const ProductList = () => {
             title={item.name}
             description={item.description}
             category={item.categories}
+            images={item.images}
             price={item.price}
           />
         ))}
