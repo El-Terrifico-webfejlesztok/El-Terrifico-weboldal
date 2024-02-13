@@ -49,7 +49,7 @@ const Kartya: React.FC<props> = ({ title, description, category = [], price }) =
             </div>
           </div>
         </div>
-          <img src="/HomeTaco.jpg" alt="Taco" className=" rounded-xl max-h-fit sm:w-96 max-w mx-auto" />
+          <img src="/HomeTaco.jpg" alt="Taco" className=" rounded-xl max-h-fit md:w-96 max-w mx-auto" />
       </div>
     </div>
   );
