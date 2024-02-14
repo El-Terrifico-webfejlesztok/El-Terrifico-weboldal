@@ -1,6 +1,7 @@
 .szurodoboz {
   border: 4px dashed black;
-  width: 60%;
+  width: 85%;
+  max-width: 96rem;
   margin: auto;
   margin-top: 10px;
   margin-bottom: 70px;
