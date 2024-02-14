@@ -10,8 +10,13 @@ function SzuroCheckbox({ cim, name }: props) {
     <div>
       <div className="form-control">
         <label className="label cursor-pointer ">
-          <span className="label-text lg:ml-1">{cim}</span>
-          <input name={name} value={cim} type="checkbox" className="checkbox lg:mr-1" />
+          <span className="label-text lg:ml-6">{cim}</span>
+          <input
+            name={name}
+            value={cim}
+            type="checkbox"
+            className="checkbox lg:mr-6"
+          />
         </label>
       </div>
     </div>

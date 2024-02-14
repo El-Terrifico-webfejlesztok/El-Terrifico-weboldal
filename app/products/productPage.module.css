@@ -20,3 +20,37 @@
   background-color: oklch(var(--wa));
   text-shadow: 0px 7px 0px grey;
 }
+
+@media screen and (max-width: 460px) {
+  .focim {
+    width: fit-content;
+    font-size: 50px;
+    text-transform: uppercase;
+    color: white;
+    line-height: 1;
+    font-weight: bold;
+    padding: 10px;
+    margin-top: 50px;
+    border: 3px solid white;
+    border-radius: 5px;
+    background-color: oklch(var(--wa));
+    text-shadow: 0px 7px 0px grey;
+  }
+}
+
+@media screen and (max-width: 370px) {
+  .focim {
+    width: fit-content;
+    font-size: 40px;
+    text-transform: uppercase;
+    color: white;
+    line-height: 1;
+    font-weight: bold;
+    padding: 10px;
+    margin-top: 50px;
+    border: 3px solid white;
+    border-radius: 5px;
+    background-color: oklch(var(--wa));
+    text-shadow: 0px 7px 0px grey;
+  }
+}
