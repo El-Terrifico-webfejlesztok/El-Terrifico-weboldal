@@ -1,3 +1,5 @@
+import { Product } from "@prisma/client";
+import AddToCart from "../AddToCart";
 import Carousel from "../Carousel";
 import KartyaCheckbox from "./KartyaCheckbox";
 import KartyaErtekeles from "./KartyaErtekeles";
@@ -12,9 +14,10 @@ interface props {
   // Lista benne képútvonalakkal
   // Pl ['https://terrifico.zapto.org/public/product_images/picture1.png', 'https://terrifico.zapto.org/public/product_images/Taco.jpg']
   images: string[];
+  product: Product;
 }
 
-const Kartya: React.FC<props> = ({ title, description, category = [], price, images }) => {
+const Kartya: React.FC<props> = ({ title, description, category = [], price, images, product }) => {
   return (
     <div className={styles.kartya}>
       <div className="card lg:card-side bg-base-100 shadow-xl">
@@ -37,7 +40,7 @@ const Kartya: React.FC<props> = ({ title, description, category = [], price, ima
 
           <div className="sm:flex my-auto">
             <div className="sm:w-1/4 mb-6 text-center">
-              <KartyaKosarba />
+              <AddToCart item={product}/>
             </div>
             <div className="sm:w-1/4 mb-6 text-center">
               <h1>Ár:</h1>
