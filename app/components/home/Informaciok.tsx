@@ -20,6 +20,10 @@ function Informaciok() {
             <td>Szombat-Vasárnap: 11:00-23:00</td>
           </tr>
           <tr>
+            <th>Kiszállítás összege:</th>
+            <td>2000 Ft</td>
+          </tr>
+          <tr>
             <th>Minimum rendelés:</th>
             <td>2000 Ft</td>
           </tr>
