@@ -4,6 +4,7 @@ import React from 'react'
 import Link from 'next/link'
 import useCartService from '@/lib/hooks/useCartStore';
 import { useState, useEffect } from 'react';
+import CartCard from './CartCard';
 
 const Cart = () => {
     const { items, totalPrice, shippingPrice, itemsPrice } = useCartService()
@@ -13,8 +14,6 @@ const Cart = () => {
     useEffect(() => {
         setMounted(true)
     }, [])
-
-
 
 
 
@@ -37,6 +36,7 @@ const Cart = () => {
                 <div className="card-body">
                     {mounted && items.length !== 0 && (
                         <>
+                            {items.map((item) => <CartCard product={item.product}/>)}
                             {/** A kosár elemeinek száma */}
                             <span className="font-bold text-lg">
                                 {items.reduce((a, c) => a + c.quantity, 0)} Termék

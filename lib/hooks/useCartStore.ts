@@ -66,24 +66,22 @@ export default function useCartService() {
                 totalPrice,
             });
         },
-        
+
         // Termék kivétele a kosárból
         decrease: (item: CartItem) => {
-            const exist = items.find((x) => x.product.id === item.product.id
-            )
-            if (!exist) return
+            const exist = items.find((x) => x.product.id === item.product.id);
+            if (!exist) return;
 
             const updatedCartItems = exist.quantity === 1
-                ?
-                items.filter((x: CartItem) => x.product.id !== item.product.id)
-                :
-                items.map((x) =>
-                    item.product.id
+                ? items.filter((x: CartItem) => x.product.id !== item.product.id)
+                : items.map((x) =>
+                    x.product.id === item.product.id
                         ? { ...exist, quantity: exist.quantity - 1 }
                         : x
-                )
+                );
+
             const { itemsPrice, shippingPrice, totalPrice } = calcPrice(updatedCartItems);
-            
+
             cartStore.setState({
                 items: updatedCartItems,
                 itemsPrice,

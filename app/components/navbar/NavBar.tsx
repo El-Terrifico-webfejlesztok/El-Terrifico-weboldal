@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import SearchBar from './SearchBar'; // Import the SearchBar component
 import ProfileButton from './ProfileButton';
-import Cart from './Cart';
+import Cart from './Cart/Cart';
 import LoadingBar from './LoadingBar';
 import Links from './Links';
 

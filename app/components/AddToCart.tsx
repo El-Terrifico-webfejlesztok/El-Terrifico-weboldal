@@ -32,7 +32,7 @@ const AddToCart = ({ item }: { item: Product }) => {
             <button className='btn btn-warning ' title='Kosárba' onClick={() => decrease(existsItem)}>
                 -
             </button>
-            <span className='px-4'>{existsItem?.quantity}</span>
+            <p className='px-2 min-w-4 w-6 text-center'>{existsItem?.quantity}</p>
             <button className='btn  btn-warning' title='Kosárba' onClick={() => increase(existsItem)}>
                 +
             </button>
