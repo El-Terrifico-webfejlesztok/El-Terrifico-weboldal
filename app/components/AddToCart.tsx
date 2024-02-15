@@ -7,7 +7,7 @@ import { Product } from '@prisma/client';
 // A kocsi egy productot kap és az hozzá adja a kocsihoz
 
 const AddToCart = ({ item }: { item: Product }) => {
-    const { items, increase } = useCartService();
+    const { items, increase, decrease } = useCartService();
     const [existsItem, setExistsItem] = useState<CartItem | undefined>();
 
     // Cucc, nemtom igazából de biztos jó, (valamit csinál a komponens betöltésekor)
@@ -29,7 +29,7 @@ const AddToCart = ({ item }: { item: Product }) => {
     return existsItem ? (
         <div className='flex items-center justify-center'>
 
-            <button className='btn btn-warning ' title='Kosárba' onClick={() => increase(existsItem)}>
+            <button className='btn btn-warning ' title='Kosárba' onClick={() => decrease(existsItem)}>
                 -
             </button>
             <span className='px-4'>{existsItem?.quantity}</span>

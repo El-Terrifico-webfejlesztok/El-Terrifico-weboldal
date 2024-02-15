@@ -25,13 +25,13 @@ const Kartya: React.FC<props> = ({ title, description, category = [], price, ima
           <h1 className="card-title text-3xl mb-4">{title}</h1>
           <div className="sm:flex my-auto">
             <div className="sm:w-3/4 mb-8">
-              <h2 className="flex justify-start text-start text-1xl text-black font-bold">
+              <h2 className="flex justify-start text-start text-1xl font-bold">
                 Leírás:
               </h2>
               <p>{description}</p>
             </div>
             <div className="sm:w-1/4 ml-10 mr-10 mb-8">
-              <h2 className=" text-1xl text-black font-bold">Kategória:</h2>
+              <h2 className=" text-1xl font-bold">Kategória:</h2>
               {category.map((part, index) => (
                 <KartyaCheckbox key={index} name={part} />
               ))}

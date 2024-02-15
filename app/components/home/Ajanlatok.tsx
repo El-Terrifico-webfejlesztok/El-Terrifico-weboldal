@@ -13,6 +13,7 @@ function Ajanlatok() {
             alt="Burger"
             kep="/HomeBurgerRajz.JPG"
             cim="Burgerek"
+            link="/products?name=&minprice=&maxprice=&categories=burger"
           />
         </div>
         <div className="lg:w-1/3 my-8 flex items-center justify-center">
@@ -21,6 +22,7 @@ function Ajanlatok() {
             alt="Taco"
             kep="/HomeTacoRajz.JPG"
             cim="Tacok"
+            link="/products?name=&minprice=&maxprice=&categories=taco"
           />
         </div>
         <div className="lg:w-1/3 my-8 flex items-center justify-center">
@@ -29,6 +31,7 @@ function Ajanlatok() {
             alt="Pizza"
             kep="/HomePizzaRajz.JPG"
             cim="Pizzák"
+            link="/products?name=&minprice=&maxprice=&categories=pizza"
           />
         </div>
       </div>
