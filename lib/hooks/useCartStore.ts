@@ -1,5 +1,7 @@
 import { create } from "zustand";
 import { PrismaClient, Product } from "@prisma/client";
+import { persist } from "zustand/middleware";
+
 // Jövőben lesz használva a kocsi szinkronizálására az adatbázissal ()
 const prisma = new PrismaClient();
 
@@ -25,7 +27,14 @@ const initialState: Cart = {
     totalPrice: 0,
 };
 
-export const cartStore = create<Cart>(() => initialState);
+// export const cartStore = create<Cart>(() => initialState);
+
+// Jelenleg sütiként van eltárolva
+export const cartStore = create<Cart>()(
+    persist(() => initialState, {
+        name: 'cartStore'
+    })
+)
 
 // Hook létrehozása, ennek az adatait és a funkcióit lehet majd felhasználni akárhol a weboldalon
 export default function useCartService() {
