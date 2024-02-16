@@ -10,30 +10,29 @@ const ShippingAddressView = ({ address }: { address: ShippingAddress }) => {
         setIsEditing(true);
     };
 
-    const handleSaveClick = () => {
-        // Implement logic to save changes
-        setIsEditing(false);
-    };
 
     const handleCancelClick = () => {
-        // Implement logic to discard changes
         setIsEditing(false);
     };
 
     const handleDeleteClick = () => {
-        setIsEditing(true);
+
+    };
+
+    const handelDefaultClick = () => {
+
     };
 
     return (
-        <div className='collapse bg-base-200 my-1'>
+        <div className='collapse transition-color bg-base-200 my-1'>
             <input type="checkbox" />
-            <div className="collapse-title text-lg font-medium">
-                Szállítási cím  {address.postal_code}, {address.city}, {address.street_address},  {address.is_default_address ? <span className='badge badge-lg badge-primary ml-4'>Alapértelmezett</span> : <></>}
+            <div className="collapse-title text-lg font-medium truncate">
+                Cím:  <strong>{address.postal_code}, {address.city}, {address.street_address}</strong> {address.is_default_address ? <span className='badge badge-lg badge-primary ml-4'>Alapértelmezett</span> : <></>}
             </div>
             {isEditing ? (
                 // Edit Mode
                 <div className='collapse-content'>
-                    <ShippingAddressForm />
+                    <ShippingAddressForm shippingAddress={address} onCancel={handleCancelClick} />
                 </div>
             ) : (
                 // View Mode
@@ -53,6 +52,7 @@ const ShippingAddressView = ({ address }: { address: ShippingAddress }) => {
                     <div className='space-x-2 mt-2'>
                         <button className='btn btn-sm btn-info' onClick={handleEditClick}>Módosítás</button>
                         <button className='btn btn-sm btn-error' onClick={handleDeleteClick}>Törlés</button>
+                        {!address.is_default_address ? <button className='btn btn-sm btn-success' onClick={handelDefaultClick}>Alapértelmezés</button> : <></>}
                     </div>
                 </div>
             )}

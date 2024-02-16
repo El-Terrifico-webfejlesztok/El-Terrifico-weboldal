@@ -4,7 +4,7 @@ import { useSession } from 'next-auth/react';
 import React, { useEffect, useState } from 'react'
 import { Order, Payment, Review, ShippingAddress, User_role } from '@prisma/client';
 import Loading from '@/app/components/Loading';
-import ShippingAddressView from '@/app/components/user/ShippingAddressView';
+import ShippingAddressView from '@/app/components/user/shipping/ShippingAddressView';
 
 interface userData {
     id: number;
@@ -80,9 +80,20 @@ const ProfilePage = () => {
                     Email: <strong>{user.email}</strong>
                 </div>
                 <div className="divider">Szállítási címek</div>
+
+
                 <div>
-                    {userData ? userData.ShippingAddress.map((address) => (<ShippingAddressView key={address.id} address={address} />)) : <Loading />}
+                    {userData && userData.ShippingAddress.length > 0 ? (
+                        userData.ShippingAddress.map((address) => (
+                            <ShippingAddressView key={address.id} address={address} />
+                        ))
+                    ) : (
+                        <p className='text-center truncate'>Még nincsenek szállítási címeid</p>
+                    )}                
                 </div>
+                <button className='btn  w-full no-animation mt-0' onClick={fetchData}><p className={loading ? "loading" : ""}>Szállítási cím hozzáadása</p></button>
+
+
                 <div className="divider">Rendelések</div>
                 <button className='btn btn-outline w-full no-animation' onClick={fetchData}><p className={loading ? "loading" : ""}>Adatok lekérése</p></button>
 
