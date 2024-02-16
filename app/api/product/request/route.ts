@@ -6,11 +6,14 @@ export async function GET(req: NextRequest) {
     // Extract query parameters from the URL
     const searchParams = req.nextUrl.searchParams;
 
-    // Parse query parameters
+    // Megadható paraméterek
     const searchTerm = searchParams.get('name')?.toLowerCase() || '';
     const parsedMinPrice = parseInt(searchParams.get('minprice') || '0');
     const parsedMaxPrice = parseInt(searchParams.get('maxprice') || '999999999');
+    const parsedMinRating = parseInt(searchParams.get('minrating') || '0')
+    const parsedMaxRating = parseInt(searchParams.get('maxrating') || '10')
     const parsedCategories = (searchParams.get('categories') || undefined)?.split(',');
+    const productId = parseInt(searchParams.get('id') || '0');
 
     // Define the type explicitly for the where clause
     type ProductWhere = {
@@ -35,6 +38,7 @@ export async function GET(req: NextRequest) {
           };
         };
       };
+      id?: number; // Added for optional ID filtering
     };
 
     // Query the database with Prisma, including categories in the response
@@ -74,6 +78,7 @@ export async function GET(req: NextRequest) {
               },
             },
           },
+          productId && { id: productId }, // Apply ID filtering if the 'id' query parameter is present
         ].filter(Boolean) as ProductWhere[], // Remove undefined filters and cast to the defined type
       },
       // Include the related fields
@@ -105,11 +110,8 @@ export async function GET(req: NextRequest) {
       created_at: product.created_at,
       updated_at: product.updated_at,
       categories: product.ProductCategoryLink.map(link => link.Category.name),
-      // A képhez hozzácsatoljuk az URL-t, így nem kell a kliens oldalon szórakozni vele
-      // Az .env file-ban be kell hogy állítva legyen az URL hogy működjön ez.
       images: product.ProductImage.map(link => `${process.env.URL}/${link.image_path}`)
     }));
-    console.log(flattenedProducts)
 
     // Return the results as a JSON response
     return NextResponse.json(flattenedProducts, { status: 200 });

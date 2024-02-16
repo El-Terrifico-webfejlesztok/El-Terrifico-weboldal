@@ -7,6 +7,7 @@ CREATE TABLE `User` (
     `is_active` BOOLEAN NOT NULL DEFAULT true,
     `role` ENUM('user', 'admin') NOT NULL DEFAULT 'user',
     `created_at` TIMESTAMP(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
+    `image` VARCHAR(255) NULL,
 
     UNIQUE INDEX `email`(`email`),
     PRIMARY KEY (`id`)
@@ -155,7 +156,7 @@ ALTER TABLE `Review` ADD CONSTRAINT `user_id_fk_review` FOREIGN KEY (`user_id`) 
 ALTER TABLE `ShippingAddress` ADD CONSTRAINT `user_id_fk_shipping` FOREIGN KEY (`user_id`) REFERENCES `User`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE `ProductImage` ADD CONSTRAINT `fk_product_id` FOREIGN KEY (`product_id`) REFERENCES `Product`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE `ProductImage` ADD CONSTRAINT `fk_product_id` FOREIGN KEY (`product_id`) REFERENCES `Product`(`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- AddForeignKey
 ALTER TABLE `ProductCategoryLink` ADD CONSTRAINT `category_id_fk` FOREIGN KEY (`category_id`) REFERENCES `Category`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;

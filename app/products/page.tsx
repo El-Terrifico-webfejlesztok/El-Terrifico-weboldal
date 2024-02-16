@@ -167,12 +167,23 @@ const ProductList = () => {
       <div className={styles.kartyak}>
         {data.map((item) => (
           <Kartya
+            product={{
+              id: item.id,
+              name: item.name,
+              description: item.description,
+              price: item.price,
+              stock: item.stock,
+              is_active: true,
+              created_at: new Date(0),
+              updated_at: new Date(0),
+            }}
             key={item.id}
             title={item.name}
             description={item.description}
             category={item.categories}
             images={item.images}
             price={item.price}
+
           />
         ))}
       </div>
