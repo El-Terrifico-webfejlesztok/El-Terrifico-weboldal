@@ -42,7 +42,7 @@ const Cart = () => {
                                 {items.reduce((a, c) => a + c.quantity, 0)} Termék
                             </span>
                             
-                             <span className="pt-1 border-t-2 border-base-300 leading-3 text-xs text-info ">Szállítás: {shippingPrice ? shippingPrice : <p>ingyenes</p>} Ft.</span> 
+                             <span className="pt-1 border-t-2 border-base-300 leading-3 text-xs text-info ">Szállítás: {shippingPrice ?  `${shippingPrice} Ft.` : 'ingyenes'} </span> 
                             <span className="leading-3 text-xs text-info ">Termékek: {itemsPrice} Ft.</span>
 
                             <span className="text-info pt-1 border-t-2 border-base-300 ">Összesen: {totalPrice} Ft.</span>
