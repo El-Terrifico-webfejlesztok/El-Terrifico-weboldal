@@ -106,7 +106,7 @@ const ProfilePage = () => {
 
                 {isEditing ? (
                     // Edit Mode
-                    <ShippingAddressForm onCancel={handleCancelClick} />
+                    <ShippingAddressForm onCancel={handleCancelClick} reload={fetchData}/>
                 ) : (
                     <button className='btn btn-primary  w-full no-animation mt-0' onClick={handleEditClick}><p className={loading ? "loading" : ""}>Szállítási cím hozzáadása</p></button>
 

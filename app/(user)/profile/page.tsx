@@ -9,7 +9,9 @@ export default async function RegisterPage() {
     if (!session) {
         redirect("/login")
     }
-    return <ProfilePage />
+    else {
+        return <ProfilePage />
+    }
 }
 
 
