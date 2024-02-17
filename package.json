@@ -18,7 +18,8 @@
     "react-dom": "^18",
     "react-icons": "^5.0.1",
     "uuid": "^9.0.1",
-    "zod": "^3.22.2"
+    "zod": "^3.22.2",
+    "zustand": "^4.5.0"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
