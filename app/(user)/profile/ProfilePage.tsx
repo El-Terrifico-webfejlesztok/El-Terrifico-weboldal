@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react'
 import { Order, Payment, Review, ShippingAddress, User_role } from '@prisma/client';
 import Loading from '@/app/components/Loading';
 import ShippingAddressView from '@/app/components/user/shipping/ShippingAddressView';
+import ShippingAddressForm from '@/app/components/user/shipping/ShippingAddressForm';
 
 interface userData {
     id: number;
@@ -22,6 +23,16 @@ interface userData {
 const ProfilePage = () => {
     const [userData, setUserData] = useState<userData | null>(null);
     const [loading, setLoading] = useState(true);
+    const [isEditing, setIsEditing] = useState(false);
+
+    const handleEditClick = () => {
+        setIsEditing(true);
+    };
+
+
+    const handleCancelClick = () => {
+        setIsEditing(false);
+    };
 
     async function fetchData() {
         setLoading(true)
@@ -85,13 +96,21 @@ const ProfilePage = () => {
                 <div>
                     {userData && userData.ShippingAddress.length > 0 ? (
                         userData.ShippingAddress.map((address) => (
-                            <ShippingAddressView key={address.id} address={address} />
+                            <ShippingAddressView key={address.id} address={address} reload={fetchData} />
                         ))
                     ) : (
+                        loading ? <div className='mx-auto loading loading-dots'></div> :
                         <p className='text-center truncate'>Még nincsenek szállítási címeid</p>
-                    )}                
+                    )}
                 </div>
-                <button className='btn  w-full no-animation mt-0' onClick={fetchData}><p className={loading ? "loading" : ""}>Szállítási cím hozzáadása</p></button>
+
+                {isEditing ? (
+                    // Edit Mode
+                    <ShippingAddressForm onCancel={handleCancelClick} />
+                ) : (
+                    <button className='btn btn-primary  w-full no-animation mt-0' onClick={handleEditClick}><p className={loading ? "loading" : ""}>Szállítási cím hozzáadása</p></button>
+
+                )}
 
 
                 <div className="divider">Rendelések</div>

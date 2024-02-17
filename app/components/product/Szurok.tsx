@@ -162,8 +162,8 @@ function Szurok({ kategoriak }: props) {
                   id="maxPrice"
                   name="maxPrice"
                   cim="Maximum ár (HUF):"
-                  minertek={1}
-                  placeh="2"
+                  minertek={500}
+                  placeh="500"
                   onChange={handleMaxPriceChange}
                 />
               </div>

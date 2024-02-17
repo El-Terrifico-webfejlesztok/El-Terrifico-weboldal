@@ -25,6 +25,7 @@ function SzuroAr({ placeh, minertek, cim, name, id, onChange }: props) {
         className={styles.ardoboz}
         min={minertek}
         onBlur={onChange}
+        step="500"
       />
     </div>
   );

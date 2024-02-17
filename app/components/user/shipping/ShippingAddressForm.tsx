@@ -1,19 +1,73 @@
 import { ShippingAddress } from '@prisma/client';
 import React, { useState } from 'react';
 
-const ShippingAddressForm = ({ shippingAddress, onCancel }: { shippingAddress: ShippingAddress, onCancel?: () => void }) => {
-    const [recipientName, setRecipientName] = useState<string>(shippingAddress.recipient_name || '');
-    const [streetAddress, setStreetAddress] = useState<string>(shippingAddress.street_address || '');
+const ShippingAddressForm = ({ shippingAddress, onCancel, reload }: { shippingAddress: ShippingAddress, onCancel?: () => void, reload?: Function }) => {
+    // Adatok összegyűjtése éredkében
+    const [recipientName, setRecipientName] = useState<string | undefined>(shippingAddress.recipient_name || undefined);
+    const [streetAddress, setStreetAddress] = useState<string | undefined>(shippingAddress.street_address || undefined);
     const [country, setCountry] = useState<string>('Magyarország');
-    const [city, setCity] = useState<string>(shippingAddress.city || '');
-    const [state, setState] = useState<string>(shippingAddress.state || '');
-    const [postalCode, setPostalCode] = useState<string>(shippingAddress.postal_code || '');
+    const [city, setCity] = useState<string | undefined>(shippingAddress.city || undefined);
+    const [state, setState] = useState<string | undefined>(shippingAddress.state || undefined);
+    const [postalCode, setPostalCode] = useState<string | undefined>(shippingAddress.postal_code || undefined);
+    // Reszponzivitás érdekében
+    const [loading, setLoading] = useState<boolean>(false)
+    const [feedback, setFeedfback] = useState<string | undefined>(undefined)
+    const [buttoncolor, setButtonColor] = useState<string | undefined>(undefined)
 
     const inputlook = 'input input-bordered w-full';
 
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        setLoading(true)
+        event.preventDefault();
+
+        try {
+
+            const addressToSend = {
+                id: shippingAddress.id,
+                recipient_name: recipientName,
+                street_address: streetAddress,
+                country,
+                city,
+                state,
+                postal_code: postalCode,
+            }
+            // ugly but works
+            if (!recipientName) { return setFeedfback('Nincs név megadva') }
+            if (!postalCode) { return setFeedfback('Nincs irányítószám megadva') }
+            if (!city) { return setFeedfback('Nincs város megadva') }
+            if (!streetAddress) { return setFeedfback('Nincs cím megadva') }
+
+            console.log(JSON.stringify(addressToSend))
+            // Send product data to create a new product
+            const response = await fetch('/api/user/address/upload', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(addressToSend),
+            });
+
+            const responseBody = await response.json();
+
+            if (!response.ok) {
+                setButtonColor('btn-error')
+                setFeedfback(`Sikertelen feltöltés: ${responseBody}`)
+                return;
+            }
+            setButtonColor('btn-success')
+            setFeedfback('Sikeres feltöltés')
+        } catch (error) {
+            setButtonColor('btn-warning')
+            console.error('A szerver nem érhető el', error);
+        }
+        finally {
+            setLoading(false)
+        }
+    }
+
     return (
         <>
-            <form className='flex flex-col gap-3 mx-auto p-2'>
+            <form onSubmit={handleSubmit} className='flex flex-col gap-3 mx-auto p-2'>
                 <div>
                     <label className='form-control' htmlFor='recipientName'>
                         Átvevő Neve:
@@ -91,9 +145,8 @@ const ShippingAddressForm = ({ shippingAddress, onCancel }: { shippingAddress: S
                     />
                 </div>
 
-
-                <button className='btn btn-primary' type='submit'>
-                    Feltöltés
+                <button className={`btn ${buttoncolor ? buttoncolor : 'btn-primary'}`} type='submit'>
+                    {loading ? <div className=' loading loading-bars '></div> : feedback ? feedback : 'Feltöltés'}
                 </button>
                 {onCancel && (
                     <button className='btn btn-neutral' type='button' onClick={onCancel}>
@@ -108,12 +161,13 @@ const ShippingAddressForm = ({ shippingAddress, onCancel }: { shippingAddress: S
 
 ShippingAddressForm.defaultProps = {
     shippingAddress: {
-        recipient_name: '',
-        street_address: '',
+        id: undefined,
+        recipient_name: undefined,
+        street_address: undefined,
         country: 'Magyarország',
-        city: '',
-        state: '',
-        postal_code: '',
+        city: undefined,
+        state: undefined,
+        postal_code: undefined,
     },
 };
 
