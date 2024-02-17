@@ -7,6 +7,7 @@ import TacoTortenete from "./components/home/TacoTortenete";
 import Videok from "./components/home/Videok";
 import Ajanlatok from "./components/home/Ajanlatok";
 import "./Home.css";
+import BemutatVideo from "./components/home/BemutatVideo";
 
 export default function Home() {
   return (
@@ -14,6 +15,7 @@ export default function Home() {
       <FigyelemFel />
       <Koszonto />
       <Bemutatkozas />
+      <BemutatVideo videoId="SIsgpllRsEM" />
       <Informaciok />
       <Ajanlatok />
       <EtteremTortenete />

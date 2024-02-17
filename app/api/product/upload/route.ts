@@ -9,7 +9,7 @@ const uploadProductSchema = z.object({
   description: z.string().min(1),
   price: z.number(),
   stock: z.number(),
-  categories: z.array(z.string()), // New field for categories
+  categories: z.array(z.string().min(1)), // New field for categories
 });
 
 export async function POST(req: NextRequest) {

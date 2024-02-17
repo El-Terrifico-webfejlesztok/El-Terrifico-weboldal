@@ -1,0 +1,29 @@
+.kartya {
+  width: 90%;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  border: 5px grey solid;
+  border-radius: 14px;
+  height: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media screen and (max-width: 640px) {
+  .kartya {
+    width: 80%;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    border: 5px grey solid;
+    border-radius: 14px;
+    height: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media (min-width: 545px) and (max-width: 640px) {
+  .kep {
+    margin-left: 140px;
+  }
+}

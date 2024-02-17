@@ -1,3 +1,6 @@
+import { Product } from "@prisma/client";
+import AddToCart from "../AddToCart";
+import Carousel from "../Carousel";
 import KartyaCheckbox from "./KartyaCheckbox";
 import KartyaErtekeles from "./KartyaErtekeles";
 import KartyaKosarba from "./KartyaKosarba";
@@ -8,9 +11,13 @@ interface props {
   description: string;
   category?: string[];
   price: number;
+  // Lista benne képútvonalakkal
+  // Pl ['https://terrifico.zapto.org/public/product_images/picture1.png', 'https://terrifico.zapto.org/public/product_images/Taco.jpg']
+  images: string[];
+  product: Product;
 }
 
-const Kartya: React.FC<props> = ({ title, description, category = [], price }) => {
+const Kartya: React.FC<props> = ({ title, description, category = [], price, images, product }) => {
   return (
     <div className={styles.kartya}>
       <div className="card lg:card-side bg-base-100 shadow-xl">
@@ -18,13 +25,13 @@ const Kartya: React.FC<props> = ({ title, description, category = [], price }) =
           <h1 className="card-title text-3xl mb-4">{title}</h1>
           <div className="sm:flex my-auto">
             <div className="sm:w-3/4 mb-8">
-              <h2 className="flex justify-start text-start text-1xl text-black font-bold">
+              <h2 className="flex justify-start text-start text-1xl font-bold">
                 Leírás:
               </h2>
               <p>{description}</p>
             </div>
             <div className="sm:w-1/4 ml-10 mr-10 mb-8">
-              <h2 className=" text-1xl text-black font-bold">Kategória:</h2>
+              <h2 className=" text-1xl font-bold">Kategória:</h2>
               {category.map((part, index) => (
                 <KartyaCheckbox key={index} name={part} />
               ))}
@@ -33,7 +40,7 @@ const Kartya: React.FC<props> = ({ title, description, category = [], price }) =
 
           <div className="sm:flex my-auto">
             <div className="sm:w-1/4 mb-6 text-center">
-              <KartyaKosarba />
+              <AddToCart item={product}/>
             </div>
             <div className="sm:w-1/4 mb-6 text-center">
               <h1>Ár:</h1>
@@ -49,7 +56,13 @@ const Kartya: React.FC<props> = ({ title, description, category = [], price }) =
             </div>
           </div>
         </div>
-          <img src="/HomeTaco.jpg" alt="Taco" className=" rounded-xl max-h-fit sm:w-96 max-w mx-auto" />
+        {/**Carousel a képeknek */}
+        <div className="rounded-xl min-w-96 w-1/4 h-96 lg:card-side mx-auto">
+          {/*images.map((image, index) => (
+            <img src={image} alt="Termék kép" className=" rounded-xl h-full sm:w-96 w-full mx-auto object-cover" />
+          ))*/}
+          <Carousel images={images} title={title}></Carousel>
+        </div>
       </div>
     </div>
   );

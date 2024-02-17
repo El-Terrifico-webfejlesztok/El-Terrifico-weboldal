@@ -78,7 +78,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ onImagesChange }) => {
                                     alt={`Preview ${index}`}
                                     className='rounded-md object-scale-down w-full lg:h-52'
                                 />
-                                <p className='text-center mt-1'>{preview.name}</p>
+                                <p className='text-center mt-1 truncate'>{preview.name}</p>
                                 <button type='button' onClick={() => handleRemoveImage(index)} className='badge hover:bg-accent rounded-md w-full mt-1.5'>
                                     Eltávolítás
                                 </button>
