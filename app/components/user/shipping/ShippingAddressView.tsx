@@ -105,7 +105,7 @@ const ShippingAddressView = ({ address, reload }: { address: ShippingAddress, re
                         <strong>Átvevő Neve:</strong> {address.recipient_name}
                     </p>
                     <p>
-                        <strong>Postal Code:</strong> {address.postal_code}
+                        <strong>Irányítószám:</strong> {address.postal_code}
                     </p>
                     <p>
                         <strong>Város:</strong> {address.city}

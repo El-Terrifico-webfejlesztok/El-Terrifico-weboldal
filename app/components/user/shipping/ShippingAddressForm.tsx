@@ -56,6 +56,9 @@ const ShippingAddressForm = ({ shippingAddress, onCancel, reload }: { shippingAd
             }
             setButtonColor('btn-success')
             setFeedfback('Sikeres feltöltés')
+            if (reload !== undefined){
+                reload()
+            }
         } catch (error) {
             setButtonColor('btn-warning')
             console.error('A szerver nem érhető el', error);
