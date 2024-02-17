@@ -1,60 +1,111 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from 'zod';
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/auth";
 import prisma from "@/prisma/client";
 import { hash } from 'bcrypt';
 
+
 // Az adatok amik kellenek a regisztációhoz 
-const registerSchema = z.object({
+const shippingAddressSchema = z.object({
     // A beérkező adat struktúrája ennek meg kell hogy feleljen:
-    username: z.string().min(3, { message: "A felhasználónévnek legalább 3 karakternek kell lennie" }).max(30, { message: "A felhasználónév maximum 30 karakter lehet" }),
-    email: z.string().min(1, { message: "Az E-mail mező kötelező" }).max(255, { message: "Az E-mail maximum 255 karakter hosszú lehet" }).email({ message: "Hibás E-mail formátum" }),
-    password: z.string().min(8, { message: "A jelszónak legalább 8 karakter hosszúnak kell lennie" }).max(255, { message: "A jelszó maximum 255 karakter hoszzú lehet" }),
+    id: z.number().optional(),
+    recipient_name: z.string().max(255, "Az átvevő neve maximum 255 karakter lehet"),
+    street_address: z.string().max(255, "A cím maximum 255 karakter lehet"),
+    country: z.string().max(50, "Az ország maximum 50 karakter lehet"),
+    city: z.string().max(100, "A város maximum 100 karakter lehet"),
+    state: z.string().max(50, "A megye maximum ").optional(),
+    postal_code: z.string().max(20, "Postal code exceeds maximum length of 20 characters"),
+    is_default_address: z.number().int().optional(),
 });
 
 // Ha jön egy POST request akkor...
 export async function POST(request: NextRequest) {
     try {
-        // eltároljuk a post tartalmát
+        // Get the user's session
+        const session = await getServerSession(authOptions);
+        let newAddress;
+
+        // Error ha nincs session
+        if (!session) {
+            return NextResponse.json('Nincs bejelentkezve', { status: 401 });
+        }
+
+        // User ID megszerzése a sessionből
+        const userID: number = parseInt(session.user!.id)
+
+        // eltároljuk a POST request tartalmát
         const body = await request.json();
-        // validáljuk a regisztrációs adatokat
-        const validation = registerSchema.safeParse(body);
 
-        // ha sikertelen elküldjük az okot (vagy okokat)
+        // Validáljuk a regisztrációs adatokat
+        const validation = shippingAddressSchema.safeParse(body);
+
+        // Ha sikertelen elküldjük az okot (vagy okokat)
         if (!validation.success) {
-            return NextResponse.json(validation.error.errors, { status: 400 });
+            return NextResponse.json(validation.error.errors[0], { status: 400 });
         }
 
-        // felbontjuk a requestet
-        const { username, email, password } = body;
+        // Validált változók felbontása az objektből
+        const {
+            id,
+            recipient_name,
+            street_address,
+            country,
+            city,
+            state,
+            postal_code,
+            is_default_address
+        } = validation.data;
 
-        // email egyediséget ellenőrizzük
-        const existingUser = await prisma.user.findUnique({
-            where: {
-                email,
-            },
-        });
-        // ha nem egyedi hibát küldünk
-        if (existingUser) {
-            return NextResponse.json({ error: 'Már létezik ilyen e-mail címmel fiók' }, { status: 400 });
+        if (id) {
+            // Ha van ID akkor csak frissítjük az ID-nek megfelelő
+            newAddress = await prisma.shippingAddress.update({
+                where: { 
+                    id , 
+                    user_id: userID, 
+                },
+                data: {
+                    recipient_name,
+                    street_address,
+                    country,
+                    city,
+                    state,
+                    postal_code,
+                    is_default_address
+                },
+            })
+        }
+        // Új address létrehozása ha nincs ID megadva a kérésben
+        else {
+            // Megszámoljuk hány címe van a felhasználónak
+            const addressCount = await prisma.shippingAddress.count({
+                where: { user_id: userID  }, // Assuming you have a userId field in your shippingAddress model
+            });
+
+            // Check if the user already has the maximum allowed number of addresses (5)
+            if (addressCount >= 5) {
+                return NextResponse.json('Nem lehet több szállítási címed. Ha új címed van, töröld a régieket', { status: 400 });
+            }
+            // Új address létrehozása
+            newAddress = await prisma.shippingAddress.create({
+                data: {
+                    user_id: userID,
+                    recipient_name,
+                    street_address,
+                    country,
+                    city,
+                    state,
+                    postal_code,
+                    is_default_address: 0,
+                },
+            });
         }
 
-        // Declare hashedPassword before using it
-        let hashedPassword = await hash(password, 10);
-
-        // ha minden jó létrehozzuk az új felhasználót
-        const newAddress = await prisma.user.create({
-            data: {
-                username,
-                email,
-                password: hashedPassword
-            },
-        });
-        // visszaküldjük a siker jelét
         return NextResponse.json(newAddress, { status: 201 });
     }
     // Ha közben baj van akkor server errort küldünk (ilyen nem kéne hogy történjen normál esetben)
     catch (error: any) {
-        console.error("Error uploading details:", error.errors || error.message);
+        console.error("Error uploading details:", error.errors[0] || error.message);
         return NextResponse.json('Error uploading address details', { status: 500 });
     }
 }

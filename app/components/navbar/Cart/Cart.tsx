@@ -36,22 +36,29 @@ const Cart = () => {
                 <div className="card-body">
                     {mounted && items.length !== 0 && (
                         <>
-                            {items.map((item) => <CartCard product={item.product}/>)}
+                            {items.map((item) => <CartCard key={item.product.id} product={item.product} />)}
                             {/** A kosár elemeinek száma */}
                             <span className="font-bold text-lg">
                                 {items.reduce((a, c) => a + c.quantity, 0)} Termék
                             </span>
-                            
-                             <span className="pt-1 border-t-2 border-base-300 leading-3 text-xs text-info ">Szállítás: {shippingPrice ?  `${shippingPrice} Ft.` : 'ingyenes'} </span> 
+
+                            <span className="pt-1 border-t-2 border-base-300 leading-3 text-xs text-info ">Szállítás: {shippingPrice ? `${shippingPrice} Ft.` : 'ingyenes'} </span>
                             <span className="leading-3 text-xs text-info ">Termékek: {itemsPrice} Ft.</span>
 
                             <span className="text-info pt-1 border-t-2 border-base-300 ">Összesen: {totalPrice} Ft.</span>
+                            <div className="card-actions">
+                                <Link href="/cart" className="bg-orange-400 text-white btn btn-primary btn-block">Rendelés</Link>
+                            </div>
                         </>
                     )}
-
-                    <div className="card-actions">
-                        <Link href="/cart" className="bg-orange-400 text-white btn btn-primary btn-block">Rendelés</Link>
-                    </div>
+                    {mounted && items.length === 0 &&
+                        <>
+                            <h1 className='text-center font-bold text-lg'>A kosarad üres</h1>
+                            <div className="card-actions">
+                                <Link href="/products" className="bg-primary text-white btn btn-primary btn-block">Termékek</Link>
+                            </div>
+                        </>
+                    }
                 </div>
             </div>
         </div>

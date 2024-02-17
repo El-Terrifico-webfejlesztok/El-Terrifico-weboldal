@@ -1,20 +1,11 @@
-export default async function RootLayout({
-    children,
-  }: Readonly<{ children: React.ReactNode }>) {
-    const theme = "retro";
-    // light, dark, retro (tailwind.config.ts contains these (daisyUI theme))
-  
-    return (
-    <body>
+import RootLayout from "@/app/layout";
 
-
-
-
-            <main className="">{children}</main>
-
-
-
-            
-    </body>
-    );
-  }
+export default async function ProfileLayout({
+  children,
+}: Readonly<{ children: React.ReactNode }>) {
+  return (
+    <>
+      {children}
+    </>
+  );
+}
