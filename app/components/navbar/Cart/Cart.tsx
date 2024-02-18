@@ -15,8 +15,6 @@ const Cart = () => {
         setMounted(true)
     }, [])
 
-
-
     return (
         <div className="dropdown dropdown-end">
             <div tabIndex={0} role="button" className="btn btn-ghost btn-box ">
@@ -36,7 +34,7 @@ const Cart = () => {
                 <div className="card-body">
                     {mounted && items.length !== 0 && (
                         <>
-                            {items.map((item) => <CartCard key={item.product.id} product={item.product} />)}
+                            {items.map((item) => <CartCard key={item.product.id} product={item.product} categories={item.categories} image={item.image} />)}
                             {/** A kosár elemeinek száma */}
                             <span className="font-bold text-lg">
                                 {items.reduce((a, c) => a + c.quantity, 0)} Termék
