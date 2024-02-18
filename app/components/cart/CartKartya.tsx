@@ -1,16 +1,16 @@
 "use client";
 
 import styles from "./cart.module.css";
-import Image from "next/image";
 import { useState } from "react";
 
 interface props {
   nev: string;
   kategoriak: string[];
   ar: number;
+  image: string
 }
 
-function CartKartya({ nev, kategoriak, ar }: props) {
+function CartKartya({ nev, kategoriak, ar, image }: props) {
   const [isVisible, setIsVisible] = useState(true);
   const kategoria = kategoriak.join(", ");
 
@@ -27,8 +27,8 @@ function CartKartya({ nev, kategoriak, ar }: props) {
               <div className="sm:flex">
                 <div className="sm:w-1/6">
                   <div className={styles.kep}>
-                    <Image
-                      src="/HomeTaco.jpg"
+                    <img
+                      src={image}
                       height={100}
                       width={100}
                       alt="kep"

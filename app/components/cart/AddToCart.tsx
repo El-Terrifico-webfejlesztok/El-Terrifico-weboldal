@@ -6,7 +6,7 @@ import { Product } from '@prisma/client';
 
 // A kocsi egy productot kap és az hozzá adja a kocsihoz
 
-const AddToCart = ({ item }: { item: Product }) => {
+const AddToCart = ({ item, image, categories }: { item: Product, image: string, categories: string[] }) => {
     const { items, increase, decrease } = useCartService();
     const [existsItem, setExistsItem] = useState<CartItem | undefined>();
 
@@ -21,6 +21,8 @@ const AddToCart = ({ item }: { item: Product }) => {
             const cartItem: CartItem = {
                 product: item,
                 quantity: 1,
+                image: image,
+                categories: categories
             };
             increase(cartItem);
         }

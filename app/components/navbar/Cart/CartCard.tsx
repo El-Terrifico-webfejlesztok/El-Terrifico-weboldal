@@ -1,30 +1,27 @@
 import React from 'react';
 import { Product } from '@prisma/client';
-import AddToCart from '../../AddToCart';
+import AddToCartSmall from './AddToCartSmall';
 
 interface Props {
     product: Product;
+    categories: string[];
+    image: string;
 }
 
-const CartCard: React.FC<Props> = ({ product }) => (
-    <div className="card card-side bg-base-100 shadow-xl">
-        <figure><img src="https://terrifico.zapto.org/public/product_images/Enchiladas.jpg" alt="" /></figure>
+const CartCard: React.FC<Props> = ({ product, categories, image }) => (
+    <div className="card card-side bg-base-100 shadow-xl h-24">
+        <figure>
+            <img src={image} alt="" className='object-cover h-24 w-24' />
+        </figure>
         <div className="card-body">
-            <h1 className="card-title  mb-2">{product.name}</h1>
+                <h1 className='font-bold text-lg leading-3'>{product.name} </h1>
+                <p className='leading-3 text-xs'>{product.price} Ft</p>
 
-            <div className=''>
-                <div className='p-2'>
-                    <AddToCart item={product} />
+                <div >
+                    <AddToCartSmall key={product.id} item={product} categories={categories} image={image} />
                 </div>
                 <div />
-                <div className="text-right">
-                    <h1 className="text-sm">Ár: {product.price} Ft</h1>
-                    <p className="text-sm"></p>
-                </div>
-            </div>
-
         </div>
-        {/**Carousel a képeknek */}
 
     </div>
 );

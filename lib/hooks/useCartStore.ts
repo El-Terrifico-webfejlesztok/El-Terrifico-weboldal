@@ -8,6 +8,8 @@ const prisma = new PrismaClient();
 // Kocsi item definiálása
 export type CartItem = {
     product: Product;
+    image: string;
+    categories: string[];
     quantity: number;
 };
 
@@ -79,6 +81,19 @@ export default function useCartService() {
                         ? { ...exist, quantity: exist.quantity - 1 }
                         : x
                 );
+
+            const { itemsPrice, shippingPrice, totalPrice } = calcPrice(updatedCartItems);
+
+            cartStore.setState({
+                items: updatedCartItems,
+                itemsPrice,
+                shippingPrice,
+                totalPrice,
+            });
+        },
+        // Termék eltávolítása a kosárból
+        remove: (item: CartItem) => {
+            const updatedCartItems = items.filter((x: CartItem) => x.product.id !== item.product.id);
 
             const { itemsPrice, shippingPrice, totalPrice } = calcPrice(updatedCartItems);
 

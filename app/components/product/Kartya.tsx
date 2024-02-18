@@ -1,5 +1,5 @@
 import { Product } from "@prisma/client";
-import AddToCart from "../AddToCart";
+import AddToCart from "../cart/AddToCart";
 import Carousel from "../Carousel";
 import KartyaCheckbox from "./KartyaCheckbox";
 import KartyaErtekeles from "./KartyaErtekeles";
@@ -40,7 +40,7 @@ const Kartya: React.FC<props> = ({ title, description, category = [], price, ima
 
           <div className="sm:flex my-auto">
             <div className="sm:w-1/4 mb-6 text-center">
-              <AddToCart item={product}/>
+              <AddToCart item={product} image={images[0]} categories={category}/>
             </div>
             <div className="sm:w-1/4 mb-6 text-center">
               <h1>Ár:</h1>

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { z } from 'zod';
+import { number, z } from 'zod';
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/auth";
 import prisma from "@/prisma/client";
@@ -86,6 +86,11 @@ export async function POST(request: NextRequest) {
             if (addressCount >= 5) {
                 return NextResponse.json('Nem lehet több szállítási címed. Ha új címed van, töröld a régieket', { status: 400 });
             }
+            let isdefault: number = 0;
+
+            if (addressCount === 0) {
+                isdefault = 1
+            }
             // Új address létrehozása
             newAddress = await prisma.shippingAddress.create({
                 data: {
@@ -96,7 +101,7 @@ export async function POST(request: NextRequest) {
                     city,
                     state,
                     postal_code,
-                    is_default_address: 0,
+                    is_default_address: isdefault,
                 },
             });
         }
