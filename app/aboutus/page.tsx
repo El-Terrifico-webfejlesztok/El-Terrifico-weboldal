@@ -10,30 +10,34 @@ const AboutUs: React.FC = () => {
       <div className="sections p-2">
         <Section
           title="Csapatunk"
-          content="Welcome to our website! We are a passionate team dedicated to delivering high-quality products/services to our customers."
+          content="Csipetke csapatka vagyunk, négyen összesen."
         />
           <div className="flex justify-evenly">
             <TeamMemberCard
-                name="John Doe"
-                position="CEO"
+                name="Fülöp"
+                name2="Krisztián"
+                position="Backend fejlesztő"
                 imageUrl="/placeholder.png"
                 description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ut nisi vitae mi euismod semper."
               />
             <TeamMemberCard
-              name="Jane Smith"
-              position="COO"
+              name="Tóth"
+              name2="Barnabás"
+              position="Frontend fejlesztő"
               imageUrl="/placeholder.png"
               description="Sed dictum turpis nec nisi dignissim, vel tincidunt odio suscipit. Curabitur aliquet, nisi nec commodo fermentum."
             />
             <TeamMemberCard
-              name="Alice Johnson"
-              position="CTO"
+              name="Nagy"
+              name2="Barnabás"
+              position="Frontend fejlesztő"
               imageUrl="/placeholder.png"
               description="Mauris id magna at nunc maximus vehicula. Fusce fringilla urna at purus congue, vitae aliquet velit elementum."
             />
             <TeamMemberCard
-              name="Bob Williams"
-              position="CFO"
+              name="Molnár"
+              name2="Zalán"
+              position="Frontend fejlesztő"
               imageUrl="/placeholder.png"
               description="Nullam sodales bibendum tellus nec aliquet. Aliquam erat volutpat."
             />
