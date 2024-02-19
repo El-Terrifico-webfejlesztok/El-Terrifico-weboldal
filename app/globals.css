@@ -13,7 +13,16 @@ p {
 }
 
 main {
-  min-height: 69vh;
+  min-height: 66.8vh;
+}
+
+footer {
+  background-color: oklch(var(--b2));
+  border-top: 5px solid white;
+}
+
+.copyr {
+  background-color: oklch(var(--b3));
 }
 
 

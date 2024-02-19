@@ -17,21 +17,21 @@ const AboutUs: React.FC = () => {
                 name="Fülöp"
                 name2="Krisztián"
                 position="Backend fejlesztő"
-                imageUrl="/placeholder.png"
+                imageUrl="/Krisz.png"
                 description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ut nisi vitae mi euismod semper."
               />
             <TeamMemberCard
               name="Tóth"
               name2="Barnabás"
               position="Frontend fejlesztő"
-              imageUrl="/placeholder.png"
+              imageUrl="/Toth_Barni.jpg"
               description="Sed dictum turpis nec nisi dignissim, vel tincidunt odio suscipit. Curabitur aliquet, nisi nec commodo fermentum."
             />
             <TeamMemberCard
               name="Nagy"
               name2="Barnabás"
               position="Frontend fejlesztő"
-              imageUrl="/placeholder.png"
+              imageUrl="/Nagy_Barni.jpg"
               description="Mauris id magna at nunc maximus vehicula. Fusce fringilla urna at purus congue, vitae aliquet velit elementum."
             />
             <TeamMemberCard
