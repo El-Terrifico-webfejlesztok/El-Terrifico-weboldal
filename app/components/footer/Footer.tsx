@@ -5,7 +5,7 @@ import { FaTwitter, FaFacebook, FaInstagram, FaLinkedin } from 'react-icons/fa';
 const Footer = () => {
 
   return (
-    <footer>
+    <footer className="pt-4">
       <div className="flex justify-evenly mx-6">
         <div className="m-2 mx-20 font-medium">
           <h3 className="font-bold text-xl">Kapcsolataink</h3>
@@ -38,7 +38,7 @@ const Footer = () => {
         </div>
       </div>
       
-      <div className="m-3">
+      <div className="mt-3 p-3 copyr">
         <p className="text-center">&copy; 2024 El Terrifico. All rights reserved.</p>
       </div>
     </footer>

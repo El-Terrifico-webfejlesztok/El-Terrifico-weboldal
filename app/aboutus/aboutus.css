@@ -1,0 +1,6 @@
+.sections {
+    border: 5px solid white;
+    border-radius: 10px;
+    margin: 20px;
+    background-color: oklch(var(--b2));
+  }

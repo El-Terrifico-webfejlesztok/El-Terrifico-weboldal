@@ -12,6 +12,19 @@ p {
   text-align: justify;
 }
 
+main {
+  min-height: 66.8vh;
+}
+
+footer {
+  background-color: oklch(var(--b2));
+  border-top: 5px solid white;
+}
+
+.copyr {
+  background-color: oklch(var(--b3));
+}
+
 
 /* Dark mode configuration, currently unused
 @media (prefers-color-scheme: dark) {
