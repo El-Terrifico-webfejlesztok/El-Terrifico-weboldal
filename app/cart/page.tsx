@@ -8,19 +8,18 @@ import { useEffect } from "react";
 import useCartService from "@/lib/hooks/useCartStore";
 
 const Cart = () => {
+  interface buttonData {
+    buttonText: string;
+    buttonStyle: string;
+  }
+
   const { items, totalPrice, shippingPrice, itemsPrice } = useCartService()
-  const [osszeg, setOsszeg] = useState(1000); // Sample osszeg
-  const [szallitas, setSzallitas] = useState(2000); // Initial value for szallitas
 
-  // Calculate the value of szallitas based on osszeg
-  useEffect(() => {
-    if (osszeg < 4000) {
-      setSzallitas(0);
-    } else {
-      setSzallitas(2000);
-    }
-  }, [osszeg]);
-
+  const [buttonData, setButtonData] = useState<buttonData>({
+    buttonText: '',
+    buttonStyle: '',
+    
+  })
   // Calculate the total amount to pay
   const buttonText = totalPrice < 2000 ? "Alacsony összeg" : "Fizetés";
 
@@ -40,7 +39,7 @@ const Cart = () => {
           </div>
         </div>
         <div>
-          {items.map((item) => <CartKartya key={item.product.id} nev={item.product.name} ar={item.product.price} kategoriak={item.categories} image={item.image} />)}
+          {items.map((item) => <CartKartya key={item.product.id} nev={item.product.name} ar={item.product.price} kategoriak={item.categories} image={item.image} item={item} />)}
         </div>
       </div>
       <div className="lg:w-1/4 sm:w-2/4 w-1/1 h-64 lg:mx-10 mx-auto my-10 p-2 rounded-xl border-white border-4 bg-orange-300">

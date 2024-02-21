@@ -1,5 +1,6 @@
 "use client";
 
+import { CartItem } from "@/lib/hooks/useCartStore";
 import styles from "./cart.module.css";
 import { useState } from "react";
 
@@ -8,6 +9,7 @@ interface props {
   kategoriak: string[];
   ar: number;
   image: string
+  item: CartItem
 }
 
 function CartKartya({ nev, kategoriak, ar, image }: props) {
