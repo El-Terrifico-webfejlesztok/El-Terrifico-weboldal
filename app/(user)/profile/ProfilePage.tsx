@@ -76,7 +76,7 @@ const ProfilePage = () => {
     // There is always a session, it's just not checked here. Hence the '!'
     const user = session!.user!;
     return (
-        <div className='mx-auto max-w-4xl mt-4'>
+        <div className='px-2 max-w-4xl mx-auto  mt-4'>
             <div className='flex space-x-4'>
                 <h1 className="text-2xl  mb-4">Üdvözlünk <strong>{user.name}</strong>!</h1>
             </div>
@@ -100,13 +100,13 @@ const ProfilePage = () => {
                         ))
                     ) : (
                         loading ? <div className='mx-auto loading loading-dots'></div> :
-                        <p className='text-center truncate'>Még nincsenek szállítási címeid</p>
+                            <p className='text-center truncate'>Még nincsenek szállítási címeid</p>
                     )}
                 </div>
 
                 {isEditing ? (
                     // Edit Mode
-                    <ShippingAddressForm onCancel={handleCancelClick} reload={fetchData}/>
+                    <ShippingAddressForm onCancel={handleCancelClick} reload={fetchData} />
                 ) : (
                     <button className='btn btn-primary  w-full no-animation mt-0' onClick={handleEditClick}><p className={loading ? "loading" : ""}>Szállítási cím hozzáadása</p></button>
 

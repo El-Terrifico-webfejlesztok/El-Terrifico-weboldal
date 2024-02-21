@@ -1,5 +1,5 @@
 import { Product } from "@prisma/client";
-import AddToCart from "../AddToCart";
+import AddToCart from "../cart/AddToCart";
 import Carousel from "../Carousel";
 import KartyaCheckbox from "./KartyaCheckbox";
 import KartyaErtekeles from "./KartyaErtekeles";
@@ -40,7 +40,7 @@ const Kartya: React.FC<props> = ({ title, description, category = [], price, ima
 
           <div className="sm:flex my-auto">
             <div className="sm:w-1/4 mb-6 text-center">
-              <AddToCart item={product}/>
+              <AddToCart item={product} image={images[0]} categories={category}/>
             </div>
             <div className="sm:w-1/4 mb-6 text-center">
               <h1>Ár:</h1>
@@ -57,7 +57,7 @@ const Kartya: React.FC<props> = ({ title, description, category = [], price, ima
           </div>
         </div>
         {/**Carousel a képeknek */}
-        <div className="rounded-xl min-w-96 w-1/4 h-96 lg:card-side mx-auto">
+        <div className="rounded-xl w-full max-w-96 h-96 lg:card-side mx-auto">
           {/*images.map((image, index) => (
             <img src={image} alt="Termék kép" className=" rounded-xl h-full sm:w-96 w-full mx-auto object-cover" />
           ))*/}

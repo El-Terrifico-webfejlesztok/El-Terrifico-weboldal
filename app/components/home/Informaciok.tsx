@@ -37,7 +37,7 @@ function Informaciok() {
           </tr>
           <tr>
             <th>Telefonszám:</th>
-            <td>+36 30 548 7729</td>
+            <td>+36 30 910 1099</td>
           </tr>
         </tbody>
       </table>

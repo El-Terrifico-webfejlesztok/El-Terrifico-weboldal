@@ -1,0 +1,26 @@
+.hiddenSearch {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+@media screen and (min-width: 1024px) {
+  .hiddenSearch {
+    display: none;
+  }
+}
+
+.forumOldal {
+  --s: 100px; /* control the size */
+  --c1: oklch(var(--b1));
+  --c2: oklch(var(--er));
+
+  --_g: #0000 24%, var(--c2) 26% 34%, var(--c1) 36% 44%, var(--c2) 46% 54%,
+    var(--c1) 56% 64%, var(--c2) 66% 74%, #0000 76%;
+  background: radial-gradient(100% 100% at 100% 0, var(--_g)),
+    radial-gradient(100% 100% at 0 100%, var(--_g)),
+    radial-gradient(var(--c2) 14%, var(--c1) 16%) calc(var(--s) / 2)
+      calc(var(--s) / 2);
+  background-size: var(--s) var(--s);
+
+  padding-bottom: 280px;
+}

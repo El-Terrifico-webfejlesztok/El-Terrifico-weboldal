@@ -1,21 +1,26 @@
 "use client";
 
+import { CartItem } from "@/lib/hooks/useCartStore";
 import styles from "./cart.module.css";
-import Image from "next/image";
 import { useState } from "react";
+import useCartService from "@/lib/hooks/useCartStore";
+import AddToCartSmall from "./AddToCartSmall";
 
 interface props {
   nev: string;
   kategoriak: string[];
   ar: number;
+  image: string
+  item: CartItem
 }
 
-function CartKartya({ nev, kategoriak, ar }: props) {
+function CartKartya({ nev, kategoriak, ar, image, item }: props) {
   const [isVisible, setIsVisible] = useState(true);
   const kategoria = kategoriak.join(", ");
+  const { remove } = useCartService()
 
   const handleButtonClick = () => {
-    setIsVisible(false);
+    remove(item)
   };
 
   return (
@@ -27,11 +32,10 @@ function CartKartya({ nev, kategoriak, ar }: props) {
               <div className="sm:flex">
                 <div className="sm:w-1/6">
                   <div className={styles.kep}>
-                    <Image
-                      src="/HomeTaco.jpg"
-                      height={100}
-                      width={100}
-                      alt="kep"
+                    <img
+                      src={image}
+                      className=""
+                      alt={nev}
                     />
                   </div>
                 </div>
@@ -39,17 +43,14 @@ function CartKartya({ nev, kategoriak, ar }: props) {
                   <h1 className="sm:text-xl font-bold text-left">{nev}</h1>
                   <p className="text-left">Kategória: {kategoria}</p>
                   <p className="text-left">Ár: {ar} Ft</p>
+                  <p className="text-left">Összesen: {ar * item.quantity} Ft</p>
+
                 </div>
                 <div className="sm:w-1/6 text-center justify-center items-center">
                   <div className="label items-center justify-center">
                     <span className="label-text">Darab:</span>
                   </div>
-                  <input
-                    type="number"
-                    placeholder="1"
-                    min={1}
-                    className=" w-12 h-6 text-center rounded-md"
-                  />
+                  <AddToCartSmall key={item.product.id} categories={kategoriak} image={image} item={item.product} />
                 </div>
                 <div className="sm:w-1/6 justify-end items-end text-right">
                   <button

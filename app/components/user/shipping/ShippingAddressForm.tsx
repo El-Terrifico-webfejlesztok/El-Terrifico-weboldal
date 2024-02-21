@@ -14,7 +14,7 @@ const ShippingAddressForm = ({ shippingAddress, onCancel, reload }: { shippingAd
     const [feedback, setFeedfback] = useState<string | undefined>(undefined)
     const [buttoncolor, setButtonColor] = useState<string | undefined>(undefined)
 
-    const inputlook = 'input input-bordered w-full';
+    const inputlook = 'input input-bordered w-full input-sm';
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         setLoading(true)

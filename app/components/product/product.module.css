@@ -15,7 +15,8 @@
 }
 
 .kartya {
-  width: 85%;
+  width: 95%;
+  max-width: 1200px;
   margin-top: 10px;
   margin-bottom: 20px;
   border: 5px white solid;

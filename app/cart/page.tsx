@@ -4,24 +4,24 @@ import React from "react";
 import CartKartya from "../components/cart/CartKartya";
 import KiszallitIdo from "../components/cart/KiszallitIdo";
 import { useState } from "react";
-import { useEffect } from "react";
+import Link from "next/link";
+import useCartService from "@/lib/hooks/useCartStore";
 
 const Cart = () => {
-  const [osszeg, setOsszeg] = useState(1000); // Sample osszeg
-  const [szallitas, setSzallitas] = useState(2000); // Initial value for szallitas
+  interface buttonData {
+    buttonText: string;
+    buttonStyle: string;
+  }
 
-  // Calculate the value of szallitas based on osszeg
-  useEffect(() => {
-    if (osszeg < 4000) {
-      setSzallitas(0);
-    } else {
-      setSzallitas(2000);
-    }
-  }, [osszeg]);
+  const { items, totalPrice, shippingPrice, itemsPrice } = useCartService()
 
+  const [buttonData, setButtonData] = useState<buttonData>({
+    buttonText: '',
+    buttonStyle: '',
+
+  })
   // Calculate the total amount to pay
-  const ennyitFizetsz = osszeg + szallitas;
-  const buttonText = ennyitFizetsz < 2000 ? "Alacsony összeg" : "Fizetés";
+  const buttonText = totalPrice < 2000 ? "Alacsony összeg" : "Fizetés";
 
   return (
     <div className="lg:flex">
@@ -39,16 +39,17 @@ const Cart = () => {
           </div>
         </div>
         <div>
-          <CartKartya
-            nev="Termek neve"
-            ar={1500}
-            kategoriak={["finom", "izes"]}
-          />
-          <CartKartya
-            nev="Termek neve"
-            ar={1500}
-            kategoriak={["finom", "izes"]}
-          />
+          {/** Kosár kártya renderelés, ha nincs semmi a kosárban akkor egy link a termékekhez */}
+          {
+            items.length ?
+              items.map((item) => <CartKartya key={item.product.id} nev={item.product.name} ar={item.product.price} kategoriak={item.categories} image={item.image} item={item} />)
+              : <>
+                <h1 className='text-center font-bold text-3xl my-6'>A kosarad üres</h1>
+                <div className="card-actions">
+                  <Link href="/products" className="btn btn-sm mx-auto mb-4">Termékek</Link>
+                </div>
+              </>
+          }
         </div>
       </div>
       <div className="lg:w-1/4 sm:w-2/4 w-1/1 h-64 lg:mx-10 mx-auto my-10 p-2 rounded-xl border-white border-4 bg-orange-300">
@@ -57,7 +58,7 @@ const Cart = () => {
             <p>Összeg:</p>
           </div>
           <div>
-            <p>{osszeg} Ft</p>
+            <p>{itemsPrice} Ft</p>
           </div>
         </div>
         <div className="flex justify-between py-2">
@@ -65,7 +66,7 @@ const Cart = () => {
             <p>Kiszállítás:</p>
           </div>
           <div>
-            <p>{szallitas} Ft</p>
+            <span >{shippingPrice ? `${shippingPrice} Ft.` : 'ingyenes'} </span>
           </div>
         </div>
         <div className="flex justify-between py-2">
@@ -73,7 +74,7 @@ const Cart = () => {
             <p className="text-xl font-bold">Ennyit fizetsz:</p>
           </div>
           <div>
-            <p className="text-xl font-bold">{ennyitFizetsz} Ft</p>
+            <p className="text-xl font-bold">{totalPrice} Ft</p>
           </div>
         </div>
         <div className="text-center">

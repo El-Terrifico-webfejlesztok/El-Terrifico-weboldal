@@ -149,14 +149,14 @@ const ProductList = () => {
         <h1 className={styles.focim}>Termékeink</h1>
       </div>
       <form onSubmit={handleSubmit}>
-        <div className="flex items-center justify-center pt-28 join">
-          <input
-            type="text"
-            name="name"
-            placeholder="Keresés..."
-            className="join-item border rounded-md p-2 focus:outline-none focus:ring focus:border-lime-700 w-3/4 max-w-96 inline-block"
-          />
-          <button className="join-item btn btn-xs sm:btn-sm md:btn-md btn-success inline-block h-12 w-24">
+        <div className="join flex items-center justify-center pt-20">
+            <input
+              type="text"
+              name="name"
+              placeholder="Keresés..."
+              className="max-w-[95%] w-96 input input-bordered join-item"
+            />
+          <button className="btn btn-success join-item w-20 ">
             <p className={loading ? "loading" : ""}>Keresés</p>
           </button>
         </div>
