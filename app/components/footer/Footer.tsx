@@ -1,45 +1,81 @@
-import React from 'react';
-import Link from 'next/link';
-import { FaTwitter, FaFacebook, FaInstagram, FaLinkedin } from 'react-icons/fa';
+import React from "react";
+import Link from "next/link";
+import { FaFacebook, FaInstagram, FaYoutube } from "react-icons/fa";
 
 const Footer = () => {
-
   return (
     <footer className="pt-4">
-      <div className="flex justify-evenly mx-6">
-        <div className="m-2 mx-20 font-medium">
+      <div className="sm:flex sm:justify-evenly sm:mx-6  ">
+        <div className="sm:m-2 sm:mx-20 font-medium text-center sm:text-start mb-7">
           <h3 className="font-bold text-xl">Kapcsolataink</h3>
-          <p>Email: el.terrifico@gmail.com</p>
-          <p>Tel: +36 30 548 7729</p>
+          <p className="text-center sm:text-start">
+            Email: el.terrifico@gmail.com
+          </p>
+          <p className="text-center sm:text-start">Tel: +36 30 910 1099</p>
+          <p className="text-center sm:text-start">Cím: Győr, Apáca u. 4</p>
         </div>
-        <div className="m-2 mx-36 font font-medium">
-          <h3 className="font-bold text-xl">Böngésszen tovább:</h3>
-            <ul>
-              <li>
-                <Link href="/products">
-                  <p>Products</p>
-                </Link>
-              </li>
-              <li>
-                <Link href="/forum">
-                  <p>Forum</p>
-                </Link>
-              </li>
-            </ul>
+        <div className="sm:m-2 sm:mx-36 mb-7 font font-medium">
+          <h3 className="font-bold text-xl text-center sm:text-start">
+            Böngésszen tovább:
+          </h3>
+          <ul className="text-center items-center sm:text-start">
+            <li>
+              <Link href="/products">
+                <p className="text-center sm:text-start">Termékek</p>
+              </Link>
+            </li>
+            <li>
+              <Link href="/forum">
+                <p className="text-center sm:text-start">Fórum</p>
+              </Link>
+            </li>
+            <li>
+              <Link href="/aboutus">
+                <p className="text-center sm:text-start">Rólunk</p>
+              </Link>
+            </li>
+          </ul>
         </div>
       </div>
-      
+
       <div className="m-3 text-center">
         <h3 className="font-bold text-xl m-2">Kövess minket!</h3>
         <div className="flex items-center justify-center">
-          <FaTwitter className="mx-2 size-9" />
-          <FaFacebook className="mx-2 size-9" />
-          <FaInstagram className="mx-2 size-9" />
+          <a
+            href="https://www.facebook.com/profile.php?id=100095614833604"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <FaFacebook className="mx-2 size-9" />{" "}
+          </a>
+          <a
+            href="https://www.instagram.com/duracell_e_francogioia/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <FaInstagram className="mx-2 size-9" />
+          </a>
+          <a
+            href="https://www.youtube.com/@ElTerrifico"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <FaYoutube className="mx-2 size-9" />
+          </a>
+          <a
+            href="https://www.tiktok.com/@duracellplus.153"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img src="/tiktokIcon.png" alt="Tiktok" className="mx-2 size-9" />
+          </a>
         </div>
       </div>
-      
+
       <div className="mt-3 p-3 copyr">
-        <p className="text-center">&copy; 2024 El Terrifico. All rights reserved.</p>
+        <p className="text-center">
+          &copy; 2024 El Terrifico. All rights reserved.
+        </p>
       </div>
     </footer>
   );
