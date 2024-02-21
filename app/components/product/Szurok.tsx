@@ -117,7 +117,7 @@ function Szurok({ kategoriak }: props) {
               setIsCollepsed(!isCollepsed);
             }}
           >
-            <h1 className="btn">Részletes keresés</h1>
+            <h1 className="btn btn-sm">Részletes keresés</h1>
           </a>
         </div>
       </>
@@ -133,7 +133,7 @@ function Szurok({ kategoriak }: props) {
               setIsCollepsed(!isCollepsed);
             }}
           >
-            <h1 className="btn btn-success">Részletes keresés</h1>
+            <h1 className="btn btn-success btn-sm">Részletes keresés</h1>
           </a>
         </div>
         <div className={styles.szurodoboz}>

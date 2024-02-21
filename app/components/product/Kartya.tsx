@@ -57,7 +57,7 @@ const Kartya: React.FC<props> = ({ title, description, category = [], price, ima
           </div>
         </div>
         {/**Carousel a képeknek */}
-        <div className="rounded-xl min-w-96 w-1/4 h-96 lg:card-side mx-auto">
+        <div className="rounded-xl w-full max-w-96 h-96 lg:card-side mx-auto">
           {/*images.map((image, index) => (
             <img src={image} alt="Termék kép" className=" rounded-xl h-full sm:w-96 w-full mx-auto object-cover" />
           ))*/}
