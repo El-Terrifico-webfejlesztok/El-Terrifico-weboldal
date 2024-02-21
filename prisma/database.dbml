@@ -89,6 +89,30 @@ Table ProductCategory {
   categoryId   Int
 }
 
+Table PostCategory {
+  id           Int       [pk, increment]
+  name         String    [unique]
+}
+
+Table Post {
+  id           Int       [pk, increment]
+  title        String
+  text         String
+  user_id      Int
+  category_id  Int       // Added foreign key reference to PostCategory
+  created_at   DateTime  [default: `now()`]
+  updated_at   DateTime
+}
+
+Table Comment {
+  id           Int       [pk, increment]
+  text         String
+  user_id      Int
+  post_id      Int
+  created_at   DateTime  [default: `now()`]
+  updated_at   DateTime
+}
+
 // Relationships
 Ref: User.id < Payment.user_id
 Ref: User.id < Order.user_id
@@ -101,3 +125,7 @@ Ref: User.id < Review.user_id
 Ref: Product.id < Review.product_id
 Ref: User.id < ShippingAddress.user_id
 Ref:  ShippingAddress.id < Order.shipping_id
+Ref: User.id < Post.user_id
+Ref: User.id < Comment.user_id
+Ref: Post.id < Comment.post_id
+Ref: Post.category_id > PostCategory.id

@@ -6,9 +6,10 @@ import { useState } from "react";
 interface props {
   cim: string;
   szoveg: string;
+  category: string;
 }
 
-function Poszt({ szoveg, cim }: props) {
+function Poszt({ szoveg, cim, category }: props) {
   const [postContent, setPostContent] = useState("");
 
   const clearInputs = () => {
@@ -16,12 +17,17 @@ function Poszt({ szoveg, cim }: props) {
   };
 
   return (
-    <div className="collapse collapse-arrow bg-base-200 w-4/5 mx-auto mb-2">
+    <div className="collapse collapse-arrow bg-base-200 sm:w-5/6 w-full mx-auto sm:mb-3 mb-5">
       <input type="checkbox" />
-      <div className="collapse-title text-xl font-medium">{cim}</div>
-      <div className="collapse-content">
-        <p className="bg-white border-2 border-grey p-4 rounded-lg">{szoveg}</p>
-        <h1 className="text-lg font-medium my-5">Hozzászólások:</h1>
+      <div className="collapse-title text-xl font-medium">
+        <div>{cim}</div> <div className=" text-sm font-normal">#{category}</div>
+      </div>
+
+      <div className="collapse-content p-1">
+        <p className="bg-white border-2 border-grey p-4 rounded-lg text-black">
+          {szoveg}
+        </p>
+        <h1 className="text-lg font-medium my-5 ml-2">Hozzászólások:</h1>
         {/*Comments*/}
         <div className="h-48 overflow-x-auto whitespace-no-wrap">
           <Komment
@@ -46,7 +52,7 @@ function Poszt({ szoveg, cim }: props) {
           />
         </div>
         <div className=" border-2 rounded-md border-grey sm:w-2/6 w-full bg-white mx-auto p-1 mt-3 mb-2">
-          <h1 className="text-sm p-1 mb-1">Hozzászólásod:</h1>
+          <h1 className="text-sm p-1 mb-1 text-black">Hozzászólásod:</h1>
           <div className="flex">
             <textarea
               placeholder="Új hozzászólás"

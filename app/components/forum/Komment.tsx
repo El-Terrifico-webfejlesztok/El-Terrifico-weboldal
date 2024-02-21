@@ -17,8 +17,8 @@ function Komment({ image, name, comment }: props) {
         </div>
       </div>
       <div>
-        <h1 className=" my-auto font-medium text-md ml-3">{name}</h1>
-        <p className="ml-3 text-sm">{comment}</p>
+        <h1 className=" my-auto font-medium text-md ml-3 text-black">{name}</h1>
+        <p className="ml-3 text-sm text-black">{comment}</p>
       </div>
     </div>
   );
