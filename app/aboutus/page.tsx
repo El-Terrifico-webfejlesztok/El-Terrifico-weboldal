@@ -6,7 +6,7 @@ import "./aboutus.css"
 const AboutUs: React.FC = () => {
   return (
     <div className="rolunk mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-4">Rólunk</h1>
+      <h1 className="sections p-2 text-3xl font-bold mb-4">Rólunk</h1>
       <div className="sections p-2">
         <Section
           title="Csapatunk"
