@@ -53,6 +53,14 @@ export const authOptions: NextAuthOptions = {
                         const passwordCorrect = await compare(credentials?.password || "", User?.password)
                         //console.log(passwordCorrect)
 
+                        // Ha van a felhasználónak profilképe akkor azt kapja meg a sessionben
+                        if (User.image) {
+                            User.image = `${process.env.URL}/${User.image}`
+                        }
+                        // Ha nincs a felhasználónak profilképe akkor az alapértelmezett képet kapja
+                        else {
+                            User.image = `${process.env.URL}/public/profile_images/defaultpfp.png`
+                        }
                         // Ha helyes a jelszó engedjük a bejelentkezést
                         if (passwordCorrect) {
                             return {

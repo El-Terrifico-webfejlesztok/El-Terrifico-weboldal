@@ -1,9 +1,8 @@
-// UserProfileView.js
-
 import React, { useState } from 'react';
 import UserProfileEditForm from './UserProfileEditForm';
 import ChangePasswordForm from './ChangePasswordForm';
 import { User } from '@prisma/client';
+import ProfilePictureChooser from './ProfilePictureChooser';
 
 export type UserView = Omit<Omit<User, 'is_active'>, 'password'>;
 
@@ -12,48 +11,51 @@ interface UserProfileViewProps {
     reload?: Function;
 }
 
-const UserProfileSettings: React.FC<UserProfileViewProps> = ({ user, reload }) => {
-    const [isEditing, setIsEditing] = useState(false);
-    const [isChangingPassword, setIsChangingPassword] = useState(false);
+type Mode = 'editProfile' | 'changePassword' | 'changePicture';
 
-    const handleEditClick = () => {
-        setIsEditing(true);
+const UserProfileSettings: React.FC<UserProfileViewProps> = ({ user, reload }) => {
+    const [mode, setMode] = useState<Mode | null>(null);
+
+    const handleButtonClick = (newMode: Mode) => {
+        setMode((prevMode) => (prevMode === newMode ? null : newMode));
     };
 
     const handleCancelClick = () => {
-        setIsEditing(false);
-        setIsChangingPassword(false); // Close password change form when canceling
-    };
-
-    const handleChangePasswordClick = () => {
-        setIsChangingPassword(true);
+        setMode(null);
     };
 
     return (
         <div>
-            {isEditing ? (
-                // Edit Mode
-                <UserProfileEditForm user={user} onCancel={handleCancelClick} reload={reload} />
-            ) : 
-            
-            isChangingPassword ? (
-                // Password Change Mode
-                <ChangePasswordForm onCancel={handleCancelClick} />
-            ) : (
-                // View Mode
-                <>
-                    <div>
-                        <button className='btn btn-primary btn-sm' onClick={handleEditClick}>
-                            Adatok módosítása
-                        </button>
-                    </div>
-                    <div>
-                        <button className='btn btn-warning mt-2 btn-sm' onClick={handleChangePasswordClick}>
-                            Jelszó megváltoztatása
-                        </button>
-                    </div>
-                </>
-            )}
+            <div className='flex space-x-4 justify-center'>
+                <div>
+                    <button
+                        className={`btn btn-${mode === 'editProfile' ? 'neutral' : 'info'} btn-sm`}
+                        onClick={() => handleButtonClick('editProfile')}
+                    >
+                        Adatok módosítása
+                    </button>
+                </div>
+                <div>
+                    <button
+                        className={`btn btn-${mode === 'changePassword' ? 'neutral' : 'info'} btn-sm`}
+                        onClick={() => handleButtonClick('changePassword')}
+                    >
+                        Jelszó megváltoztatása
+                    </button>
+                </div>
+                <div>
+                    <button
+                        className={`btn btn-${mode === 'changePicture' ? 'neutral' : 'info'} btn-sm`}
+                        onClick={() => handleButtonClick('changePicture')}
+                    >
+                        Profilkép megváltoztatása
+                    </button>
+                </div>
+            </div>
+            {mode === 'editProfile' && <UserProfileEditForm user={user} onCancel={handleCancelClick} reload={reload} />}
+            {mode === 'changePassword' && <ChangePasswordForm onCancel={handleCancelClick} />}
+            {mode === 'changePicture' && <ProfilePictureChooser onCancel={handleCancelClick} />}
+
         </div>
     );
 };

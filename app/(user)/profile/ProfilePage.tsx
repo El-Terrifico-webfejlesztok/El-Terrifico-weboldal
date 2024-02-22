@@ -1,5 +1,4 @@
 'use client'
-import { fetchData } from 'next-auth/client/_utils';
 import { useSession } from 'next-auth/react';
 import React, { useEffect, useState } from 'react'
 import { Order, Payment, Review, ShippingAddress, User_role } from '@prisma/client';
@@ -7,6 +6,8 @@ import ShippingAddressView from '@/app/components/user/shipping/ShippingAddressV
 import ShippingAddressForm from '@/app/components/user/shipping/ShippingAddressForm';
 import UserProfileSettings from '@/app/components/user/profile/UserProfileSettings';
 import { UserView } from '@/app/components/user/profile/UserProfileSettings';
+import ProfilePictureChooser from '@/app/components/user/profile/ProfilePictureChooser';
+
 
 interface userData {
     id: number;
@@ -30,7 +31,6 @@ const ProfilePage = () => {
     const handleAddressEditClick = () => {
         setIsEditing(true);
     };
-
 
     const handleAddressCancelClick = () => {
         setIsEditing(false);
@@ -102,12 +102,7 @@ const ProfilePage = () => {
                 </div>
             </div>
 
-            <div id='settings' className="divider">Fiókbeállítások</div>
 
-            {userView ?
-                <UserProfileSettings key={user.id} reload={fetchData} user={userView} />
-                :
-                <></>}
 
             <div id='address' className="divider">Szállítási címek</div>
 
@@ -135,7 +130,12 @@ const ProfilePage = () => {
 
             <div id='order' className="divider">Rendelések</div>
             <button className='btn btn-outline w-full no-animation' onClick={fetchData}><p className={loading ? "loading" : ""}>Adatok lekérése</p></button>
+            <div id='settings' className="divider">Fiókbeállítások</div>
 
+            {userView ?
+                <UserProfileSettings key={user.id} reload={fetchData} user={userView} />
+                :
+                <></>}
 
 
         </div>
