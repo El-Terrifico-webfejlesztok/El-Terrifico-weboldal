@@ -4,6 +4,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../auth/[...nextauth]/auth";
 
+// A maximum fájlméret MB-ben megadva
+const MAX_FILE_SIZE_MB = 10;
+
 export async function POST(req: NextRequest) {
   try {
     // Get the user's session
@@ -20,12 +23,17 @@ export async function POST(req: NextRequest) {
     const file = formData.get('file') as unknown as File;
 
     if (!file || product_id === null) {
-      return NextResponse.json('Product ID or file is not present in the form data', { status: 400 });
+      return NextResponse.json('Product ID vagy kép hiányzik a requestből', { status: 400 });
     }
 
-    // Random string a fájl elejére hogy elkerüljük az ütközést
+    // Generate a short UUID to append to the filename
     const uuid = Math.random().toString(36).substring(2, 10);
     const filePath = `public/product_images/${uuid}_${file.name}`;
+
+    // Check file size
+    if (file.size > MAX_FILE_SIZE_MB * 1024 * 1024) {
+      return NextResponse.json(`A kép túllépi a ${MAX_FILE_SIZE_MB}MB képméret határt`, { status: 400 });
+    }
 
     // Read the file buffer and write it to the specified path
     const bytes = await file.arrayBuffer();
