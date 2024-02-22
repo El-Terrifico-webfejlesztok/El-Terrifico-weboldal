@@ -8,7 +8,12 @@ const registerSchema = z.object({
     // A beérkező adat struktúrája ennek meg kell hogy feleljen:
     username: z.string().min(3, { message: "A felhasználónévnek legalább 3 karakternek kell lennie" }).max(30, { message: "A felhasználónév maximum 30 karakter lehet" }),
     email: z.string().min(1, { message: "Az E-mail mező kötelező" }).max(255, { message: "Az E-mail maximum 255 karakter hosszú lehet" }).email({ message: "Hibás E-mail formátum" }),
-    password: z.string().min(8, { message: "A jelszónak legalább 8 karakter hosszúnak kell lennie" }).max(255, { message: "A jelszó maximum 255 karakter hoszzú lehet" }),
+    password: z
+        .string()
+        .min(8, 'A jelszónak legalább 8 karakter hosszúnak kell lennie')
+        .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).*$/, {
+            message: 'A jelszónake meg kell felelnie az alábbi regex követelményeknek: ^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).*$',
+        }),
 });
 
 // Ha jön egy POST request akkor...
