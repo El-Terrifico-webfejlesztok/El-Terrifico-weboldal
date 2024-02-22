@@ -1,0 +1,20 @@
+/* .f {
+    width: 150px;
+}
+
+@media screen and (min-width: 1024px) {
+    .f {
+      width: 200px;
+    }
+  }
+
+  @media screen and (min-width: 1324px) {
+    .f {
+      width: 300px;
+    }
+  }
+*/
+
+.h {
+    min-width: 60vw;
+  }
