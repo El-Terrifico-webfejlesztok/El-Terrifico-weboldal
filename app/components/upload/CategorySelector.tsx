@@ -88,8 +88,15 @@ const CategorySelector: React.FC<CategorySelectorProps> = ({ onCategoriesChange 
 
     return (
         <div>
-            <div className='mb-2'>
-                <label className='form-control'>Add New Category:</label>
+            <div className='mb-4'>
+                <label className='form-control'>
+                    <div className='flex items-center'>
+                        <div className="mx-0 tooltip" data-tip="A kategória a termékkel együtt kerül feltöltésre">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="stroke-current shrink-0 w-6 h-4"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        </div>
+                        Új kategória hozzáadása:
+                    </div>
+                </label>
                 <div className='join w-full'>
                     <button className='btn join-item' type="button" onClick={handleAddCategory}>
                         Hozzáadás
@@ -104,6 +111,7 @@ const CategorySelector: React.FC<CategorySelectorProps> = ({ onCategoriesChange 
                 </div>
             </div>
 
+            Kategóriák kiválasztása:
             <div className='grid grid-cols-2 gap-1'>
                 {displayedCategories.map((category) => (
                     <label key={category} className='label cursor-pointer'>
