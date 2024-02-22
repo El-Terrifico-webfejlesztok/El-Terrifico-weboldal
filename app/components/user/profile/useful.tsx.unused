@@ -1,0 +1,72 @@
+// UserProfileEditForm.js
+
+import React, { useState } from 'react';
+import { UserView } from './UserProfileSettings';
+
+interface UserProfileEditFormProps {
+    user: UserView;
+    onCancel: () => void;
+    reload?: Function;
+}
+
+const UserProfileEditForm: React.FC<UserProfileEditFormProps> = ({ user, onCancel, reload }) => {
+    // Dynamically generate input fields based on user details
+    const [editedUser, setEditedUser] = useState(() => {
+        const initialState: Record<string, string> = {};
+        Object.keys(user).forEach((key) => {
+            if (typeof user[key] === 'string') {
+                initialState[key] = user[key] as string;
+            }
+        });
+        return initialState;
+    });
+
+    const handleSaveClick = async () => {
+        try {
+            // Make a PUT request to update user details
+            const response = await fetch('/api/user/settings', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    // Include any necessary headers, like authorization headers if needed
+                },
+                body: JSON.stringify(editedUser),
+            });
+
+            // Check if the response is successful (status code 200-299)
+            if (response.ok) {
+                // Reload user data after a successful update
+                if (reload) {
+                    reload();
+                }
+            } else {
+                // Handle error responses
+                console.error('Error:', response.status, response.statusText);
+            }
+        } catch (error) {
+            console.error('An error occurred during the update:', error);
+        }
+    };
+
+    return (
+        <div>
+            {/* Dynamically generate input fields based on user details */}
+            {Object.keys(editedUser).map((key) => (
+                <div key={key}>
+                    <label htmlFor={key}>{key}:</label>
+                    <input
+                        type='text'
+                        id={key}
+                        value={editedUser[key]}
+                        onChange={(e) => setEditedUser({ ...editedUser, [key]: e.target.value })}
+                    />
+                </div>
+            ))}
+
+            <button onClick={handleSaveClick}>Save</button>
+            <button onClick={onCancel}>Cancel</button>
+        </div>
+    );
+};
+
+export default UserProfileEditForm;
