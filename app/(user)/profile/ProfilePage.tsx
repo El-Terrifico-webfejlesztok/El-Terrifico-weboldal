@@ -6,10 +6,10 @@ import ShippingAddressView from '@/app/components/user/shipping/ShippingAddressV
 import ShippingAddressForm from '@/app/components/user/shipping/ShippingAddressForm';
 import UserProfileSettings from '@/app/components/user/profile/UserProfileSettings';
 import { UserView } from '@/app/components/user/profile/UserProfileSettings';
-import ProfilePictureChooser from '@/app/components/user/profile/ProfilePictureChooser';
+import ProfileStats from '@/app/components/user/profile/ProfileStats';
 
 
-interface userData {
+export interface userData {
     id: number;
     username: string;
     email: string;
@@ -91,20 +91,18 @@ const ProfilePage = () => {
     return (
         <div className='px-2 max-w-4xl mx-auto  mt-4'>
 
-            <div className='mx-auto'>
-                <div className='flex space-x-4'>
-                    <h1 className="text-2xl  mb-4">Üdvözlünk <strong>{user.name}</strong>!</h1>
-                </div>
-                <div className="space-y-4">
-                    <div>
-                        Email: <strong>{user.email}</strong>
-                    </div>
-                </div>
+            <div className='text-center mt-12'>
+                <h1 className="text-2xl  mb-4">Üdvözlünk <strong>{user.name}</strong>!</h1>
+                Email: <strong>{user.email}</strong>
+            </div>
+
+            <div className='text-center mt-4'>
+                <ProfileStats userdata={userData} />
             </div>
 
 
 
-            <div id='address' className="divider">Szállítási címek</div>
+            <div id='address' className="divider py-4">Szállítási címek</div>
 
             {/** This is for displaying all of the shipping addresses the user has */}
             <div>
@@ -114,7 +112,7 @@ const ProfilePage = () => {
                     ))
                 ) : (
                     loading ? <div className='mx-auto loading loading-dots'></div> :
-                        <p className='text-center truncate'>Még nincsenek szállítási címeid</p>
+                        <p className='text-center truncate mb-4 font-bold'>Még nincsenek szállítási címeid</p>
                 )}
             </div>
 
@@ -128,9 +126,9 @@ const ProfilePage = () => {
             )}
 
 
-            <div id='order' className="divider">Rendelések</div>
+            <div id='order' className="divider py-4">Rendelések</div>
             <button className='btn btn-outline w-full no-animation' onClick={fetchData}><p className={loading ? "loading" : ""}>Adatok lekérése</p></button>
-            <div id='settings' className="divider">Fiókbeállítások</div>
+            <div id='settings' className="divider py-4">Fiókbeállítások</div>
 
             {userView ?
                 <UserProfileSettings key={user.id} reload={fetchData} user={userView} />

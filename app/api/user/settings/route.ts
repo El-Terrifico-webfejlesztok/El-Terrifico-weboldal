@@ -73,7 +73,11 @@ export async function PUT(req: NextRequest) {
             return NextResponse.json({ message: 'Update failed' }, { status: 400 });
         }
 
-        return NextResponse.json(updatedData, { status: 200 });
+        // Here you can see my utter incompetence
+        const { username, email } = updatedData;
+        const responseData = { username, email };
+
+        return NextResponse.json(responseData, { status: 200 });
     } catch (error) {
         console.error('Error updating data:', error);
         return NextResponse.json({ message: 'An error occurred' }, { status: 500 });
