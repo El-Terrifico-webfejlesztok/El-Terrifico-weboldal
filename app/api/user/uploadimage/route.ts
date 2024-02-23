@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Generate a short UUID
-    const shortUuid = uuidv4().substr(0, 8);
+    const shortUuid = uuidv4().slice(0, 8);
     const filePath = `public/profile_images/${shortUuid}_${file.name}`;
 
     // Valami buffer vagy valami, nem tudom (még mindig)
@@ -56,7 +56,7 @@ export async function POST(req: NextRequest) {
       }
     });
 
-    return NextResponse.json(imageUpload, { status: 201 });
+    return NextResponse.json(`${process.env.URL}/${filePath}`, { status: 201 });
   } catch (error) {
     console.error('Hiba profilképfeltöltés közben:', error);
     return NextResponse.json('Hiba a profilkép feltöltése közben', { status: 500 });

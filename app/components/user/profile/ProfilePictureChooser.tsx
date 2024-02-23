@@ -1,5 +1,5 @@
 import React, { useState, ChangeEvent } from 'react';
-import { useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import Image from 'next/image';
 
 interface ProfilePictureChooserProps {
@@ -8,14 +8,17 @@ interface ProfilePictureChooserProps {
 
 const ProfilePictureChooser: React.FC<ProfilePictureChooserProps> = ({ onCancel }) => {
     const [selectedImage, setSelectedImage] = useState<File | null>(null);
-    const { data: session, update} = useSession();
+    const { data: session, update } = useSession();
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+    const [buttonText, setButtonText] = useState<string>('Válassz egy képet');
 
     const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
 
         if (file) {
-            // TODO: Perform any validation if needed
             setSelectedImage(file);
+            setButtonText('Kép feltöltése')
         }
     };
 
@@ -25,34 +28,42 @@ const ProfilePictureChooser: React.FC<ProfilePictureChooserProps> = ({ onCancel 
     };
 
     const handleUpload = async () => {
+        setLoading(true);
         try {
+            setError(null);
+
             const formData = new FormData();
             formData.append('file', selectedImage as Blob);
 
             const response = await fetch('/api/user/uploadimage', {
                 method: 'POST',
                 headers: {
-                    // Include any necessary headers, like authorization headers if needed
                 },
                 body: formData,
             });
 
             if (response.ok) {
-                // Handle successful upload
-                update();
-                console.log('Image uploaded successfully!');
+                setButtonText('Sikeres feltöltés')
+                // Updateljük a sessiont az új profilképpel
+                update({ image: response })
+                console.log(session!.user!.image)
+                setSelectedImage(null)
             } else {
                 // Handle error responses
-                console.error('Error during image upload:', response.status, response.statusText);
+                const errorMessage = await response.text();
+                setError(`Hiba a kép feltöltése közben: ${errorMessage}`);
             }
         } catch (error) {
-            console.error('An error occurred during the image upload:', error);
+            console.error('Hiba a kép feltöltése közben:', error);
+            setError('Hiba a kép feltöltése közben');
+        } finally {
+            setLoading(false);
         }
     };
 
     return (
         <div className='max-w-lg mx-auto'>
-            <div className='mx-auto '>
+            <div className='mx-auto'>
                 <input
                     type="file"
                     accept="image/*"
@@ -67,19 +78,22 @@ const ProfilePictureChooser: React.FC<ProfilePictureChooserProps> = ({ onCancel 
                     className='p-2 mx-auto my-4 object-cover bg-base-200 rounded-full cursor-pointer hover:brightness-110 transition-all h-96 w-96'
                 />
             </div>
-            <div className="w-full flex mt-4">
+            <div className="w-full items-center flex mt-4">
                 <button className="btn btn-neutral mr-auto w-40" type="button" onClick={onCancel}>
                     Mégsem
                 </button>
+                
                 <button
-                    className="btn btn-primary ml-auto w-40"
+                    className={`btn ${buttonText==='Sikeres feltöltés' ? 'btn-success' : 'btn-primary'} ml-auto w-40`}
                     type="button"
                     onClick={handleUpload}
                     disabled={!selectedImage}
                 >
-                    {selectedImage ? 'Kép feltöltése' : 'Válassz egy képet'}
+                    <p className={loading? 'loading loading-dots' :''}>{buttonText}</p>
                 </button>
             </div>
+            {error && <div className="text-error mt-2">{error}</div>}
+
         </div>
     );
 };
