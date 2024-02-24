@@ -3,13 +3,22 @@
 import CartSteps from "@/app/components/cart/CartSteps";
 import useCartService from "@/lib/hooks/useCartStore";
 import SummaryKartya from "@/app/components/cart/summary/SummaryKartya";
-import { useSearchParams } from "next/navigation";
+import { redirect, useSearchParams } from "next/navigation";
 
 function CartSummary() {
   const { items, totalPrice, shippingPrice, itemsPrice } = useCartService();
   const searchParams = useSearchParams();
   const datas = searchParams.get("data");
-  const lista = datas.split("_");
+  let lista
+  
+  // Ha nincs az URL-ben a szállítási cím akkor redirect a shipping oldalra
+  if (datas) {
+    lista = datas.split("_");
+    
+  }
+  else {
+    redirect("/cart/shipping")
+  }
 
   return (
     <div>
@@ -26,6 +35,7 @@ function CartSummary() {
             <SummaryKartya
               key={item.product.id}
               nev={item.product.name}
+              image={item.image}
               ar={item.product.price}
               kategoriak={item.categories}
               item={item}
