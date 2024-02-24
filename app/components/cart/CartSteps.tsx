@@ -5,7 +5,7 @@ interface props {
 }
 
 function CartSteps({ currentStep }: props) {
-  const steps = ["Kosár", "Szállítási adatok", "Fizetés", "Összegzés"];
+  const steps = ["Kosár", "Szállítási adatok", "Összegzés"];
   
   return (
     <div className="text-center my-10">

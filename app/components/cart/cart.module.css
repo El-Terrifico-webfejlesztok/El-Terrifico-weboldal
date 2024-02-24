@@ -3,7 +3,7 @@
   margin-top: 10px;
   margin-bottom: 20px;
   border: 5px grey solid;
-  border-radius: 14px;
+  border-radius: 16px;
   height: fit-content;
   margin-left: auto;
   margin-right: auto;
@@ -31,6 +31,6 @@
 @media screen and (min-width: 640px) {
   .buttonXSmall {
     display: none;
+    margin: 10px;
   }
 }
-
