@@ -17,7 +17,14 @@ interface props {
   product: Product;
 }
 
-const Kartya: React.FC<props> = ({ title, description, category = [], price, images, product }) => {
+const Kartya: React.FC<props> = ({
+  title,
+  description,
+  category = [],
+  price,
+  images,
+  product,
+}) => {
   return (
     <div className={styles.kartya}>
       <div className="card lg:card-side bg-base-100 shadow-xl">
@@ -25,22 +32,30 @@ const Kartya: React.FC<props> = ({ title, description, category = [], price, ima
           <h1 className="card-title text-3xl mb-4">{title}</h1>
           <div className="sm:flex my-auto">
             <div className="sm:w-3/4 mb-8">
-              <h2 className="flex justify-start text-start text-1xl font-bold">
+              <h2 className="flex justify-start text-start text-1xl font-bold mb-2">
                 Leírás:
               </h2>
-              <p>{description}</p>
+              <p className="sm:h-20 sm:overflow-x-auto sm:whitespace-no-wrap sm:border-4 sm:border-black sm:rounded-lg sm:p-4 sm:pt-2 sm:border-dotted">
+                {description}
+              </p>
             </div>
             <div className="sm:w-1/4 ml-10 mr-10 mb-8">
-              <h2 className=" text-1xl font-bold">Kategória:</h2>
-              {category.map((part, index) => (
-                <KartyaCheckbox key={index} name={part} />
-              ))}
+              <h2 className=" text-1xl font-bold mb-2">Kategória:</h2>
+              <ul className="sm:h-20 sm:overflow-x-auto sm:whitespace-no-wrap sm:border-4 sm:border-black sm:rounded-lg sm:px-6 sm:py-2 sm:border-dotted list-disc">
+                {category.map((part, index) => (
+                  <KartyaCheckbox key={index} name={part} />
+                ))}
+              </ul>
             </div>
           </div>
 
           <div className="sm:flex my-auto">
             <div className="sm:w-1/4 mb-6 text-center">
-              <AddToCart item={product} image={images[0]} categories={category}/>
+              <AddToCart
+                item={product}
+                image={images[0]}
+                categories={category}
+              />
             </div>
             <div className="sm:w-1/4 mb-6 text-center">
               <h1>Ár:</h1>

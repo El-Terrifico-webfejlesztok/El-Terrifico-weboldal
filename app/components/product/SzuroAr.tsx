@@ -15,7 +15,7 @@ function SzuroAr({ placeh, minertek, cim, name, id, onChange }: props) {
   return (
     <div className="mb-10">
       <div className="label items-center justify-center">
-        <span className="label-text">{cim}</span>
+        <span className="label-text text-black">{cim}</span>
       </div>
       <input
         id={id}
