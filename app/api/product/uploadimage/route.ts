@@ -51,6 +51,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(imageUpload, { status: 201 });
   } catch (error) {
     console.error('Error during image upload:', error);
-    return NextResponse.json('Error during image upload', { status: 500 });
+    return NextResponse.json('Hiba a termékkép feltöltése közben', { status: 500 });
   }
 }

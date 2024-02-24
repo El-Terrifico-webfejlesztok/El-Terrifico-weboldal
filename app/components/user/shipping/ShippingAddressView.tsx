@@ -38,15 +38,15 @@ const ShippingAddressView = ({ address, reload }: { address: ShippingAddress, re
             const responseBody = await response.json();
 
             if (!response.ok) {
-                console.error(`Error deleting address: ${responseBody.error}`);
+                console.error(`Hiba a cím törlése közben: ${responseBody.error}`);
                 // Handle error appropriately, e.g., show an error message to the user
             } else {
-                console.log('Address deleted successfully');
+                console.log('Cím sikeresen törölve');
                 // Az oldal frissítése
                 reload();
             }
         } catch (error) {
-            console.error('Failed to delete address:', error);
+            console.error('A szerver nem elérhető:', error);
             // Handle the error appropriately, e.g., show a general error message
         } finally {
             setDeleteLoading(false);
@@ -55,7 +55,6 @@ const ShippingAddressView = ({ address, reload }: { address: ShippingAddress, re
 
     // Itt intézzük el az alapértelmezés kattintást
     const handleDefaultClick = async () => {
-        // Assuming you have the addressId in the address object
         setDefaultLoading(true)
         const addressId = address.id;
 
