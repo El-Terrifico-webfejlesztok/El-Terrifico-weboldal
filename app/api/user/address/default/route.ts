@@ -51,3 +51,33 @@ export async function POST(request: NextRequest) {
         return NextResponse.json('Hiba az alapértelmezett cím beállításakor', { status: 500 });
     }
 }
+
+export async function GET(req: NextRequest) {
+    // Get the user's session
+    const session = await getServerSession(authOptions);
+
+    // If the user is not authenticated, return an unauthorized response
+    if (!session) {
+        return NextResponse.json('Nincs bejelentkezve', { status: 401 });
+    }
+
+    try {
+        // Fetch the user's default shipping address from the database
+        const defaultAddress = await prisma.shippingAddress.findFirst({
+            where: {
+                user_id: parseInt(session.user!.id),
+                is_default_address: 1,
+            },
+        });
+
+        if (defaultAddress) {
+            return NextResponse.json(defaultAddress, { status: 200 });
+        } else {
+            // If no default address is found, return an empty response or customize as needed
+            return NextResponse.json('Nincs alapértelemzett szállítási címe', { status: 404 });
+        }
+    } catch (error) {
+        console.error('Error fetching default shipping address:', error);
+        return NextResponse.json('Internal Server Error', { status: 500 });
+    }
+}
