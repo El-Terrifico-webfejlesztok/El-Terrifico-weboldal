@@ -1,16 +1,26 @@
 import React, { useState } from "react";
 import { ShippingAddress } from "@prisma/client";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
-
-const ShippingAddressViewCart = (
-  { address, reload }: { address: ShippingAddress; reload: Function },
-) => {
+const ShippingAddressViewCart = ({
+  address,
+  reload,
+}: {
+  address: ShippingAddress;
+  reload: Function;
+}) => {
   const router = useRouter();
 
-  const handleNext = () => {
-    router.push("/cart/summary"); // Change '/another-page' to the desired page URL
-  };
+
+  const data =
+    address.recipient_name +
+    "_" +
+    address.postal_code +
+    "_" +
+    address.city +
+    "_" +
+    address.street_address;
 
   return (
     <div className="collapse transition-color bg-base-200 my-1">
@@ -41,11 +51,18 @@ const ShippingAddressViewCart = (
         <p>
           <strong>Szállítási cím:</strong> {address.street_address}
         </p>
-        <div className="space-x-2 mt-2">
-          <button className="btn btn-sm btn-info" onClick={handleNext}>
-            Kiválasztás és Tovább
-          </button>
-        </div>
+        <Link
+          href={{
+            pathname: "/cart/summary",
+            query: { data },
+          }}
+        >
+          <div className="space-x-2 mt-2">
+            <button className="btn btn-sm btn-info">
+              Kiválasztás és tovább
+            </button>
+          </div>
+        </Link>
       </div>
     </div>
   );

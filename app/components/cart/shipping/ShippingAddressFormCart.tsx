@@ -2,6 +2,7 @@ import { ShippingAddress } from "@prisma/client";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import Link from "next/link";
 
 const ShippingAddressFormCart = ({
   shippingAddress,
@@ -89,7 +90,7 @@ const ShippingAddressFormCart = ({
         return;
       }
       setButtonColor("btn-success");
-      setFeedfback("Sikeres feltöltés");
+      setFeedfback("Tovább");
       if (reload !== undefined) {
         reload();
       }
@@ -101,7 +102,8 @@ const ShippingAddressFormCart = ({
     }
   };
 
-
+  const data =
+    recipientName + "_" + postalCode + "_" + city + "_" + streetAddress;
 
   return (
     <>
@@ -181,18 +183,42 @@ const ShippingAddressFormCart = ({
             onChange={(e) => setState(e.target.value)}
           />
         </div>
-        <button
-          className={`btn ${buttoncolor ? buttoncolor : "btn-primary"}`}
-          type="submit"
-        >
-          {loading ? (
-            <div className=" loading loading-bars "></div>
-          ) : feedback ? (
-            feedback
-          ) : (
-            "Mentés és tovább"
-          )}
-        </button>
+        {feedback === "Tovább" ? (
+          <div className="text-center items-center">
+            <Link
+              href={{
+                pathname: "/cart/summary",
+                query: { data },
+              }}
+            >
+              <button
+                className={`btn ${buttoncolor ? buttoncolor : "btn-primary"}`}
+                type="submit"
+              >
+                {loading ? (
+                  <div className=" loading loading-bars "></div>
+                ) : feedback ? (
+                  feedback
+                ) : (
+                  "Mentés és tovább"
+                )}
+              </button>
+            </Link>
+          </div>
+        ) : (
+          <button
+            className={`btn ${buttoncolor ? buttoncolor : "btn-primary"}`}
+            type="submit"
+          >
+            {loading ? (
+              <div className=" loading loading-bars "></div>
+            ) : feedback ? (
+              feedback
+            ) : (
+              "Mentés"
+            )}
+          </button>
+        )}
       </form>
     </>
   );
