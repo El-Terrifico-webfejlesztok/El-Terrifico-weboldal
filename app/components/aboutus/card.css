@@ -16,5 +16,11 @@
 */
 
 .h {
-    min-width: 60vw;
+    max-height: 60vh;
+    max-width: 60vw;;
   }
+
+.img {
+  max-width: 30vw;
+  max-height: 30vh;
+}

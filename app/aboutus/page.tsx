@@ -40,7 +40,7 @@ const AboutUs: React.FC = () => {
                 description="Mauris id magna at nunc maximus vehicula. Fusce fringilla urna at purus congue, vitae aliquet velit elementum."
               />
             </div>
-            <div className="flex-1 m-2 sm:m-1 hover:m-1">
+            <div className="flex-1 m-2 hover:m-1">
               <TeamMemberCard
                 name="Molnár"
                 name2="Zalán"
