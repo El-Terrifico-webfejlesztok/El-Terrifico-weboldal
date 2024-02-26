@@ -63,7 +63,7 @@ const ProfilePictureChooser: React.FC<ProfilePictureChooserProps> = ({ onCancel 
 
     return (
         <div className='max-w-lg mx-auto'>
-            <div className='mx-auto'>
+            <div className='mx-auto aspect-square'>
                 <input
                     type="file"
                     accept="image/*"
@@ -71,25 +71,27 @@ const ProfilePictureChooser: React.FC<ProfilePictureChooserProps> = ({ onCancel 
                     style={{ display: 'none' }}
                     onChange={handleImageChange}
                 />
-                <img
-                    src={selectedImage ? URL.createObjectURL(selectedImage) : session?.user?.image || ''}
-                    alt="Selected"
-                    onClick={handleImageClick}
-                    className='p-2 mx-auto my-4 object-cover bg-base-200 rounded-full cursor-pointer hover:brightness-110 transition-all h-96 w-96'
-                />
+                <label htmlFor="fileInput">
+                    <img
+                        src={selectedImage ? URL.createObjectURL(selectedImage) : session?.user?.image || ''}
+                        alt="Selected"
+                        onClick={handleImageClick}
+                        className='p-2 h-full aspect-square mx-auto my-4 object-cover bg-base-200 rounded-full cursor-pointer hover:brightness-110 transition-all '
+                    />
+                </label>
             </div>
             <div className="w-full items-center flex mt-4">
                 <button className="btn btn-neutral mr-auto w-40" type="button" onClick={onCancel}>
                     Mégsem
                 </button>
-                
+
                 <button
-                    className={`btn ${buttonText==='Sikeres feltöltés' ? 'btn-success' : 'btn-primary'} ml-auto w-40`}
+                    className={`btn ${buttonText === 'Sikeres feltöltés' ? 'btn-success' : 'btn-primary'} ml-auto w-40`}
                     type="button"
                     onClick={handleUpload}
                     disabled={!selectedImage}
                 >
-                    <p className={loading? 'loading loading-dots' :''}>{buttonText}</p>
+                    <p className={loading ? 'loading loading-dots' : ''}>{buttonText}</p>
                 </button>
             </div>
             {error && <div className="text-error mt-2">{error}</div>}

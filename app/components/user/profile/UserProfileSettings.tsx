@@ -26,7 +26,7 @@ const UserProfileSettings: React.FC<UserProfileViewProps> = ({ user, reload }) =
 
     return (
         <div>
-            <div className='flex sm:flex-wrap space-x-4 justify-center'>
+            <div className='flex flex-col space-y-1 sm:flex-row sm:space-y-0 sm:space-x-4 justify-center items-center'>
                 <div>
                     <button
                         className={`btn btn-${mode === 'editProfile' ? 'neutral' : 'info'} btn-sm`}
