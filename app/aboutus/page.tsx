@@ -10,10 +10,10 @@ const AboutUs: React.FC = () => {
       <div className="sections p-2">
         <Section
           title="Csapatunk"
-          content="Csipetke csapatka vagyunk, négyen összesen."
+          content="Csapatunk lelkes tagjai."
         />
           <div className="flex flex-col justify-evenly sm:flex-row">
-            <div className="flex-1 m-2 hover:m-1">
+            <div className="flex-1 m-2">
               <TeamMemberCard
                   name="Fülöp"
                   name2="Krisztián"
@@ -22,7 +22,7 @@ const AboutUs: React.FC = () => {
                   description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ut nisi vitae mi euismod semper."
                 />
             </div>
-            <div className="flex-1 m-2 hover:m-1">
+            <div className="flex-1 m-2">
               <TeamMemberCard
                 name="Tóth"
                 name2="Barnabás"
@@ -31,7 +31,7 @@ const AboutUs: React.FC = () => {
                 description="Sed dictum turpis nec nisi dignissim, vel tincidunt odio suscipit. Curabitur aliquet, nisi nec commodo fermentum."
               />
             </div>
-            <div className="flex-1 m-2 hover:m-1">
+            <div className="flex-1 m-2">
               <TeamMemberCard
                 name="Nagy"
                 name2="Barnabás"
@@ -40,7 +40,7 @@ const AboutUs: React.FC = () => {
                 description="Mauris id magna at nunc maximus vehicula. Fusce fringilla urna at purus congue, vitae aliquet velit elementum."
               />
             </div>
-            <div className="flex-1 m-2 hover:m-1">
+            <div className="flex-1 m-2">
               <TeamMemberCard
                 name="Molnár"
                 name2="Zalán"
