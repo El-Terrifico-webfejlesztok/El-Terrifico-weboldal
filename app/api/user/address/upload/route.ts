@@ -42,7 +42,9 @@ export async function POST(request: NextRequest) {
 
         // Ha sikertelen elküldjük az okot (vagy okokat)
         if (!validation.success) {
-            return NextResponse.json(validation.error.errors[0], { status: 400 });
+            // A hibák listává alakítása
+            const errorList = validation.error.errors.map((error) => error.message);
+            return NextResponse.json(errorList, { status: 400 });
         }
 
         // Validált változók felbontása az objektből
@@ -54,15 +56,15 @@ export async function POST(request: NextRequest) {
             city,
             state,
             postal_code,
-            is_default_address
+            is_default_address // Jelenleg nincs használva, a default címeket a /api/user/address/default API végpont kezeli
         } = validation.data;
 
         if (id) {
             // Ha van ID akkor csak frissítjük az ID-nek megfelelő
             newAddress = await prisma.shippingAddress.update({
-                where: { 
-                    id , 
-                    user_id: userID, 
+                where: {
+                    id,
+                    user_id: userID,
                 },
                 data: {
                     recipient_name,
@@ -71,7 +73,6 @@ export async function POST(request: NextRequest) {
                     city,
                     state,
                     postal_code,
-                    is_default_address
                 },
             })
         }
@@ -79,7 +80,7 @@ export async function POST(request: NextRequest) {
         else {
             // Megszámoljuk hány címe van a felhasználónak
             const addressCount = await prisma.shippingAddress.count({
-                where: { user_id: userID  }, // Assuming you have a userId field in your shippingAddress model
+                where: { user_id: userID }, // Assuming you have a userId field in your shippingAddress model
             });
 
             // Check if the user already has the maximum allowed number of addresses (5)
@@ -111,6 +112,6 @@ export async function POST(request: NextRequest) {
     // Ha közben baj van akkor server errort küldünk (ilyen nem kéne hogy történjen normál esetben)
     catch (error: any) {
         console.error("Error uploading details:", error.errors[0] || error.message);
-        return NextResponse.json('Error uploading address details', { status: 500 });
+        return NextResponse.json('Hiba a cím feltöltése közben', { status: 500 });
     }
 }

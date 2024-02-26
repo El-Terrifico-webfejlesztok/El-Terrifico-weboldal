@@ -11,7 +11,7 @@ export async function DELETE(request: NextRequest) {
 
         // Error if there is no session
         if (!session) {
-            return NextResponse.json({ error: 'Nincs bejelentkezve' }, { status: 401 });
+            return NextResponse.json('Nincs bejelentkezve', { status: 401 });
         }
 
         // Retrieve the user's ID from the session
@@ -26,7 +26,7 @@ export async function DELETE(request: NextRequest) {
         });
 
         if (!address || address.user_id !== userId) {
-            return NextResponse.json({ error: 'Az adott cím nem létezik vagy nem tartozik a felhasználóhoz' }, { status: 400 });
+            return NextResponse.json('Az adott cím nem létezik vagy nem tartozik a felhasználóhoz', { status: 400 });
         }
 
         // Delete the address
@@ -34,9 +34,9 @@ export async function DELETE(request: NextRequest) {
             where: { id: addressId },
         });
 
-        return NextResponse.json({ message: 'A cím sikeresen törölve' }, { status: 200 });
+        return NextResponse.json('A cím sikeresen törölve', { status: 200 });
     } catch (error: any) {
         console.error("Error deleting address:", error.errors || error.message);
-        return NextResponse.json({ error: 'Hiba a cím törlésekor' }, { status: 500 });
+        return NextResponse.json('Hiba a cím törlésekor', { status: 500 });
     }
 }

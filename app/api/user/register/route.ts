@@ -12,7 +12,7 @@ const registerSchema = z.object({
         .string()
         .min(8, 'A jelszónak legalább 8 karakter hosszúnak kell lennie')
         .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).*$/, {
-            message: 'A jelszónake meg kell felelnie az alábbi regex követelményeknek: ^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).*$',
+            message: 'A jelszónak tartalmaznia kell legalább egy kisbetűt, egy nagybetűt és egy számot',
         }),
 });
 
@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
         });
         // ha nem egyedi hibát küldünk
         if (existingUser) {
-            return NextResponse.json({ error: 'Már létezik ilyen e-mail címmel fiók' }, { status: 400 });
+            return NextResponse.json('Már létezik ilyen e-mail címmel fiók', { status: 400 });
         }
 
         // Declare hashedPassword before using it
@@ -59,7 +59,7 @@ export async function POST(request: NextRequest) {
     }
     // Ha közben baj van akkor server errort küldünk (ilyen nem kéne hogy történjen normál esetben)
     catch (error: any) {
-        console.error("Error during registration:", error.errors || error.message);
-        return NextResponse.json('Error during registration', { status: 500 });
+        console.error("Hiba regisztráció közben:", error.errors || error.message);
+        return NextResponse.json('Hiba a regisztráció közben', { status: 500 });
     }
 }

@@ -117,12 +117,12 @@ export async function GET(req: NextRequest) {
     return NextResponse.json(flattenedProducts, { status: 200 });
   } catch (error) {
     // Log and handle errors
-    console.error('Error during search', error);
+    console.error('A keresés közben hiba történt', error);
 
     // Explicitly cast error to Error type and get the error message
     const errorMessage = (error as Error).message;
 
     // Return an error response with the error message
-    return NextResponse.json({ error: 'Error during search', message: errorMessage }, { status: 500 });
+    return NextResponse.json({ error: 'A keresés közben hiba történt', message: errorMessage }, { status: 500 });
   }
 }

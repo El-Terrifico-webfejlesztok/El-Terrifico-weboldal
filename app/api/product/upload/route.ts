@@ -27,7 +27,8 @@ export async function POST(req: NextRequest) {
     const validation = uploadProductSchema.safeParse(body);
 
     if (!validation.success) {
-      return NextResponse.json(validation.error.errors, { status: 400 });
+      const errorList = validation.error.errors.map((error) => error.message);
+      return NextResponse.json(errorList, { status: 400 });
     }
 
     // Fetch or create categories and store them in an array

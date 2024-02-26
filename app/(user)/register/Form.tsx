@@ -25,7 +25,7 @@ const Form = () => {
             return;
         }
 
-        const response = await fetch(`/api/register`, {
+        const response = await fetch(`/api/user/register`, {
             method: 'POST',
             body: JSON.stringify({
                 email: formData.get('email'),

@@ -1,4 +1,3 @@
-// api/categories.ts
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/prisma/client';
 
@@ -15,6 +14,6 @@ export async function GET(req: NextRequest) {
         return NextResponse.json(categoryNames);
     } catch (error) {
         console.error('Hiba a kategóriák lekérése közben:', error);
-        return NextResponse.json('Internal Server Error', { status: 500 });
+        return NextResponse.json('Hiba a kategóriák lekérése közben', { status: 500 });
     }
 }
