@@ -99,7 +99,7 @@ function ShippingPage() {
         Szállítási adatok
       </div>
 
-      <div>
+      <div className="sm:w-1/2 mx-auto mb-4">
         <ShippingAddressFormCart
           onCancel={handleAddressCancelClick}
           reload={fetchData}

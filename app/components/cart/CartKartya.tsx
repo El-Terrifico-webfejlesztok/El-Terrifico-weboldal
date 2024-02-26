@@ -30,8 +30,8 @@ function CartKartya({ nev, kategoriak, ar, image, item }: props) {
           <div className="card lg:card-side bg-base-100 shadow-xl rounded-xl">
             <div className="card-body p-3">
               <div className="sm:flex">
-                <div className="sm:w-1/6 justify-end items-end text-right">
-                  <div className={styles.buttonXSmall}>
+                <div className={styles.buttonXSmall}>
+                  <div className="sm:w-1/6 justify-end items-end text-right">
                     <button
                       className="btn btn-sm btn-error btn-circle btn-outline my-auto"
                       onClick={handleButtonClick}
@@ -53,7 +53,7 @@ function CartKartya({ nev, kategoriak, ar, image, item }: props) {
                     </button>
                   </div>
                 </div>
-                <div className="sm:w-1/6 mt-3">
+                <div className="sm:w-1/6 mt-3 sm:mr-5">
                   <div className={styles.kep}>
                     <img src={image} className="" alt={nev} />
                   </div>
