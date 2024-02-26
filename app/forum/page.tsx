@@ -37,7 +37,7 @@ const Forum = () => {
 
   return (
     <div className={styles.forumOldal}>
-      <div className="navbar bg-success sm:w-4/5 w-1/1 mx-auto shadow-sm rounded-md">
+      <div className="navbar bg-success w-1/1 mx-auto shadow-sm rounded-md">
         <div className="navbar-start">
           <h1 className="sm:text-lg text-md text-white font-bold uppercase sm:ml-4">
             Colegauno

@@ -35,13 +35,13 @@ const Kartya: React.FC<props> = ({
               <h2 className="flex justify-start text-start text-1xl font-bold mb-2">
                 Leírás:
               </h2>
-              <p className="sm:h-20 sm:overflow-x-auto sm:whitespace-no-wrap sm:border-4 sm:border-black sm:rounded-lg sm:p-4 sm:pt-2 sm:border-dotted">
+              <p className="sm:h-20 sm:overflow-x-auto sm:whitespace-no-wrap sm:p-4 sm:pt-2 sm:border-dotted">
                 {description}
               </p>
             </div>
             <div className="sm:w-1/4 ml-10 mr-10 mb-8">
               <h2 className=" text-1xl font-bold mb-2">Kategória:</h2>
-              <ul className="sm:h-20 sm:overflow-x-auto sm:whitespace-no-wrap sm:border-4 sm:border-black sm:rounded-lg sm:px-6 sm:py-2 sm:border-dotted list-disc">
+              <ul className="sm:h-20 sm:overflow-x-auto sm:whitespace-no-wrap  sm:px-6 sm:py-2 sm:border-dotted list-disc">
                 {category.map((part, index) => (
                   <KartyaCheckbox key={index} name={part} />
                 ))}

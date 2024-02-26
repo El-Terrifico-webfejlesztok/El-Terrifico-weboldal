@@ -9,7 +9,7 @@ function CartSteps({ currentStep }: props) {
   
   return (
     <div className="text-center my-10">
-      <ul className="steps steps-vertical lg:steps-horizontal">
+      <ul className="steps steps-horizontal">
         {steps.map((step, index) => (
           <li key={index} className={`step ${index < currentStep ? "step-primary" : ""}`}>
             {step}
