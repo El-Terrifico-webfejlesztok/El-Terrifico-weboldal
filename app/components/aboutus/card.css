@@ -1,26 +1,26 @@
-/* .f {
-    width: 150px;
-}
-
-@media screen and (min-width: 1024px) {
-    .f {
-      width: 200px;
-    }
-  }
-
-  @media screen and (min-width: 1324px) {
-    .f {
-      width: 300px;
-    }
-  }
-*/
-
-.h {
-    max-height: 60vh;
+.cardExpanded {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Two equal columns */
+  gap: 20px;
+    max-height: 70vh;
     max-width: 60vw;;
   }
+
+@media screen and (max-width: 650px) {
+  .cardExpanded {
+    max-width: 90vw;
+    grid-template-columns: 1fr;
+  }
+}
 
 .img {
   max-width: 30vw;
   max-height: 30vh;
+}
+
+.hover-effect {
+  /* Define your hover effect styles */
+  /* For example: */
+  transform: scale(1.025);
+  box-shadow: 0 0 10px rgba(92, 92, 92, 0.5);
 }
