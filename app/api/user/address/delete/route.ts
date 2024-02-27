@@ -29,9 +29,13 @@ export async function DELETE(request: NextRequest) {
             return NextResponse.json('Az adott cím nem létezik vagy nem tartozik a felhasználóhoz', { status: 400 });
         }
 
-        // Delete the address
-        await prisma.shippingAddress.delete({
+        // Set the address inactive
+        await prisma.shippingAddress.update({
             where: { id: addressId },
+            data: {
+                is_active: false,
+                user_id: null
+            },
         });
 
         return NextResponse.json('A cím sikeresen törölve', { status: 200 });
