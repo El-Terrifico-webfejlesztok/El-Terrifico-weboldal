@@ -695,3 +695,239 @@ Ez a API végpont lehetővé teszi egy felhasználóhoz tartozó szállítási c
 	  }
 	};
 	```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# BESOROLANDÓ
+
+### Rendelés Létrehozó API
+
+**Végpont:** `POST /api/order`
+
+**Leírás:**\
+Ez az API végpont lehetővé teszi egy rendelés létrehozását megadott termékekkel és szállítási címmel.
+
+**Hitelesítés:**
+
+-   **Szükséges:** Bejelentkezés.
+
+**Kérés:**
+
+-   **Metódus:** POST
+-   **Végpont:** `/api/order`
+-   **Kérés Body (JSON):**
+	```json
+	{
+		"shippingAddressId": 456,
+		"orderItems": [
+			{ "productId": 789, "quantity": 2 },
+			{ "productId": 101, "quantity": 1 }
+		]
+	}
+	```
+
+**Válasz:**
+
+-   **Sikeres Válasz (HTTP Státuszkód: 201 Created):**
+
+	```json
+	{
+		"orderId": 987,
+		"totalPrice": 150.00,
+		"createdAt": "2024-02-20T12:30:45Z",
+		"OrderItems": [
+			// Létrehozott rendelés termékeinek részletei
+		]
+	}
+	```
+
+    -   **Hiba Válaszok:**
+
+		-   **HTTP Státuszkód: 401 Unauthorized:**
+
+			```json
+			{
+				"error": "A rendeléshez be kell jelentkeznie"
+			}
+			```	
+		-   **HTTP Státuszkód: 404 Not Found:**
+			```json
+			{
+				"error": "Nem található a kiválasztott szállítási cím"
+			}
+			```
+		-   **HTTP Státuszkód: 400 Bad Request:**
+
+			```json
+			{
+				"error": "Nincs termék a rendelésben"
+			}
+			```
+		-   **HTTP Státuszkód: 500 Internal Server Error:**
+
+			```json
+			{
+				"error": "Hiba a rendelés felvétele közben"
+			}
+			```
+
+**Példa Használat**:
+
+-   **Kérés:**
+    ```typescript
+	const createOrder = async (orderData: OrderData) => {
+		try {
+		const response = await fetch('/api/order', {
+			method: 'POST',
+			headers: {
+			'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+			shippingAddressId: orderData.shippingAddressId,
+			orderItems: orderData.orderItems.map(item => ({
+				id: item.id,
+				quantity: item.quantity,
+			})),
+			}),
+		});
+
+		if (!response.ok) {
+			throw new Error("Sikertelen rendelés létrehozás");
+		}
+
+		const responseData = await response.json();
+		console.log(responseData);
+		} catch (error) {
+		console.error("A szerver nem érhető el", error);
+		}
+	};
+	```
+
+### Rendelési Adatok Lekérdezése API
+
+**Végpont:** `GET /api/order`
+
+**Leírás:**\
+Ez az API végpont lehetővé teszi egy rendelés részleteinek lekérdezését azonosító alapján, beleértve az OrderItemeket is.
+
+**Hitelesítés:**
+
+-   **Szükséges:** A felhasználónak be kell jelentkeznie (next-auth segítségével ellenőrzött).
+
+**Kérés:**
+
+-   **Metódus:** GET
+-   **Végpont:** `/api/order`
+-   **Kérés Body (JSON):**
+
+	```json
+	{
+		"orderId": 987
+	}
+	```
+**Válasz:**
+
+-   **Sikeres Válasz (HTTP Státuszkód: 200 OK):**
+	```json
+	{
+		"orderId": 987,
+		"totalPrice": 150.00,
+		"createdAt": "2024-02-20T12:30:45Z",
+		"OrderItems": [
+			{
+				"id": 1,
+				"name": "Product A",
+				"quantity": 2,
+				"price": 100.00
+			},
+			{
+				"id": 2,
+				"name": "Product B",
+				"quantity": 1,
+				"price": 50.00
+			}
+			// ... További OrderItem részletek
+		]
+	}
+	```
+-   **Hiba Válaszok:**
+
+	-   **HTTP Státuszkód: 401 Unauthorized:**
+
+		```json
+		{
+			"error": "A rendelési adatok lekéréséhez be kell jelentkeznie"
+		}
+		```
+	-   **HTTP Státuszkód: 404 Not Found:**
+
+		```json
+		{
+			"error": "Nem található rendelés az azonosítóval: 987"
+		}
+		```
+	-   **HTTP Státuszkód: 500 Internal Server Error:**
+
+		```json
+		{
+			"error": "Hiba a rendelési adatok lekérdezése közben"
+		}
+		```
+**Példa Használat**:
+
+-   **Kérés:**
+
+	```typescript
+	const getOrderDetails = async (orderId) => {
+		try {
+			const response = await fetch('/api/order', {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				orderId: orderId,
+			}),
+			});
+
+			if (!response.ok) {
+			throw new Error("Sikertelen rendelési adat lekérdezés");
+			}
+
+			const responseData = await response.json();
+			console.log(responseData);
+		}
+		catch (error) {
+			console.error(error.message);
+		}
+	};
+	```

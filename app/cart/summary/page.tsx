@@ -4,21 +4,89 @@ import CartSteps from "@/app/components/cart/CartSteps";
 import useCartService from "@/lib/hooks/useCartStore";
 import SummaryKartya from "@/app/components/cart/summary/SummaryKartya";
 import { redirect, useSearchParams } from "next/navigation";
+import { useState } from "react";
+
+export interface OrderItem {
+  id: number;
+  quantity: number;
+}
+
+export interface OrderData {
+  shippingAddressId: number;
+  orderItems: OrderItem[];
+}
+
 
 function CartSummary() {
-  const { items, totalPrice, shippingPrice, itemsPrice } = useCartService();
+  const { items, totalPrice, shippingPrice, itemsPrice, clearCart } = useCartService();
   const searchParams = useSearchParams();
   const datas = searchParams.get("data");
-  let lista
-  
+  const [buttonColor, setButtonColor] = useState('')
+  const [loading, setLoading] = useState<boolean>(false)
+  const [buttonText, setButtonText] = useState('Megrendelem')
+
+
+  let lista: any
+
   // Ha nincs az URL-ben a szállítási cím akkor redirect a shipping oldalra
   if (datas) {
     lista = datas.split("_");
-    
+
   }
   else {
     redirect("/cart/shipping")
   }
+
+  const createOrder = async (orderData: OrderData) => {
+    setLoading(true)
+    try {
+      const response = await fetch('/api/order', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          shippingAddressId: orderData.shippingAddressId,
+          orderItems: orderData.orderItems.map(item => ({
+            id: item.id,
+            quantity: item.quantity,
+          })),
+        }),
+      });
+      const responseData = await response.json();
+
+
+      if (!response.ok) {
+        setButtonColor('btn-error')
+        setButtonText(responseData)
+        throw new Error("Sikertelen rendelés létrehozás");
+      }
+
+      console.log(responseData);
+      setButtonColor('btn-success')
+      setButtonText('Sikeres rendelés!')
+      // Kocsi nullázása
+      clearCart()
+    } catch (error) {
+      console.error("A szerver nem érhető el", error);
+    }
+    finally {
+      setLoading(false)
+    }
+  };
+
+
+  const handleOrderClick = () => {
+    const orderData: OrderData = {
+      shippingAddressId: parseInt(lista[4]),
+      orderItems: items.map((item) => ({
+        id: item.product.id,
+        quantity: item.quantity,
+      })),
+    };
+
+    createOrder(orderData);
+  };
 
   return (
     <div>
@@ -62,7 +130,7 @@ function CartSummary() {
         </div>
       </div>
       <div className="items-center text-center justify-center my-8">
-        <button className="btn btn-wide ">Megrendelem</button>
+        <button className={`btn btn-wide ${buttonColor}`} onClick={handleOrderClick}><p className={loading ? 'loading' : ''}>{buttonText}</p></button>
       </div>
     </div>
   );

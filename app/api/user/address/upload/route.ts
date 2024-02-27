@@ -15,7 +15,7 @@ const shippingAddressSchema = z.object({
     country: z.string().max(50, "Az ország maximum 50 karakter lehet"),
     city: z.string().max(100, "A város maximum 100 karakter lehet"),
     state: z.string().max(50, "A megye maximum ").optional(),
-    postal_code: z.string().max(20, "Postal code exceeds maximum length of 20 characters"),
+    postal_code: z.string().max(20, "Az irányítószám maximum 20 karakter lehet "),
     is_default_address: z.number().int().optional(),
 });
 
