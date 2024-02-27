@@ -45,3 +45,5 @@ To learn more about Next.js, take a look at the following resources:
 -  **Tailwind CSS:** Előre elkészített HTML-be írható CSS classok.
 
 -  **DaisyUI:** Bootstraphoz hasonló library a Tailwind CSS-hez.
+
+-  **Zustand:** State management library
