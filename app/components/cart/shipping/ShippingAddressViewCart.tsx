@@ -20,7 +20,9 @@ const ShippingAddressViewCart = ({
     "_" +
     address.city +
     "_" +
-    address.street_address;
+    address.street_address +
+    "_" +
+    address.id;
 
   return (
     <div className="collapse transition-color bg-base-200 my-1">

@@ -4,6 +4,11 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/auth";
 import { OrderItem } from "@prisma/client";
 
+interface orderItemDetail {
+    price: number,
+    name: string,
+}
+
 export async function POST(req: NextRequest) {
     try {
         // Validation
@@ -30,7 +35,7 @@ export async function POST(req: NextRequest) {
             return NextResponse.json('Nem található a kiválasztott szállítási cím', { status: 404 });
         }
 
-        if (!body.orderItems.length()){
+        if (!body.orderItems || body.orderItems.length === 0) {
             return NextResponse.json('Nincs termék a rendelésben', { status: 400 });
         }
 
@@ -51,22 +56,18 @@ export async function POST(req: NextRequest) {
         });
 
         // Kiszámoljuk az OrderItemek árát
-        const orderItemPrices = await Promise.all(body.orderItems.map(async (item: OrderItem) => {
-            return calculateItemPrice(item);
+        const orderItemDetails: orderItemDetail[] = await Promise.all(body.orderItems.map(async (item: OrderItem) => {
+            return calculateOrderItemDetails(item);
         }));
 
         // Create OrderItems after the Order is created
         const orderItems = await prisma.orderItem.createMany({
             data: body.orderItems.map((item: OrderItem, index: number) => ({
                 order_id: createdOrder.id,
-                product: {
-                    connect: {
-                        id: item.id,
-                    },
-                },
-                name: item.name, 
+                product_id: item.id,
+                name: orderItemDetails[index].name, // Use product name
                 quantity: item.quantity,
-                price: orderItemPrices[index],
+                price: orderItemDetails[index].price,
             })),
         });
 
@@ -86,13 +87,13 @@ export async function POST(req: NextRequest) {
 }
 
 async function calculateTotalPrice(orderItems: OrderItem[]) {
-    const itemPrices = await Promise.all(orderItems.map(calculateItemPrice));
-    const total = itemPrices.reduce((acc, itemPrice) => acc + itemPrice, 0);
+    const itemPrices = await Promise.all(orderItems.map(calculateOrderItemDetails));
+    const total = itemPrices.reduce((acc, itemDetails) => acc + itemDetails.price, 0);
     return total;
 }
 
-// Helper function to calculate the price of an individual order item
-async function calculateItemPrice(item: OrderItem) {
+// Segédfüggvény ami visszaad pár adatot a product ID-ből vonatkoztatva
+async function calculateOrderItemDetails(item: OrderItem) {
     // Fetch the product details from the database using Prisma
     const product = await prisma.product.findUnique({
         where: {
@@ -100,6 +101,7 @@ async function calculateItemPrice(item: OrderItem) {
         },
         select: {
             price: true,
+            name: true,
         },
     });
 
@@ -108,10 +110,13 @@ async function calculateItemPrice(item: OrderItem) {
         throw new Error(`Product not found with ID ${item.id}`);
     }
 
-    // Calculate the item price based on quantity and product price
+    // Az itemnek az összegzett ára (szám*ár)
     const itemPrice = item.quantity * product.price;
 
-    return itemPrice;
+    return {
+        name: product.name,
+        price: itemPrice,
+    };
 }
 
 /* 
@@ -119,8 +124,8 @@ async function calculateItemPrice(item: OrderItem) {
 {
     "shippingAddressId": 456,
     "orderItems": [
-      { "productId": 789, "quantity": 2 },
-      { "productId": 101, "quantity": 1 }
+      { "id": 789, "quantity": 2 },
+      { "id": 101, "quantity": 1 }
     ]
 }
 
@@ -129,7 +134,7 @@ async function calculateItemPrice(item: OrderItem) {
     "orderId": 987,
     "totalPrice": 150.00,
     "createdAt": "2024-02-20T12:30:45Z",
-    "OrderItem": [
+    "OrderItems": [
         // Details of created OrderItems
     ]
 }

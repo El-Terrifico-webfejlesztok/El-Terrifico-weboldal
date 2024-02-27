@@ -695,3 +695,139 @@ Ez a API végpont lehetővé teszi egy felhasználóhoz tartozó szállítási c
 	  }
 	};
 	```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# BESOROLANDÓ
+
+### Rendelés Létrehozó API
+
+**Végpont:** `POST /api/order`
+
+**Leírás:**\
+Ez az API végpont lehetővé teszi egy rendelés létrehozását megadott termékekkel és szállítási címmel.
+
+**Hitelesítés:**
+
+-   **Szükséges:** Bejelentkezés.
+
+**Kérés:**
+
+-   **Metódus:** POST
+-   **Végpont:** `/api/order`
+-   **Kérés Body (JSON):**
+	```json
+	{
+		"shippingAddressId": 456,
+		"orderItems": [
+			{ "productId": 789, "quantity": 2 },
+			{ "productId": 101, "quantity": 1 }
+		]
+	}
+	```
+
+**Válasz:**
+
+-   **Sikeres Válasz (HTTP Státuszkód: 201 Created):**
+
+	```json
+	{
+		"orderId": 987,
+		"totalPrice": 150.00,
+		"createdAt": "2024-02-20T12:30:45Z",
+		"OrderItems": [
+			// Létrehozott rendelés termékeinek részletei
+		]
+	}
+	```
+
+    -   **Hiba Válaszok:**
+
+		-   **HTTP Státuszkód: 401 Unauthorized:**
+
+			```json
+			{
+				"error": "A rendeléshez be kell jelentkeznie"
+			}
+			```	
+		-   **HTTP Státuszkód: 404 Not Found:**
+			```json
+			{
+				"error": "Nem található a kiválasztott szállítási cím"
+			}
+			```
+		-   **HTTP Státuszkód: 400 Bad Request:**
+
+			```json
+			{
+				"error": "Nincs termék a rendelésben"
+			}
+			```
+		-   **HTTP Státuszkód: 500 Internal Server Error:**
+
+			```json
+			{
+				"error": "Hiba a rendelés felvétele közben"
+			}
+			```
+
+**Példa Használat**:
+
+-   **Kérés:**
+    ```typescript
+	const createOrder = async (orderData: OrderData) => {
+		try {
+		const response = await fetch('/api/order', {
+			method: 'POST',
+			headers: {
+			'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+			shippingAddressId: orderData.shippingAddressId,
+			orderItems: orderData.orderItems.map(item => ({
+				id: item.id,
+				quantity: item.quantity,
+			})),
+			}),
+		});
+
+		if (!response.ok) {
+			throw new Error("Sikertelen rendelés létrehozás");
+		}
+
+		const responseData = await response.json();
+		console.log(responseData);
+		} catch (error) {
+		console.error("A szerver nem érhető el", error);
+		}
+	};
+	```

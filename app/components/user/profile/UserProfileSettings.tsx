@@ -4,6 +4,7 @@ import ChangePasswordForm from './ChangePasswordForm';
 import { User } from '@prisma/client';
 import ProfilePictureChooser from './ProfilePictureChooser';
 
+// User a prisma schamból akinek csak a biztonságosan megosztható adatai vannak meg (nincs password például)
 export type UserView = Omit<Omit<User, 'is_active'>, 'password'>;
 
 interface UserProfileViewProps {

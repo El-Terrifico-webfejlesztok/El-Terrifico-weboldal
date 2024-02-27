@@ -5,20 +5,71 @@ import useCartService from "@/lib/hooks/useCartStore";
 import SummaryKartya from "@/app/components/cart/summary/SummaryKartya";
 import { redirect, useSearchParams } from "next/navigation";
 
+export interface OrderItem {
+  id: number;
+  quantity: number;
+}
+
+export interface OrderData {
+  shippingAddressId: number;
+  orderItems: OrderItem[];
+}
+
+
 function CartSummary() {
   const { items, totalPrice, shippingPrice, itemsPrice } = useCartService();
   const searchParams = useSearchParams();
   const datas = searchParams.get("data");
-  let lista
-  
+  let lista: any
+
   // Ha nincs az URL-ben a szállítási cím akkor redirect a shipping oldalra
   if (datas) {
     lista = datas.split("_");
-    
+
   }
   else {
     redirect("/cart/shipping")
   }
+
+  const createOrder = async (orderData: OrderData) => {
+    try {
+      const response = await fetch('/api/order', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          shippingAddressId: orderData.shippingAddressId,
+          orderItems: orderData.orderItems.map(item => ({
+            id: item.id,
+            quantity: item.quantity,
+          })),
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Sikertelen rendelés létrehozás");
+      }
+
+      const responseData = await response.json();
+      console.log(responseData);
+    } catch (error) {
+      console.error("A szerver nem érhető el", error);
+    }
+  };
+
+
+  const handleOrderClick = () => {
+    const orderData: OrderData = {
+      shippingAddressId: parseInt(lista[4]),
+      orderItems: items.map((item) => ({
+        id: item.product.id,
+        quantity: item.quantity,
+      })),
+    };
+
+    createOrder(orderData);
+  };
 
   return (
     <div>
@@ -62,7 +113,7 @@ function CartSummary() {
         </div>
       </div>
       <div className="items-center text-center justify-center my-8">
-        <button className="btn btn-wide ">Megrendelem</button>
+        <button className="btn btn-wide" onClick={handleOrderClick}>Megrendelem</button>
       </div>
     </div>
   );
