@@ -139,3 +139,81 @@ async function calculateOrderItemDetails(item: OrderItem) {
     ]
 }
 */
+
+export async function GET(req: NextRequest) {
+    try {
+        // Validation - Check if the user is authenticated
+        const session = await getServerSession(authOptions);
+
+        if (!session) {
+            return NextResponse.json('A rendelési adatok lekéréséhez be kell jelentkeznie', { status: 401 });
+        }
+
+        // Get the orderId from the query parameters
+        const orderId = await req.json();
+
+        // Fetch the order details including OrderItems
+        const orderDetails = await prisma.order.findUnique({
+            where: {
+                id: Number(orderId),
+            },
+            include: {
+                OrderItem: {
+                    select: {
+                        id: true,
+                        name: true,
+                        quantity: true,
+                        price: true,
+                    },
+                },
+            },
+        });
+
+        // Check if the order is found
+        if (!orderDetails) {
+            return NextResponse.json(`Nem található rendelés az azonosítóval: ${orderId}`, { status: 404 });
+        }
+
+        // Prepare the response
+        const response = {
+            orderId: orderDetails.id,
+            totalPrice: orderDetails.total_price,
+            createdAt: orderDetails.created_at,
+            OrderItems: orderDetails.OrderItem,
+        };
+
+        return NextResponse.json(response, { status: 200 });
+    } catch (error) {
+        console.error('Hiba a rendelési adatok lekérdezésekor:', error);
+        return NextResponse.json('Hiba a rendelési adatok lekérdezése közben', { status: 500 });
+    }
+}
+
+/*
+request:
+{
+    "orderId": 987
+}
+
+response:
+{
+    "orderId": 987,
+    "totalPrice": 150.00,
+    "createdAt": "2024-02-20T12:30:45Z",
+    "OrderItems": [
+        {
+            "id": 1,
+            "name": "Product A",
+            "quantity": 2,
+            "price": 100.00
+        },
+        {
+            "id": 2,
+            "name": "Product B",
+            "quantity": 1,
+            "price": 50.00
+        }
+        // ... Additional OrderItem details
+    ]
+}
+*/
