@@ -4,6 +4,7 @@ import CartSteps from "@/app/components/cart/CartSteps";
 import useCartService from "@/lib/hooks/useCartStore";
 import SummaryKartya from "@/app/components/cart/summary/SummaryKartya";
 import { redirect, useSearchParams } from "next/navigation";
+import { useState } from "react";
 
 export interface OrderItem {
   id: number;
@@ -17,9 +18,14 @@ export interface OrderData {
 
 
 function CartSummary() {
-  const { items, totalPrice, shippingPrice, itemsPrice } = useCartService();
+  const { items, totalPrice, shippingPrice, itemsPrice, clearCart } = useCartService();
   const searchParams = useSearchParams();
   const datas = searchParams.get("data");
+  const [buttonColor, setButtonColor] = useState('')
+  const [loading, setLoading] = useState<boolean>(false)
+  const [buttonText, setButtonText] = useState('Megrendelem')
+
+
   let lista: any
 
   // Ha nincs az URL-ben a szállítási cím akkor redirect a shipping oldalra
@@ -32,6 +38,7 @@ function CartSummary() {
   }
 
   const createOrder = async (orderData: OrderData) => {
+    setLoading(true)
     try {
       const response = await fetch('/api/order', {
         method: 'POST',
@@ -46,15 +53,25 @@ function CartSummary() {
           })),
         }),
       });
+      const responseData = await response.json();
+
 
       if (!response.ok) {
+        setButtonColor('btn-error')
+        setButtonText(responseData)
         throw new Error("Sikertelen rendelés létrehozás");
       }
 
-      const responseData = await response.json();
       console.log(responseData);
+      setButtonColor('btn-success')
+      setButtonText('Sikeres rendelés!')
+      // Kocsi nullázása
+      clearCart()
     } catch (error) {
       console.error("A szerver nem érhető el", error);
+    }
+    finally {
+      setLoading(false)
     }
   };
 
@@ -113,7 +130,7 @@ function CartSummary() {
         </div>
       </div>
       <div className="items-center text-center justify-center my-8">
-        <button className="btn btn-wide" onClick={handleOrderClick}>Megrendelem</button>
+        <button className={`btn btn-wide ${buttonColor}`} onClick={handleOrderClick}><p className={loading ? 'loading' : ''}>{buttonText}</p></button>
       </div>
     </div>
   );

@@ -103,7 +103,10 @@ export default function useCartService() {
                 shippingPrice,
                 totalPrice,
             });
-        }
+        },
+        clearCart: () => {
+            cartStore.setState(initialState);
+        },
     };
 }
 
