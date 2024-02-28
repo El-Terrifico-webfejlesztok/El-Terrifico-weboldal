@@ -10,7 +10,9 @@ const AboutUs: React.FC = () => {
       <div className="sections p-2">
         <Section
           title="Feladatunk és a csapat"
-          content='Szervusz amigo! Mi az El Terrifico étterem IT csapata vagyunk. Feladatunk a cég online ügyeinek intézése, valamint bármifále szoftveres hiba kiküszöbölése, ami a céget érint. Ez a weboldal azért készült, hogy éttermünk versenyt tudjon tartani a mai trendekkel, hiszen az emberek nagyrésze napjainkban már csak házhoz rendel ételt. A mi célunk e weboldal megalkotásával, hogy a világon mindenkinek az életét megkönnyítsük: így csak pár gombnyomásra vagy attól, hogy világhírű étkeinket megízlelhesd! Eleinte csapatunknak három tagja volt, de végül nagylelkű befektetőnk, a Horribili kft.™, elküldte hozzánk egyik legjobb programozóját, így mi négyen alkottuk meg ezt az oldalt, csak önnek! Csapatunk tagjait ezeken a kártyákon találja! Ha többet meg szeretne tudni rólunk, kattintson az adott kártyán a "Több..." gombra extra információért.'
+          par1='Szervusz amigo! Mi az El Terrifico étterem IT csapata vagyunk. Feladatunk a cég online ügyeinek intézése, valamint bármifále szoftveres hiba kiküszöbölése, ami a céget érint.' 
+          par2='Ez a weboldal azért készült, hogy éttermünk versenyt tudjon tartani a mai trendekkel, hiszen az emberek nagyrésze napjainkban már csak házhoz rendel ételt. A mi célunk e weboldal megalkotásával, hogy a világon mindenkinek az életét megkönnyítsük: így csak pár gombnyomásra vagy attól, hogy világhírű étkeinket megízlelhesd!' 
+          par3='Eleinte csapatunknak három tagja volt, de végül nagylelkű befektetőnk, a Horribili kft.™, elküldte hozzánk egyik legjobb programozóját, így mi négyen alkottuk meg ezt az oldalt, csak önnek! Csapatunk tagjait ezeken a kártyákon találja! Ha többet meg szeretne tudni rólunk, kattintson az adott kártyán a "Több..." gombra extra információért.'
         />
           <div className="flex flex-col justify-evenly sm:flex-row">
             <div className="flex-1 m-2">
