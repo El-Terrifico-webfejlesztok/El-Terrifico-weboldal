@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from 'zod';
 import prisma from "@/prisma/client";
 import { hash } from 'bcrypt';
+import { compileRegisterTemplate, sendMail } from "@/lib/mail";
 
 // Az adatok amik kellenek a regisztációhoz 
 const registerSchema = z.object({
@@ -54,6 +55,14 @@ export async function POST(request: NextRequest) {
                 password: hashedPassword
             },
         });
+
+        // Email sending
+            await sendMail({
+              to: "barni.nagy2004@gmail.com",
+              name: "Barni",
+              subject: "Test Email",
+              body: compileRegisterTemplate(username, email),
+            });
         // visszaküldjük a siker jelét
         return NextResponse.json(newUser, { status: 201 });
     }

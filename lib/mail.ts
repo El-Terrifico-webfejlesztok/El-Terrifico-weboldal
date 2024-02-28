@@ -1,4 +1,6 @@
 import nodemailer from "nodemailer";
+import * as handlebars from "handlebars";
+import { registerTemplate } from "./templates/register";
 
 export async function sendMail({
   to,
@@ -39,4 +41,15 @@ export async function sendMail({
   } catch (error) {
     console.log(error);
   }
+}
+
+
+export function compileRegisterTemplate(name: string, email: string) {
+
+  const template = handlebars.compile(registerTemplate);
+  const htmlBody = template({
+    name: name,
+    email: email,
+  })
+  return htmlBody
 }

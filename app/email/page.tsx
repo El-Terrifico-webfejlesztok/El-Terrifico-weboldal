@@ -1,4 +1,6 @@
-import { sendMail } from "@/lib/mail";
+/*Ez az email küldés tesztje és kiindulópontja */
+
+import { compileRegisterTemplate, sendMail } from "@/lib/mail";
 
 export default function EmailProba() {
   const send = async () => {
@@ -7,7 +9,7 @@ export default function EmailProba() {
       to: "barni.nagy2004@gmail.com",
       name: "Barni",
       subject: "Test Email",
-      body: `<h1>Hellotok</h1>`,
+      body: compileRegisterTemplate("Barni", "barni.nagy2004@gmail.com"),
     });
   };
   return (
