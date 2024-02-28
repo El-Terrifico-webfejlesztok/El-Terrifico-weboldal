@@ -7,6 +7,8 @@ import ShippingAddressForm from '@/app/components/user/shipping/ShippingAddressF
 import UserProfileSettings from '@/app/components/user/profile/UserProfileSettings';
 import { UserView } from '@/app/components/user/profile/UserProfileSettings';
 import ProfileStats from '@/app/components/user/profile/ProfileStats';
+import OrderView from '@/app/components/user/order/OrderView';
+import Link from 'next/link';
 
 
 export interface userData {
@@ -127,7 +129,31 @@ const ProfilePage = () => {
 
 
             <div id='order' className="divider py-4">Rendelések</div>
-            <button className='btn btn-outline w-full no-animation' onClick={fetchData}><p className={loading ? "loading" : ""}>Adatok lekérése</p></button>
+            {/** This is for displaying all of the orders the user has */}
+            <div>
+                {userData && userData.Order.length > 0 ? (
+                    userData.Order.map((order) => (
+                        <OrderView key={order.id} order={order} reload={fetchData} />
+                    ))
+                ) : (
+                    loading ? <div className='mx-auto loading loading-dots'></div> :
+                        <>
+                            <p className='text-center truncate mb-4 font-bold'>Még nincsenek rendeléseid</p>
+
+                            <div className='text-center'>
+                                <Link href="/products" className="btn btn-lg btn-primary">Termékek</Link>
+                            </div>
+                        </>
+                )}
+            </div>
+
+
+            {/* 
+            <button className='btn btn-outline w-full no-animation' onClick={fetchData}><p className={loading ? "loading" : ""}>Adatok lekérése</p></button> 
+            */}
+
+
+
             <div id='settings' className="divider py-4">Fiókbeállítások</div>
 
             {userView ?

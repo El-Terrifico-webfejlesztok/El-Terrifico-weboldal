@@ -908,16 +908,13 @@ Ez az API végpont lehetővé teszi egy rendelés részleteinek lekérdezését 
 -   **Kérés:**
 
 	```typescript
-	const getOrderDetails = async (orderId) => {
+	const getOrderDetails = async (orderId: number) => {
 		try {
-			const response = await fetch('/api/order', {
+			const response = await fetch(`/api/order?id=${orderId}`, {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			body: JSON.stringify({
-				orderId: orderId,
-			}),
 			});
 
 			if (!response.ok) {
@@ -928,7 +925,7 @@ Ez az API végpont lehetővé teszi egy rendelés részleteinek lekérdezését 
 			console.log(responseData);
 		}
 		catch (error) {
-			console.error(error.message);
+			console.error(error);
 		}
 	};
 	```

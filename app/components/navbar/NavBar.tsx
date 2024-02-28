@@ -29,7 +29,7 @@ const NavBar = () => {
 
                 {/* Terrifico logo */}
                 <Link href='/' className='mr-4 '>
-                    <img src="Sombrero.png" alt="Logo" className='max-h-10 cursor-pointer hover:scale-110 hover:brightness-150 active:scale-95 transition-all' />
+                    <img src="/Sombrero.png" alt="Logo" className='max-h-10 cursor-pointer hover:scale-110 hover:brightness-150 active:scale-95 transition-all' />
                 </Link>
             </div>
             {/* navbar-center középre rakja az komponenseket, csak nagy képernyőn látszanak */}

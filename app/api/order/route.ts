@@ -150,12 +150,18 @@ export async function GET(req: NextRequest) {
         }
 
         // Get the orderId from the query parameters
-        const orderId = await req.json();
+        const searchParams = req.nextUrl.searchParams;
+        const orderId: number = parseInt(searchParams.get('id') || '') ;
+        if (!orderId) {
+            return NextResponse.json('Nincs rendelés megadva a kérésben', { status: 401 });
+
+        }
 
         // Fetch the order details including OrderItems
         const orderDetails = await prisma.order.findUnique({
             where: {
                 id: Number(orderId),
+                user_id: Number(session.user!.id)
             },
             include: {
                 OrderItem: {
@@ -191,9 +197,7 @@ export async function GET(req: NextRequest) {
 
 /*
 request:
-{
-    "orderId": 987
-}
+https://terrifico.zapto.org/api/order?id=987
 
 response:
 {
