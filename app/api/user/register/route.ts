@@ -54,6 +54,7 @@ export async function POST(request: NextRequest) {
                 password: hashedPassword
             },
         });
+        
         // visszaküldjük a siker jelét
         return NextResponse.json(newUser, { status: 201 });
     }
