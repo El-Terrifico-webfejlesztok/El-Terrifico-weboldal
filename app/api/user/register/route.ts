@@ -61,7 +61,7 @@ export async function POST(request: NextRequest) {
               to: email,
               name: username,
               subject: "Regisztráció",
-              body: compileRegisterTemplate(username, email, "Sikeres regisztráció!", "Sikeresen regisztrált az El Terrifco webáruházban ezzel email címmel! </span><span>Köszönjük, hogy minket választott és reméljük, hogy a legmegfelelőbb ételekkel tudjuk Önt szolgálni. Az oldalra visszatérhet a <em>Vissza az oldalra</em> gombbal."),
+              body: compileRegisterTemplate(username, email, "Sikeres regisztráció!", "Sikeresen regisztrált az El Terrifico étterem weboldalán ezzel az email címmel! Köszönjük, hogy minket választott, és reméljük, hogy a legmegfelelőbb ételekkel tudjuk Önt szolgálni. Az oldalra visszatérhet a 'Vissza az oldalra' gombbal"),
             });
         // visszaküldjük a siker jelét
         return NextResponse.json(newUser, { status: 201 });

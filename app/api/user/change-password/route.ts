@@ -70,7 +70,7 @@ export async function POST(req: NextRequest) {
       to: mail,
       name: name,
       subject: "Jelszómódosítás",
-      body: compileRegisterTemplate(name, mail, "Sikeres jelszómódosítás", "Sikeresen módosította jelszavát az El Terrifco webáruházban ezzel email címmel! </span><span>Köszönjük, hogy minket választott és reméljük, hogy a legmegfelelőbb ételekkel tudjuk Önt szolgálni. Az oldalra visszatérhet a <em>Vissza az oldalra</em> gombbal."),
+      body: compileRegisterTemplate(name, mail, "Sikeres jelszómódosítás", "Sikeresen módosította jelszavát az El Terrifico étterem weboldalán ezzel az email címmel! Köszönjük, hogy minket választott, és reméljük, hogy a legmegfelelőbb ételekkel tudjuk Önt szolgálni. Az oldalra visszatérhet a 'Vissza az oldalra' gombbal"),
     });
 
     return NextResponse.json(updatePassword.username, { status: 200 });
