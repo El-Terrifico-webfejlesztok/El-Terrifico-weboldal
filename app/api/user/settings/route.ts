@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { NextRequest, NextResponse } from 'next/server';
 import { authOptions } from "../../auth/[...nextauth]/auth";
 import { getServerSession } from "next-auth";
+import { compileRegisterTemplate, sendMail } from "@/lib/mail";
 
 // Consistent validation schema for data integrity
 const sharedSchema = z.object({
@@ -89,6 +90,14 @@ export async function PUT(req: NextRequest) {
         // Here you can see my utter incompetence
         const { username, email } = updatedData;
         const responseData = { username, email };
+
+        // Email sending
+        await sendMail({
+            to: email,
+            name: username,
+            subject: "Adatmódosítás",
+            body: compileRegisterTemplate(username, email, "Sikeres adatmódosítás", "Sikeresen módosította adatait az El Terrifico étterem weboldalán ezzel az email címmel! Köszönjük, hogy minket választott, és reméljük, hogy a legmegfelelőbb ételekkel tudjuk Önt szolgálni. Az oldalra visszatérhet a 'Vissza az oldalra' gombbal"),
+          });
 
         return NextResponse.json(responseData, { status: 200 });
     } catch (error) {

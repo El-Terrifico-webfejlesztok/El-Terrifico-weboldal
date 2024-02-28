@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from 'zod';
 import prisma from "@/prisma/client";
 import { hash } from 'bcrypt';
+import { compileRegisterTemplate, sendMail } from "@/lib/mail";
 
 // Az adatok amik kellenek a regisztációhoz 
 const registerSchema = z.object({
@@ -54,7 +55,16 @@ export async function POST(request: NextRequest) {
                 password: hashedPassword
             },
         });
-        
+
+
+        // Email sending
+            await sendMail({
+              to: email,
+              name: username,
+              subject: "Regisztráció",
+              body: compileRegisterTemplate(username, email, "Sikeres regisztráció!", "Sikeresen regisztrált az El Terrifico étterem weboldalán ezzel az email címmel! Köszönjük, hogy minket választott, és reméljük, hogy a legmegfelelőbb ételekkel tudjuk Önt szolgálni. Az oldalra visszatérhet a 'Vissza az oldalra' gombbal"),
+            });
+
         // visszaküldjük a siker jelét
         return NextResponse.json(newUser, { status: 201 });
     }
