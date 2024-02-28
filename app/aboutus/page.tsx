@@ -76,7 +76,9 @@ const AboutUs: React.FC = () => {
       <div className="sections p-2">
         <Section
           title="A Horribili Kft-ről"
-          par1="Fusce fringilla urna at purus congue, vitae aliquet velit elementum. Sed nec libero pulvinar, vehicula est sed, fermentum lorem. Nullam sodales bibendum tellus nec aliquet. Aliquam erat volutpat."
+          par1="Fusce fringilla urna at purus congue, vitae aliquet velit elementum." 
+          par2="Sed nec libero pulvinar, vehicula est sed, fermentum lorem." 
+          par3="Nullam sodales bibendum tellus nec aliquet. Aliquam erat volutpat."
         />
       </div>
     </div>
