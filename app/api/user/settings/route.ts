@@ -83,7 +83,7 @@ export async function PUT(req: NextRequest) {
             to: email,
             name: username,
             subject: "Adatmódosítás",
-            body: compileRegisterTemplate(username, email, "Sikeres adatmódosítás", "Sikeresen módosította adatait az El Terrifco webáruházban ezzel email címmel! </span><span>Köszönjük, hogy minket választott és reméljük, hogy a legmegfelelőbb ételekkel tudjuk Önt szolgálni. Az oldalra visszatérhet a <em>Vissza az oldalra</em> gombbal."),
+            body: compileRegisterTemplate(username, email, "Sikeres adatmódosítás", "Sikeresen módosította adatait az El Terrifico étterem weboldalán ezzel az email címmel! Köszönjük, hogy minket választott, és reméljük, hogy a legmegfelelőbb ételekkel tudjuk Önt szolgálni. Az oldalra visszatérhet a 'Vissza az oldalra' gombbal"),
           });
 
         return NextResponse.json(responseData, { status: 200 });
