@@ -9,7 +9,7 @@ export default function EmailProba() {
       to: "barni.nagy2004@gmail.com",
       name: "Barni",
       subject: "Test Email",
-      body: compileRegisterTemplate("Barni", "barni.nagy2004@gmail.com"),
+      body: compileRegisterTemplate("Barni", "barni.nagy2004@gmail.com", "Cím", "Szöveg"),
     });
   };
   return (
