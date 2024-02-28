@@ -58,10 +58,10 @@ export async function POST(request: NextRequest) {
 
         // Email sending
             await sendMail({
-              to: "barni.nagy2004@gmail.com",
-              name: "Barni",
-              subject: "Test Email",
-              body: compileRegisterTemplate(username, email),
+              to: email,
+              name: username,
+              subject: "Regisztráció",
+              body: compileRegisterTemplate(username, email, "Sikeres regisztráció!", "Sikeresen regisztrált az El Terrifco webáruházban ezzel email címmel! </span><span>Köszönjük, hogy minket választott és reméljük, hogy a legmegfelelőbb ételekkel tudjuk Önt szolgálni. Az oldalra visszatérhet a <em>Vissza az oldalra</em> gombbal."),
             });
         // visszaküldjük a siker jelét
         return NextResponse.json(newUser, { status: 201 });

@@ -115,7 +115,7 @@ export const registerTemplate = `
 													<table class="heading_block block-3" width="100%" border="0" cellpadding="10" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
 														<tr>
 															<td class="pad">
-																<h1 style="margin: 0; color: #2d5f08; direction: ltr; font-family: 'Droid Serif', Georgia, Times, 'Times New Roman', serif; font-size: 44px; font-weight: 700; letter-spacing: 2px; line-height: 150%; text-align: center; margin-top: 0; margin-bottom: 0; mso-line-height-alt: 66px;"><span class="tinyMce-placeholder">Üdvözöl az El Terrifco!</span></h1>
+																<h1 style="margin: 0; color: #2d5f08; direction: ltr; font-family: 'Droid Serif', Georgia, Times, 'Times New Roman', serif; font-size: 44px; font-weight: 700; letter-spacing: 2px; line-height: 150%; text-align: center; margin-top: 0; margin-bottom: 0; mso-line-height-alt: 66px;"><span class="tinyMce-placeholder">Üdvözöl az El Terrifico!</span></h1>
 															</td>
 														</tr>
 													</table>
@@ -139,7 +139,7 @@ export const registerTemplate = `
 													<table class="heading_block block-7" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
 														<tr>
 															<td class="pad" style="text-align:center;width:100%;">
-																<h1 style="margin: 0; color: #2d3234; direction: ltr; font-family: 'Lato', Tahoma, Verdana, Segoe, sans-serif; font-size: 30px; font-weight: normal; letter-spacing: normal; line-height: 120%; text-align: center; margin-top: 0; margin-bottom: 0; mso-line-height-alt: 36px;"><span style="color: #fe0000;"><strong>Sikeres regisztráció</strong>!</span></h1>
+																<h1 style="margin: 0; color: #2d3234; direction: ltr; font-family: 'Lato', Tahoma, Verdana, Segoe, sans-serif; font-size: 30px; font-weight: normal; letter-spacing: normal; line-height: 120%; text-align: center; margin-top: 0; margin-bottom: 0; mso-line-height-alt: 36px;"><span style="color: #fe0000;"><strong>{{title}}</strong>!</span></h1>
 															</td>
 														</tr>
 													</table>
@@ -155,7 +155,7 @@ export const registerTemplate = `
 															<td class="pad">
 																<div style="font-family: sans-serif">
 																	<div class style="font-size: 12px; font-family: Arial, Helvetica Neue, Helvetica, sans-serif; mso-line-height-alt: 21.6px; color: #2d3234; line-height: 1.8;">
-																		<p style="margin: 0; font-size: 14px; mso-line-height-alt: 25.2px;"><span style="font-size:14px;">Sikeresen regisztrált az El Terrifco webáruházban az {{email}} email címmel! </span><span style="font-size:14px;">Köszönjük, hogy minket választott és reméljük, hogy a legmegfelelőbb ételekkel tudjuk Önt szolgálni. Az oldalra visszatérhet a <em>Vissza az oldalra</em> gombbal.</span></p>
+																		<p style="margin: 0; font-size: 14px; mso-line-height-alt: 25.2px;"><span style="font-size:14px;">{{text}}. Az Ön email címe, amivel regisztrált: {{email}}</span></p>
 																	</div>
 																</div>
 															</td>

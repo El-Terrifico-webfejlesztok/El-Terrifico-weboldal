@@ -44,11 +44,13 @@ export async function sendMail({
 }
 
 
-export function compileRegisterTemplate(name: string, email: string) {
+export function compileRegisterTemplate(name: string, email: string, title: string, text: string) {
 
   const template = handlebars.compile(registerTemplate);
   const htmlBody = template({
     name: name,
+    text: text,
+    title: title,
     email: email,
   })
   return htmlBody

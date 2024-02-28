@@ -5,6 +5,7 @@ import { hash } from 'bcrypt';
 import prisma from '@/prisma/client';
 import { compare } from 'bcrypt';
 import { z } from 'zod';
+import { compileRegisterTemplate, sendMail } from "@/lib/mail";
 
 // define the request payload schema
 const passwordChangeSchema = z.object({
@@ -60,6 +61,16 @@ export async function POST(req: NextRequest) {
     const updatePassword = await prisma.user.update({
       where: { id: userID },
       data: { password: hashedPassword },
+    });
+
+    // Email sending
+    const name = session.user!.name as string
+    const mail = session.user!.email as string
+    await sendMail({
+      to: mail,
+      name: name,
+      subject: "Jelszómódosítás",
+      body: compileRegisterTemplate(name, mail, "Sikeres jelszómódosítás", "Sikeresen módosította jelszavát az El Terrifco webáruházban ezzel email címmel! </span><span>Köszönjük, hogy minket választott és reméljük, hogy a legmegfelelőbb ételekkel tudjuk Önt szolgálni. Az oldalra visszatérhet a <em>Vissza az oldalra</em> gombbal."),
     });
 
     return NextResponse.json(updatePassword.username, { status: 200 });
