@@ -1,15 +1,23 @@
 .cardExpanded {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* Two equal columns */
+  grid-template-columns: repeat(2, 1fr);
   gap: 20px;
-    max-height: 70vh;
-    max-width: 60vw;;
+    max-height: 90vh;
+    max-width: 70vw;;
   }
 
-@media screen and (max-width: 650px) {
+@media screen and (max-width: 800px) {
   .cardExpanded {
+    justify-content: center;
     max-width: 90vw;
+    max-height: 85.5vh;
     grid-template-columns: 1fr;
+  }
+}
+
+@media screen and (max-height: 850px) {
+  .cardExpanded {
+    max-height: none;
   }
 }
 
@@ -19,8 +27,6 @@
 }
 
 .hover-effect {
-  /* Define your hover effect styles */
-  /* For example: */
   transform: scale(1.025);
   box-shadow: 0 0 10px rgba(92, 92, 92, 0.5);
 }

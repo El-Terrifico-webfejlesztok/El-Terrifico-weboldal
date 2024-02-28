@@ -9,8 +9,8 @@ const AboutUs: React.FC = () => {
       <h1 className="sections p-2 text-3xl font-bold mb-4">Rólunk</h1>
       <div className="sections p-2">
         <Section
-          title="Csapatunk"
-          content="Csapatunk lelkes tagjai."
+          title="Feladatunk és a csapat"
+          content='Szervusz amigo! Mi az El Terrifico étterem IT csapata vagyunk. Feladatunk a cég online ügyeinek intézése, valamint bármifále szoftveres hiba kiküszöbölése, ami a céget érint. Ez a weboldal azért készült, hogy éttermünk versenyt tudjon tartani a mai trendekkel, hiszen az emberek nagyrésze napjainkban már csak házhoz rendel ételt. A mi célunk e weboldal megalkotásával, hogy a világon mindenkinek az életét megkönnyítsük: így csak pár gombnyomásra vagy attól, hogy világhírű étkeinket megízlelhesd! Eleinte csapatunknak három tagja volt, de végül nagylelkű befektetőnk, a Horribili kft.™, elküldte hozzánk egyik legjobb programozóját, így mi négyen alkottuk meg ezt az oldalt, csak önnek! Csapatunk tagjait ezeken a kártyákon találja! Ha többet meg szeretne tudni rólunk, kattintson az adott kártyán a "Több..." gombra extra információért.'
         />
           <div className="flex flex-col justify-evenly sm:flex-row">
             <div className="flex-1 m-2">
@@ -19,7 +19,10 @@ const AboutUs: React.FC = () => {
                   name2="Krisztián"
                   position="Backend fejlesztő"
                   imageUrl="/Krisz.png"
-                  description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ut nisi vitae mi euismod semper."
+                  description='A Horribili Kft.™ egyik elit programozója, tapasztalatai megosztásával csapatunk hatalmas mennyiségű új tudásra tett szert. Ezek mellett a weboldal backend részét neki köszönhetjük.'
+                  contributions="Főbb tevékenységei: "
+                  contr1="A backend megalkotása"
+                  contr2="A frontend stílus meghatározása"
                 />
             </div>
             <div className="flex-1 m-2">
@@ -28,7 +31,10 @@ const AboutUs: React.FC = () => {
                 name2="Barnabás"
                 position="Frontend fejlesztő"
                 imageUrl="/Toth_Barni.jpg"
-                description="Sed dictum turpis nec nisi dignissim, vel tincidunt odio suscipit. Curabitur aliquet, nisi nec commodo fermentum."
+                description="Csapatunk lelkes vezetője. Bár a cég ügyeivel gyakran elfoglalt, mindent megtesz azért, hogy csapata sikert arasson. Csapattársaitól szívesen vesz át tudást, hogy minél hatékonyabban tudja segíteni őket."
+                contributions='Főbb tevékenységei: '
+                contr1='Feladatok leosztása, valamint frontend'
+                contr2='Bemutatók, munkatér karbantartása'
               />
             </div>
             <div className="flex-1 m-2">
@@ -37,7 +43,10 @@ const AboutUs: React.FC = () => {
                 name2="Barnabás"
                 position="Frontend fejlesztő"
                 imageUrl="/Nagy_Barni.jpg"
-                description="Mauris id magna at nunc maximus vehicula. Fusce fringilla urna at purus congue, vitae aliquet velit elementum."
+                description="Csapatunk fő frontend programozója. Az itt dolgozott évei során összebarátkozott az étterem fő séfével, Sergio Francoval, így az étteremben gyakran ő a mulatság lelke. Ezt a tulajdonsága munka közben is előjön, csapattagjainkat mindig felvidítja."
+                contributions='Főbb tevékenységei: '
+                contr1='Több rész frontendje'
+                contr2='Videók készítése, beszerzése'
               />
             </div>
             <div className="flex-1 m-2">
@@ -46,21 +55,26 @@ const AboutUs: React.FC = () => {
                 name2="Zalán"
                 position="Frontend fejlesztő"
                 imageUrl="/placeholder.png"
-                description="Nullam sodales bibendum tellus nec aliquet. Aliquam erat volutpat."
+                description="Csapatunk legúabb tagja. Nemrég frontend fejlesztőként került be csapatunkba. Tapasztalatlansága ellenére mindent megtesz, hogy csapatunk értékes tagjává tudjon válni."
+                contributions='Főbb tevékenységei: '
+                contr1='Frontend fejlesztések'
+                contr2='Árubeszerzés'
               />
             </div>
           </div>
       </div>
       <div className="sections p-2">
         <Section
-          title="A Horribili Kft-ről"
-          content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ut nisi vitae mi euismod semper. Mauris id magna at nunc maximus vehicula. Sed dictum turpis nec nisi dignissim, vel tincidunt odio suscipit. Curabitur aliquet, nisi nec commodo fermentum, lorem risus convallis sem, ac convallis neque leo in ligula."
+          title="Az étterem története"
+          par1="Az étterem az 1900-as években alapult, szerény körülmények között. A kis Sergio Franco ezzel az étteremmel együtt nőtt fel. Apja, az étterem tulajdonosa, zseniális séf volt, fiának mindent megtanított ahhoz, hogyha felnő, magától tudja vezetni az éttermet. Az akkoriban kis színvonalú étterem nem teljesített túl jól, de hozamaiból a család meg tudott élni."
+          par2="Apja halála után Franconak egyedül kellet megbírkóznia az étterem vezetésével azok alapján, amit apja tanított neki, de ez az étterem állapota miatt nehéznek bizonyult. Bővítette a menüt, hátha így több ember látogat el éttermébe, de a szűk körű hírneve miatt ez sajnos nem segített. Franco tudta, hogy ennél sokkal többre vihetné, és ezt meg is látta benne egy nagyvállalat. A Horribili Kft.™ meglátta a potenciált Francoban és éttermében, ezért az egészet felvásárolta, így megmentette séfünket az anyagi csődtől. Az anyagi problémáktól megszabadult Franconak támadt egy ötlete, hogy éttermét híressé tegye: úgy döntött, részt vesz a 2013-as konyhafőnök műsorban, amit végül diadalmasan meg is nyert."
+          par3="Azóta az étterem neve vilegszerte elterjedt Franco győzelme hatására. Napjainkban az El Terrifico az egyik legsikeresebb mexikói étterem a világon. Franco még azóta is széles mosollyal készíti el kedvenc ételeinket ennyi év után is."
         />
       </div>
       <div className="sections p-2">
         <Section
-          title="Feladatunk"
-          content="Fusce fringilla urna at purus congue, vitae aliquet velit elementum. Sed nec libero pulvinar, vehicula est sed, fermentum lorem. Nullam sodales bibendum tellus nec aliquet. Aliquam erat volutpat."
+          title="A Horribili Kft-ről"
+          par1="Fusce fringilla urna at purus congue, vitae aliquet velit elementum. Sed nec libero pulvinar, vehicula est sed, fermentum lorem. Nullam sodales bibendum tellus nec aliquet. Aliquam erat volutpat."
         />
       </div>
     </div>
