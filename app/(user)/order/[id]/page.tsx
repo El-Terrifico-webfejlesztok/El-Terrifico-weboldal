@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react'
 
-const page = ({ params }: { params: { id: string } }) => {
+const UserOrder = ({ params }: { params: { id: string } }) => {
   const [orderData, setOrderData] = useState();
 
   useEffect(() => {
@@ -45,4 +45,4 @@ const page = ({ params }: { params: { id: string } }) => {
   )
 }
 
-export default page
+export default UserOrder
