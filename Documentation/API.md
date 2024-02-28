@@ -127,7 +127,7 @@ Ez a API végpont visszaadja az adatbázisban létező összes kategóriát.
 **Végpont:** `POST /api/product/upload`
 
 **Leírás:**  
-Ez az API végpont lehetővé teszi új termékek feltöltését. Fontos hogy a képek feltöltését nem ez az API kezeli
+Ez az API végpont lehetővé teszi új termékek feltöltését vagy meglévő termékek frissítését. Fontos hogy a termék képek feltöltését nem ez az API kezeli
 
 **Hitelesítés:**
 -  **Szükséges:** Adminisztrátor: Csak az admin szerepű felhasználó használhatja (next-auth-al ellenőrizve).
@@ -139,6 +139,7 @@ Ez az API végpont lehetővé teszi új termékek feltöltését. Fontos hogy a 
     
 	```json
 	{
+	  "id": 123, //Opcionális, ha meg van adva akkor a megadott IDs terméket frissíti
       "name": "Termék neve",
       "description": "Termék leírása",
       "price": 5000,
@@ -907,16 +908,13 @@ Ez az API végpont lehetővé teszi egy rendelés részleteinek lekérdezését 
 -   **Kérés:**
 
 	```typescript
-	const getOrderDetails = async (orderId) => {
+	const getOrderDetails = async (orderId: number) => {
 		try {
-			const response = await fetch('/api/order', {
+			const response = await fetch(`/api/order?id=${orderId}`, {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			body: JSON.stringify({
-				orderId: orderId,
-			}),
 			});
 
 			if (!response.ok) {
@@ -927,7 +925,7 @@ Ez az API végpont lehetővé teszi egy rendelés részleteinek lekérdezését 
 			console.log(responseData);
 		}
 		catch (error) {
-			console.error(error.message);
+			console.error(error);
 		}
 	};
 	```

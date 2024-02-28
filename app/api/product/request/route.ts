@@ -43,7 +43,8 @@ export async function GET(req: NextRequest) {
 
     // Query the database with Prisma, including categories in the response
     const productsWithCategories = await prisma.product.findMany({
-      take: 10,
+      // 25 terméket adunk vissza
+      take: 25,
       where: {
         AND: [
           searchTerm && {

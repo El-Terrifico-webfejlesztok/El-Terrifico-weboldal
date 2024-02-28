@@ -56,7 +56,7 @@ export async function POST(req: NextRequest) {
     }
 
     let hashedPassword = await hash(newPassword, 10);
-    
+
     // Update the user's password
     const updatePassword = await prisma.user.update({
       where: { id: userID },

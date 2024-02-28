@@ -5,6 +5,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../../auth/[...nextauth]/auth";
 
 const uploadProductSchema = z.object({
+  id: z.number().optional(),
   name: z.string().min(1).max(255),
   description: z.string().min(1),
   price: z.number(),
@@ -49,23 +50,52 @@ export async function POST(req: NextRequest) {
       })
     );
 
-    // Create new product and associate with categories
-    const newProduct = await prisma.product.create({
-      data: {
-        name: body.name,
-        description: body.description,
-        price: body.price,
-        stock: body.stock,
-        ProductCategoryLink: {
-          create: categories.map((category) => ({
-            category_id: category.id, // Access individual category object for ID
-          })),
+    // Check if an ID is provided
+    if (body.id) {
+      const existingProduct = await prisma.product.findUnique({
+        where: { id: body.id },
+      })
+      if (!existingProduct){
+        return NextResponse.json("Nem létezik a frissíteni ", { status: 200 });
+      }
+      // Update the existing product with the specified ID
+      const updatedProduct = await prisma.product.update({
+        where: { id: body.id },
+        data: {
+          name: body.name,
+          description: body.description,
+          price: body.price,
+          stock: body.stock,
+          ProductCategoryLink: {
+            deleteMany: { category_id: { notIn: categories.map((category) => category.id) } },
+            create: categories.map((category) => ({
+              category_id: category.id,
+            })),
+          },
         },
-      },
-    });
+      });
 
-    console.log('Product upload successful');
-    return NextResponse.json(newProduct, { status: 201 });
+      console.log('Product update successful');
+      return NextResponse.json(updatedProduct, { status: 200 });
+    } else {
+      // Create a new product
+      const newProduct = await prisma.product.create({
+        data: {
+          name: body.name,
+          description: body.description,
+          price: body.price,
+          stock: body.stock,
+          ProductCategoryLink: {
+            create: categories.map((category) => ({
+              category_id: category.id,
+            })),
+          },
+        },
+      });
+
+      console.log('Product creation successful');
+      return NextResponse.json(newProduct, { status: 201 });
+    }
   } catch (error) {
     console.error('Error during product upload:', error);
     return NextResponse.json(`Hiba a termék feltöltése közben`, { status: 500 });

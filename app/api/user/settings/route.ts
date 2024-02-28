@@ -33,7 +33,18 @@ export async function GET(req: NextRequest) {
         // Retrieve and filter data or perform necessary actions using Prisma
         const data = await prisma.user.findUnique({
             where: { id: userId },
-            select: { id: true, username: true, email: true, image: true, role: true, created_at: true, ShippingAddress: true, Payment: true, Order: true, Review: true },
+            select: {
+                id: true,
+                username: true,
+                email: true,
+                image: true,
+                role: true,
+                created_at: true,
+                ShippingAddress: true,
+                Payment: true,
+                Order: true,
+                Review: true
+            },
         });
 
         if (!data) {
@@ -54,6 +65,8 @@ export async function PUT(req: NextRequest) {
         if (!session) {
             return NextResponse.json('Unauthorized', { status: 401 });
         }
+        session.user?.email
+        session.user?.name
         // Access user data if authorized based on your requirements
         const userId = parseInt(session.user?.id as string);
 
