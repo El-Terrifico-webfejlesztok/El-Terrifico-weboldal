@@ -151,29 +151,51 @@ export async function GET(req: NextRequest) {
 
         // Get the orderId from the query parameters
         const searchParams = req.nextUrl.searchParams;
-        const orderId: number = parseInt(searchParams.get('id') || '') ;
+        const orderId: number = parseInt(searchParams.get('id') || '');
         if (!orderId) {
             return NextResponse.json('Nincs rendelés megadva a kérésben', { status: 401 });
 
         }
-
-        // Fetch the order details including OrderItems
-        const orderDetails = await prisma.order.findUnique({
-            where: {
-                id: Number(orderId),
-                user_id: Number(session.user!.id)
-            },
-            include: {
-                OrderItem: {
-                    select: {
-                        id: true,
-                        name: true,
-                        quantity: true,
-                        price: true,
+        let orderDetails = null
+        // User csak a saját rendelését kérdezheti le
+        if (session.user?.role !== 'admin') {
+            // Fetch the order details including OrderItems
+            orderDetails = await prisma.order.findUnique({
+                where: {
+                    id: Number(orderId),
+                    user_id: Number(session.user!.id)
+                },
+                include: {
+                    OrderItem: {
+                        select: {
+                            id: true,
+                            name: true,
+                            quantity: true,
+                            price: true,
+                        },
                     },
                 },
-            },
-        });
+            });
+        }
+        
+        // Az admin bárkinek a rendelését lekérdezheti
+        else {
+            orderDetails = await prisma.order.findUnique({
+                where: {
+                    id: Number(orderId),
+                },
+                include: {
+                    OrderItem: {
+                        select: {
+                            id: true,
+                            name: true,
+                            quantity: true,
+                            price: true,
+                        },
+                    },
+                },
+            });
+        }
 
         // Check if the order is found
         if (!orderDetails) {

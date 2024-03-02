@@ -61,7 +61,6 @@ export async function GET(req: NextRequest) {
             },
         });
 
-        console.log(orderDetails)
         // Check if the order is found
         if (!orderDetails || orderDetails.length === 0) {
             return NextResponse.json(`Nem található ilyen rendelés`, { status: 404 });

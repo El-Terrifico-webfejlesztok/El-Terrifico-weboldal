@@ -7,7 +7,7 @@ const Links = () => {
     const currentPath = usePathname();
 
     const links = [
-        { name: 'Áttekintés', href: '/admin/overview'},
+        { name: 'Áttekintés', href: '/admin'},
         { name: 'Rendelések', href: '/admin/orders' },
         { name: 'Termékfeltöltés', href: '/admin/upload' },
     ];

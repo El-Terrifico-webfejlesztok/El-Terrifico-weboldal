@@ -1004,7 +1004,7 @@ Ez az API végpont lehetővé teszi az összes rendelés lekérdezését. Csak a
 		console.log(responseData);
 		}
 		catch (error) {
-		console.error(error.message);
+		console.error(error);
 		}
 	};
 	```
