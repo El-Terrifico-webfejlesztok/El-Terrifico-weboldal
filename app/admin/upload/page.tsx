@@ -1,7 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react';
-import ImageUploader from '../components/upload/imageuploader';
-import CategorySelector from '../components/upload/CategorySelector';
+import ImageUploader from '../../components/admin/upload/imageuploader';
+import CategorySelector from '../../components/admin/upload/CategorySelector';
 
 const UploadProduct = () => {
   const [name, setName] = useState('');

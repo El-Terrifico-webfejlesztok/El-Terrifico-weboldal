@@ -9,6 +9,7 @@ import {
   useRouter,
   ReadonlyURLSearchParams,
 } from "next/navigation";
+import Footer from "../components/footer/Footer";
 
 interface Product {
   id: number;
@@ -144,50 +145,50 @@ const ProductList = () => {
   }, [URLsearchParams]);
 
   return (
-    <div className={styles.productoldal}>
-      <div className="flex items-center justify-center">
-        <h1 className={styles.focim}>Termékeink</h1>
-      </div>
-      <form onSubmit={handleSubmit}>
-        <div className="join flex items-center justify-center pt-20">
+    <>
+      <div className={styles.productoldal}>
+        <div className="flex items-center justify-center">
+          <h1 className={styles.focim}>Termékeink</h1>
+        </div>
+        <form onSubmit={handleSubmit}>
+          <div className="join flex items-center justify-center pt-20">
             <input
               type="text"
               name="name"
               placeholder="Keresés..."
-              className="max-w-[95%] w-96 input input-bordered join-item"
-            />
-          <button className="btn btn-success join-item w-20 ">
-            <p className={loading ? "loading" : ""}>Keresés</p>
-          </button>
+              className="max-w-[95%] w-96 input input-bordered join-item" />
+            <button className="btn btn-success join-item w-20 ">
+              <p className={loading ? "loading" : ""}>Keresés</p>
+            </button>
+          </div>
+          <Szurok kategoriak={allCategories} />
+        </form>
+
+        {/**Kárty renderelés a visszakapott eredményekkel */}
+        <div className={styles.kartyak}>
+          {data.map((item) => (
+            <Kartya
+              product={{
+                id: item.id,
+                name: item.name,
+                description: item.description,
+                price: item.price,
+                stock: item.stock,
+                is_active: true,
+                created_at: new Date(0),
+                updated_at: new Date(0),
+              }}
+              key={item.id}
+              title={item.name}
+              description={item.description}
+              category={item.categories}
+              images={item.images}
+              price={item.price} />
+          ))}
         </div>
-        <Szurok kategoriak={allCategories} />
-      </form>
-
-      {/**Kárty renderelés a visszakapott eredményekkel */}
-      <div className={styles.kartyak}>
-        {data.map((item) => (
-          <Kartya
-            product={{
-              id: item.id,
-              name: item.name,
-              description: item.description,
-              price: item.price,
-              stock: item.stock,
-              is_active: true,
-              created_at: new Date(0),
-              updated_at: new Date(0),
-            }}
-            key={item.id}
-            title={item.name}
-            description={item.description}
-            category={item.categories}
-            images={item.images}
-            price={item.price}
-
-          />
-        ))}
-      </div>
-    </div>
+        <div className="h-12"></div>
+      </div><Footer />
+    </>
   );
 };
 

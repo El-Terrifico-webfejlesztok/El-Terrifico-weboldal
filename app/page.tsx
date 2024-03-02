@@ -8,6 +8,7 @@ import Videok from "./components/home/Videok";
 import Ajanlatok from "./components/home/Ajanlatok";
 import "./Home.css";
 import BemutatVideo from "./components/home/BemutatVideo";
+import Footer from "./components/footer/Footer";
 
 export default function Home() {
   return (
@@ -21,6 +22,7 @@ export default function Home() {
       <EtteremTortenete />
       <TacoTortenete />
       <Videok />
+      <Footer />
     </div>
   );
 }
