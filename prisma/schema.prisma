@@ -52,6 +52,7 @@ model Order {
   total_price     Decimal         @db.Decimal(10, 2)
   created_at      DateTime        @default(now()) @db.Timestamp(0)
   updated_at      DateTime?       @default(now()) @db.Timestamp(0)
+  status          Order_status    @default(created)
   ShippingAddress ShippingAddress @relation(fields: [shipping_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_shipping_id")
   User            User            @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_id")
   OrderItem       OrderItem[]
@@ -158,4 +159,12 @@ model CartItem {
 enum User_role {
   user
   admin
+}
+
+enum Order_status {
+  created
+  preparing
+  shipping
+  completed
+  canceled
 }

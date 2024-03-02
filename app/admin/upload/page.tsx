@@ -1,7 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react';
-import ImageUploader from '../components/upload/imageuploader';
-import CategorySelector from '../components/upload/CategorySelector';
+import ImageUploader from '../../components/admin/upload/imageuploader';
+import CategorySelector from '../../components/admin/upload/CategorySelector';
 
 const UploadProduct = () => {
   const [name, setName] = useState('');
@@ -125,7 +125,7 @@ const UploadProduct = () => {
         <div className='flex space-x-2 justify-between'>
           <div>
             <label className='form-control' htmlFor='price'>
-              Termék ára:
+              Ár:
             </label>
             <input
               className={inputlook}
@@ -143,7 +143,7 @@ const UploadProduct = () => {
                 <div className="mx-0 tooltip" data-tip="Jelenleg nincs használtaba véve">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="stroke-current shrink-0 w-6 h-4"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                 </div>
-                Termék mennyisége:
+                Mennyiség:
               </div>
             </label>
             <input
@@ -156,7 +156,7 @@ const UploadProduct = () => {
             />
           </div>
         </div>
-          <CategorySelector onCategoriesChange={handleCategoriesChange} />
+        <CategorySelector onCategoriesChange={handleCategoriesChange} />
         <ImageUploader onImagesChange={handleImageChange} />
 
         <button className='btn btn-primary' type='submit'>

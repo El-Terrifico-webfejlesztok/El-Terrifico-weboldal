@@ -3,8 +3,8 @@
 
 # Termék APIk
 
-### Termék Keresési API
-
+Termék Keresési API
+---------------------------
 **Végpont:** `GET /api/product/request`
 
 **Leírás:**
@@ -75,8 +75,8 @@ Ez a API végpont lehetővé teszi termékek keresését a megadott kritériumok
         }};
     ```
 
-### Termék Kategóriák API
-
+Termék Kategóriák API
+---------------------------
 **Végpont:** `GET /api/product/categories`
 
 **Leírás:**  
@@ -121,9 +121,8 @@ Ez a API végpont visszaadja az adatbázisban létező összes kategóriát.
 	  }
 	};
 	```
-
-### Termék Feltöltési API
-
+Termék Feltöltési API
+---------------------------
 **Végpont:** `POST /api/product/upload`
 
 **Leírás:**  
@@ -217,7 +216,8 @@ Ez az API végpont lehetővé teszi új termékek feltöltését vagy meglévő 
 	};
 	```
 
-### Termék Képfeltöltési API
+Termék Képfeltöltési API
+---------------------------
 
 **Végpont:** `POST /api/product/uploadimage`
 
@@ -305,7 +305,8 @@ Ez a API végpont lehetővé teszi termékhez tartozó képek feltöltését.
 	</script>
 	```
 # Felhasználó APIk
-### Regisztrációs API
+Regisztrációs API
+---------------------------
 
 **Végpont:** `POST /api/user/register`
 
@@ -384,7 +385,8 @@ Ez a API végpont lehetővé teszi új felhasználók regisztrációját.
 
 ## Szállítási Cím API
 
-### Alapértelmezett Cím Beállítása API
+Alapértelmezett Cím Beállítása API
+---------------------------
 
 **Végpont:** `POST /api/user/address/default`
 
@@ -451,7 +453,8 @@ Ez a végpont lehetővé teszi az alapértelmezett szállítási cím beállít�
 		    }
 		};
 		```
-### Alapértelmezett Cím Lekérdezése API
+Alapértelmezett Cím Lekérdezése API
+---------------------------
 
 **Végpont:** `GET /api/user/address/default`
 
@@ -516,7 +519,8 @@ Ez a végpont visszaadja a felhasználó alapértelmezett szállítási címéne
 		};
 		```
 
-### Felhasználói Cím Törlése API
+Felhasználói Cím Törlése API
+---------------------------
 
 **Végpont:** `DELETE /api/user/address/delete`
 
@@ -597,7 +601,8 @@ Ez a API végpont lehetővé teszi egy felhasználóhoz tartozó szállítási c
 	};
 	```
 
-### Felhasználói Cím Feltöltése API
+Felhasználói Cím Feltöltése API
+---------------------------
 
 **Végpont:** `POST /api/user/address/upload`
 
@@ -730,7 +735,8 @@ Ez a API végpont lehetővé teszi egy felhasználóhoz tartozó szállítási c
 
 # BESOROLANDÓ
 
-### Rendelés Létrehozó API
+Rendelés Létrehozó API
+---------------------------
 
 **Végpont:** `POST /api/order`
 
@@ -776,29 +782,21 @@ Ez az API végpont lehetővé teszi egy rendelés létrehozását megadott term�
 		-   **HTTP Státuszkód: 401 Unauthorized:**
 
 			```json
-			{
-				"error": "A rendeléshez be kell jelentkeznie"
-			}
+			"A rendeléshez be kell jelentkeznie"
 			```	
 		-   **HTTP Státuszkód: 404 Not Found:**
 			```json
-			{
-				"error": "Nem található a kiválasztott szállítási cím"
-			}
+			"Nem található a kiválasztott szállítási cím"
 			```
 		-   **HTTP Státuszkód: 400 Bad Request:**
 
 			```json
-			{
-				"error": "Nincs termék a rendelésben"
-			}
+			"Nincs termék a rendelésben"
 			```
 		-   **HTTP Státuszkód: 500 Internal Server Error:**
 
 			```json
-			{
-				"error": "Hiba a rendelés felvétele közben"
-			}
+			"Hiba a rendelés felvétele közben"
 			```
 
 **Példa Használat**:
@@ -833,7 +831,8 @@ Ez az API végpont lehetővé teszi egy rendelés létrehozását megadott term�
 	};
 	```
 
-### Rendelési Adatok Lekérdezése API
+Rendelési Adatok Lekérdezése API
+---------------------------
 
 **Végpont:** `GET /api/order`
 
@@ -885,23 +884,17 @@ Ez az API végpont lehetővé teszi egy rendelés részleteinek lekérdezését 
 	-   **HTTP Státuszkód: 401 Unauthorized:**
 
 		```json
-		{
-			"error": "A rendelési adatok lekéréséhez be kell jelentkeznie"
-		}
+		"A rendelési adatok lekéréséhez be kell jelentkeznie"
 		```
 	-   **HTTP Státuszkód: 404 Not Found:**
 
 		```json
-		{
-			"error": "Nem található rendelés az azonosítóval: 987"
-		}
+		"Nem található rendelés az azonosítóval: 987"
 		```
 	-   **HTTP Státuszkód: 500 Internal Server Error:**
 
 		```json
-		{
-			"error": "Hiba a rendelési adatok lekérdezése közben"
-		}
+		"Hiba a rendelési adatok lekérdezése közben"
 		```
 **Példa Használat**:
 
@@ -926,6 +919,278 @@ Ez az API végpont lehetővé teszi egy rendelés részleteinek lekérdezését 
 		}
 		catch (error) {
 			console.error(error);
+		}
+	};
+	```
+
+Összes Rendelés Lekérése API
+---------------------------
+**Végpont:** `GET /api/order/getall`
+
+**Leírás:**\
+Ez az API végpont lehetővé teszi az összes rendelés lekérdezését. Csak adminisztrátori jogosultsággal rendelkező felhasználók használhatják.
+
+**Hitelesítés:**
+
+-   **Szükséges:** Adminisztrátor: Csak az admin szerepű felhasználó használhatja (next-auth-al ellenőrizve).
+
+**Kérés:**
+
+-   **Metódus:** GET
+-   **Végpont:** `/api/order/getall`
+-   **URL Paraméterek:**
+    -   `page` (Opcionális): Az oldal száma (alapértelmezett: 1).
+    -   `type` (Opcionális): A rendelés típusa, érvényes értékek: 'created', 'preparing', 'shipping', 'completed', 'canceled' (alapértelmezett: 'created'). (Ha hibás a típus akkor az alapértelemezett típussal rendelkező rendeléseket adja vissza)
+
+**Válasz:**
+
+-   **Sikeres Válasz (HTTP Státuszkód: 200 OK):**
+	```json
+	[
+		{
+			"id": 1,
+			"total_price": 150.00,
+			"created_at": "2024-02-20T12:30:45Z",
+			"status": "created",
+			"OrderItem": [
+				{
+					"id": 1,
+					"name": "Product A",
+					"quantity": 2,
+					"price": 100.00
+				},
+				{
+					"id": 2,
+					"name": "Product B",
+					"quantity": 1,
+					"price": 50.00
+				}
+				// ... További rendelésitemek
+			]
+		},
+		// ... További rendelések részletei
+	]
+	```
+-   **Hiba Válaszok:**
+
+	-   **HTTP Státuszkód: 401 Unauthorized:**
+		```json
+		"Csak adminos bejelentkezéssel lehet lekérni rendeléseket"
+		```
+	-   **HTTP Státuszkód: 404 Not Found:**
+		```json
+		"Nem található ilyen rendelés"
+		```
+	-   **HTTP Státuszkód: 500 Internal Server Error:**
+		```json
+		"Hiba a rendelési adatok lekérdezése közben"
+		```
+**Példa Használat**:
+
+-   **Kérés:**
+	```typescript
+	const getAllOrders = async (page = 1, type = 'created') => {
+		try {
+		const response = await fetch(`/api/order/getall?page=${page}&type=${type}`, {
+			method: 'GET',
+			headers: {
+			'Content-Type': 'application/json',
+			},
+		});
+		if (!response.ok) {
+			throw new Error("Sikertelen a rendelések lekérdezése");
+		}
+		const responseData = await response.json();
+		console.log(responseData);
+		}
+		catch (error) {
+		console.error(error);
+		}
+	};
+	```
+
+Rendelés Státusz Módosítása API
+---------------------------
+**Végpont:** `PUT /api/order/update`
+
+**Leírás:**\
+Ez az API végpont lehetővé teszi egy státusz frissítését (pl. elküldve, feldolgozás alatt, szállítás alatt stb.).
+
+**Hitelesítés:**
+
+-   **Szükséges:** Adminisztrátor: Csak az admin szerepű felhasználó használhatja (next-auth-al ellenőrizve).
+
+**Kérés:**
+
+-   **Metódus:** PUT
+-   **Végpont:** `/api/order/update`
+-   **Kérés Body (JSON):**
+	```json
+	{
+		"orderId": 987,
+		"newStatus": "completed"
+		/*
+			Lehetséges státuszok:
+			- created
+			- preparing
+			- shipping
+			- completed
+			- canceled
+ 		*/
+	}
+	```
+**Válasz:**
+
+-   **Sikeres Válasz (HTTP Státuszkód: 200 OK):**
+
+	```json
+	{
+		"order": {
+			"orderId": 987,
+			"totalPrice": 150.00,
+			"createdAt": "2024-02-20T12:30:45Z",
+			"status": "shipped",
+			"OrderItems": [
+				{
+					"id": 1,
+					"name": "Product A",
+					"quantity": 2,
+					"price": 100.00
+				},
+				{
+					"id": 2,
+					"name": "Product B",
+					"quantity": 1,
+					"price": 50.00
+				}
+				// ... További rendelésitemek
+			]
+		},
+	}
+	```
+
+-   **Hiba Válaszok:**
+    -   **HTTP Státuszkód: 401 Unauthorized:**
+		```json
+		"Csak adminisztrátorok módosíthatják a rendelés státuszát"
+		```
+
+    -   **HTTP Státuszkód: 404 Not Found:**
+		```json
+		"Nem található rendelés az azonosítóval: 987"
+		```
+
+
+    -   **HTTP Státuszkód: 400 Bad Request:**
+		```json
+		"Érvénytelen státusz: shipped"
+		```
+
+
+    -   **HTTP Státuszkód: 500 Internal Server Error:**
+		```json
+		"Hiba a rendelés státuszának frissítése közben"
+		```
+
+
+**Példa Használat:**
+
+-   **Kérés:**
+	```typescript
+	const updateOrderStatus = async (orderId: number, newStatus: string) => {
+		try {
+			const response = await fetch('/api/order/update', {
+				method: 'PUT',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({
+					orderId,
+					newStatus,
+				}),
+			});
+
+			if (!response.ok) {
+				throw new Error("Sikertelen rendelés státusz frissítés");
+			}
+
+			const responseData = await response.json();
+			console.log(responseData);
+		} catch (error) {
+			console.error("A szerver nem érhető el", error);
+		}
+	};
+	```
+
+Rendelés Lemondása API
+----------------------
+**Végpont:** `PUT /api/order/cancel`
+
+**Leírás:**\
+Ez az API végpont lehetővé teszi egy rendelés lemondását az azonosító alapján. A lemondás után a rendelés státusza "canceled" lesz.
+
+**Hitelesítés:**
+
+-   **Szükséges:** Bejelentkezés
+
+**Kérés:**
+
+-   **Metódus:** PUT
+-   **Végpont:** `/api/order/cancel`
+-   **Kérés Body (JSON):**
+	```json
+	{
+		"orderId": 987
+	}
+	```
+
+**Válasz:**
+
+-   **Sikeres Válasz (HTTP Státuszkód: 200 OK):**
+	```json
+	"A rendelés sikeresen lemondva"
+	```
+-   **Hiba Válaszok:**
+
+    -   **HTTP Státuszkód: 401 Unauthorized:**
+		```json
+		"A rendelés lemondásához be kell jelentkeznie vagy adminisztrátornak lennie"
+		```
+
+    -   **HTTP Státuszkód: 404 Not Found:**
+		```json
+		"Nem található rendelés az azonosítóval: 987"
+		```
+
+    -   **HTTP Státuszkód: 500 Internal Server Error:**
+		```json
+		"Hiba a rendelés lemondása közben"
+		```
+
+**Példa Használat**:
+
+-   **Kérés:**
+	```typescript
+	const cancelOrder = async (orderId: number) => {
+		try {
+		const response = await fetch('/api/order/cancel', {
+			method: 'PUT',
+			headers: {
+			'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				orderId,
+			}),
+		});
+
+		if (!response.ok) {
+			throw new Error("Sikertelen rendelés lemondás");
+		}
+
+		const responseData = await response.json();
+		console.log(responseData);
+		} catch (error) {
+		console.error("A szerver nem érhető el", error);
 		}
 	};
 	```

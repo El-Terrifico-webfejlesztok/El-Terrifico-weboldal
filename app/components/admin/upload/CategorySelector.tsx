@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 interface CategorySelectorProps {
     onCategoriesChange: (categories: string[]) => void;
@@ -30,6 +30,12 @@ const CategorySelector: React.FC<CategorySelectorProps> = ({ onCategoriesChange 
         fetchCategories();
     }, []);
 
+    // Function to check if a category already exists
+    const isCategoryDuplicate = (category: string): boolean => {
+        return displayedCategories.some((c) => c.trim() === category.trim());
+    };
+
+    // Function to handle category checkbox change
     const handleCategoryChange = (category: string) => {
         // Check if the category is already in the checked list
         const isCategorySelected = checkedCategories.includes(category);
@@ -46,10 +52,13 @@ const CategorySelector: React.FC<CategorySelectorProps> = ({ onCategoriesChange 
         // console.log('Updated Checked Categories:', updatedCheckedCategories);
     };
 
+    // Function to handle new category input change
     const handleNewCategoryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        // Update the new category state
         setNewCategory(event.target.value);
     };
 
+    // Function to handle adding a new category
     const handleAddCategory = () => {
         // Check for empty category
         if (!newCategory) {
@@ -57,24 +66,27 @@ const CategorySelector: React.FC<CategorySelectorProps> = ({ onCategoriesChange 
             return;
         }
 
-        // Check for duplicate category
-        if (displayedCategories.some((c) => c.trim() === newCategory.trim())) {
-            console.error('Category already exists.');
-            return;
+        // Check if the new category already exists
+        const existingCategory = displayedCategories.find((c) => c.trim() === newCategory.trim());
+
+        // If the category exists, automatically select it
+        if (existingCategory) {
+            handleCategoryChange(existingCategory);
+        } else {
+            // Add the new category to the displayed and checked lists
+            const updatedDisplayedCategories = [...displayedCategories, newCategory];
+            const updatedCheckedCategories = [...checkedCategories, newCategory];
+
+            setDisplayedCategories(updatedDisplayedCategories);
+            setCheckedCategories(updatedCheckedCategories);
+            onCategoriesChange(updatedCheckedCategories);
         }
-
-        // Add the new category to the displayed and checked lists
-        const updatedDisplayedCategories = [...displayedCategories, newCategory];
-        const updatedCheckedCategories = [...checkedCategories, newCategory];
-
-        setDisplayedCategories(updatedDisplayedCategories);
-        setCheckedCategories(updatedCheckedCategories);
-        onCategoriesChange(updatedCheckedCategories);
 
         // Clear the new category input
         setNewCategory('');
     };
 
+    // Function to handle Enter key press in the new category input
     const handleNewCategoryKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
         // Check if the Enter key is pressed
         if (event.key === 'Enter') {
@@ -112,18 +124,21 @@ const CategorySelector: React.FC<CategorySelectorProps> = ({ onCategoriesChange 
             </div>
 
             Kategóriák kiválasztása:
-            <div className='grid grid-cols-2 gap-1'>
-                {displayedCategories.map((category) => (
-                    <label key={category} className='label cursor-pointer'>
-                        <span className='label-text'>{category}</span>
-                        <input
-                            className='checkbox ani'
-                            type="checkbox"
-                            checked={checkedCategories.includes(category)}
-                            onChange={() => handleCategoryChange(category)}
-                        />
-                    </label>
-                ))}
+            
+            <div className='max-h-32 overflow-scroll'>
+                <div className='grid grid-cols-2 gap-1'>
+                    {displayedCategories.map((category) => (
+                        <label key={category} className='label cursor-pointer'>
+                            <span className='label-text'>{category}</span>
+                            <input
+                                className='checkbox ani'
+                                type="checkbox"
+                                checked={checkedCategories.includes(category)}
+                                onChange={() => handleCategoryChange(category)}
+                            />
+                        </label>
+                    ))}
+                </div>
             </div>
         </div>
     );
