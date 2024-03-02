@@ -91,7 +91,7 @@ const ProfilePage = () => {
     const user = session!.user!;
 
     return (
-        <div className='px-2 max-w-4xl mx-auto  mt-4'>
+        <div className='px-2 max-w-4xl mx-auto  my-4'>
 
             <div className='text-center mt-12'>
                 <h1 className="text-2xl  mb-4">Üdvözlünk <strong>{user.name}</strong>!</h1>

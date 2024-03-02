@@ -1,6 +1,5 @@
 import React, { useState, ChangeEvent } from 'react';
 import { signOut, useSession } from 'next-auth/react';
-import Image from 'next/image';
 
 interface ProfilePictureChooserProps {
     onCancel: () => void;
@@ -43,11 +42,9 @@ const ProfilePictureChooser: React.FC<ProfilePictureChooserProps> = ({ onCancel 
             });
 
             if (response.ok) {
-                setButtonText('Sikeres feltöltés')
-                // Updateljük a sessiont az új profilképpel
-                update({ image: response })
-                console.log(session!.user!.image)
                 setSelectedImage(null)
+                setButtonText('Sikeres feltöltés')
+                signOut()
             } else {
                 // Handle error responses
                 const errorMessage = await response.text();
@@ -74,12 +71,16 @@ const ProfilePictureChooser: React.FC<ProfilePictureChooserProps> = ({ onCancel 
                 <label htmlFor="fileInput">
                     <img
                         src={selectedImage ? URL.createObjectURL(selectedImage) : session?.user?.image || ''}
-                        alt="Selected"
+                        alt="Profilkép"
                         onClick={handleImageClick}
                         className='p-2 h-full aspect-square mx-auto my-4 object-cover bg-base-200 rounded-full cursor-pointer hover:brightness-110 transition-all '
                     />
                 </label>
             </div>
+            <div role="alert" className="alert alert-info mt-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="stroke-current shrink-0 w-6 h-6"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <span>Az profilkép módosítása után újra be kell jelenteznie</span>
+                </div>
             <div className="w-full items-center flex mt-4">
                 <button className="btn btn-neutral mr-auto w-40" type="button" onClick={onCancel}>
                     Mégsem
