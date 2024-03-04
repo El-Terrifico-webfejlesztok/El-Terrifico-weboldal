@@ -68,7 +68,7 @@ const UserOrder = ({ params }: { params: { id: string } }) => {
     return (
       <>
         <div className="container mx-auto p-4">
-          <h1 className="text-3xl font-semibold mb-4">Rendelésed részletei</h1>
+          <h1 className="text-3xl font-semibold mb-4">Rendelés részletei</h1>
           <div className="bg-base-300 rounded-lg shadow-lg p-6">
             <p className="font-semibold">
               Rendelési azonosító: {orderData.orderId}

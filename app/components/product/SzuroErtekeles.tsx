@@ -1,3 +1,4 @@
+// Már nem kell!!!!!!
 interface Props {
   cim: string;
   id: string;
