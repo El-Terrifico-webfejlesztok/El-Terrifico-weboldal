@@ -1,5 +1,5 @@
 "use client";
-
+// Már nem kell!!!!!
 import { useState } from "react";
 
 function KartyaErtekeles() {

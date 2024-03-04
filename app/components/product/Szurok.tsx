@@ -4,7 +4,6 @@ import { useState } from "react";
 import SzuroCheckbox from "./SzuroCheckbox";
 import styles from "./product.module.css";
 import SzuroAr from "./SzuroAr";
-import SzuroErtekeles from "./SzuroErtekeles";
 
 interface props {
   kategoriak: string[];
@@ -13,7 +12,6 @@ interface props {
 function Szurok({ kategoriak }: props) {
   const [isCollepsed, setIsCollepsed] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string>("");
-  const [errorMessageRating, setErrorMessageRating] = useState<string>("");
 
   const handleMinPriceChange = () => {
     const minPriceInput = document.getElementById(
@@ -59,53 +57,6 @@ function Szurok({ kategoriak }: props) {
     }
   };
 
-  const handleMinRatingChange = () => {
-    const minRatingInput = document.getElementById(
-      "minRating"
-    ) as HTMLInputElement;
-    const maxRatingInput = document.getElementById(
-      "maxRating"
-    ) as HTMLInputElement;
-    const minRating = parseInt(minRatingInput.value, 10);
-    const maxRating = parseInt(maxRatingInput.value, 10);
-    if (!isNaN(minRating) && !isNaN(maxRating)) {
-      if (minRating > maxRating) {
-        setErrorMessageRating(
-          "Minimum értékelés nem lehet nagyobb mint a maximum értékelés!"
-        );
-        minRatingInput.value = "";
-        maxRatingInput.value = "";
-      } else {
-        setErrorMessageRating("");
-      }
-    } else {
-      setErrorMessageRating("");
-    }
-  };
-
-  const handleMaxRatingChange = () => {
-    const minRatingInput = document.getElementById(
-      "minRating"
-    ) as HTMLInputElement;
-    const maxRatingInput = document.getElementById(
-      "maxRating"
-    ) as HTMLInputElement;
-    const minRating = parseInt(minRatingInput.value, 10);
-    const maxRating = parseInt(maxRatingInput.value, 10);
-    if (!isNaN(minRating) && !isNaN(maxRating)) {
-      if (maxRating < minRating) {
-        setErrorMessageRating(
-          "Maximum értékelés nem lehet kisebb mint a minimum értékelés!"
-        );
-        minRatingInput.value = "";
-        maxRatingInput.value = "";
-      } else {
-        setErrorMessageRating("");
-      }
-    } else {
-      setErrorMessageRating("");
-    }
-  };
 
   if (isCollepsed == true) {
     return (
@@ -138,7 +89,7 @@ function Szurok({ kategoriak }: props) {
         </div>
         <div className={styles.szurodoboz}>
           <div className="sm:flex bg-orange-300">
-            <div className="sm:w-1/3 items-center justify-center pb-3">
+            <div className="sm:w-1/2 items-center justify-center pb-3">
               <h1 className=" text-center text-1xl text-black font-bold mb-4 pt-4">
                 Árak
               </h1>
@@ -169,7 +120,7 @@ function Szurok({ kategoriak }: props) {
               </div>
             </div>
 
-            <div className="sm:w-1/3 sm:border-x-4 sm:border-y-0 border-y-4 border-x-0 pb-3">
+            <div className="sm:w-1/2 sm:border-l-4 sm:border-t-0 border-t-4 border-l-0 pb-3">
               <h1 className="flex justify-center text-center text-1xl text-black font-bold mb-4 mt-4">
                 Kategóriák
               </h1>
@@ -177,31 +128,6 @@ function Szurok({ kategoriak }: props) {
                   {kategoriak.map((category, index) => (
                     <SzuroCheckbox key={index} name="category" cim={category} />
                   ))}
-              </div>
-            </div>
-
-            <div className="sm:w-1/3 items-center justify-center pb-3">
-              <h1 className="flex justify-center text-center text-1xl text-black font-bold mb-4 mt-4">
-                Értékelés
-              </h1>
-              {errorMessageRating && (
-                <div role="alert" className="alert alert-error">
-                  <span className="text-white justify-center text-center">
-                    {errorMessageRating}
-                  </span>
-                </div>
-              )}
-              <div className="text-center">
-                <SzuroErtekeles
-                  id="minRating"
-                  cim="Minimum értékelés"
-                  onChange={handleMinRatingChange}
-                />
-                <SzuroErtekeles
-                  id="maxRating"
-                  cim="Maximum értékelés"
-                  onChange={handleMaxRatingChange}
-                />
               </div>
             </div>
           </div>
