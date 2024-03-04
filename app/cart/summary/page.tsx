@@ -3,7 +3,7 @@
 import CartSteps from "@/app/components/cart/CartSteps";
 import useCartService from "@/lib/hooks/useCartStore";
 import SummaryKartya from "@/app/components/cart/summary/SummaryKartya";
-import { redirect, useSearchParams } from "next/navigation";
+import { redirect, useSearchParams, useRouter } from "next/navigation";
 import { useState } from "react";
 
 export interface OrderItem {
@@ -24,7 +24,7 @@ function CartSummary() {
   const [buttonColor, setButtonColor] = useState('')
   const [loading, setLoading] = useState<boolean>(false)
   const [buttonText, setButtonText] = useState('Megrendelem')
-
+  const router = useRouter()
 
   let lista: any
 
@@ -53,20 +53,19 @@ function CartSummary() {
           })),
         }),
       });
-      const responseData = await response.json();
 
-
-      if (!response.ok) {
+      if (response.ok) {
+        await Success()
+      }
+      // Call the success function
+      else {
+        const responseData = await response.json();
         setButtonColor('btn-error')
         setButtonText(responseData)
         throw new Error("Sikertelen rendelés létrehozás");
       }
 
-      console.log(responseData);
-      setButtonColor('btn-success')
-      setButtonText('Sikeres rendelés!')
-      // Kocsi nullázása
-      clearCart()
+
     } catch (error) {
       console.error("A szerver nem érhető el", error);
     }
@@ -74,6 +73,15 @@ function CartSummary() {
       setLoading(false)
     }
   };
+
+  const Success = async () => {
+    setButtonColor('btn-success')
+    setButtonText('Sikeres rendelés!')
+    // Kocsi nullázása
+    clearCart()
+    console.log('siker')
+    router.push('/cart/thankyou')
+  }
 
 
   const handleOrderClick = () => {

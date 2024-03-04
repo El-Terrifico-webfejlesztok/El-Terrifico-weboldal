@@ -8,7 +8,7 @@ interface StatProps {
 const ProfileStats: React.FC<StatProps> = ({ userdata }) => {
     if (userdata) {
         return (
-            <div className="stats grid-flow-row grid-cols-2 sm:stats-horizontal sm:overflow-auto shadow mx-auto overflow-scroll max-h-44">
+            <div className="stats grid-flow-row grid-cols-2 sm:stats-horizontal sm:overflow-auto shadow mx-auto overflow-auto max-h-44">
 
                 <div className="stat">
                     <div className="stat-title">Szállítási címek</div>

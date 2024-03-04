@@ -125,7 +125,7 @@ const CategorySelector: React.FC<CategorySelectorProps> = ({ onCategoriesChange 
 
             Kategóriák kiválasztása:
             
-            <div className='max-h-32 overflow-scroll'>
+            <div className='max-h-32 overflow-auto'>
                 <div className='grid grid-cols-2 gap-1'>
                     {displayedCategories.map((category) => (
                         <label key={category} className='label cursor-pointer'>
