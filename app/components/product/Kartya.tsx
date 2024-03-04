@@ -57,17 +57,9 @@ const Kartya: React.FC<props> = ({
                 categories={category}
               />
             </div>
-            <div className="sm:w-1/4 mb-6 text-center">
+            <div className="sm:w-3/4 mb-6 text-center">
               <h1>Ár:</h1>
               <p className="text-center">{price} Ft</p>
-            </div>
-            <div className="sm:w-1/4 mb-6 text-center">
-              <h1>Értékelés:</h1>
-              <p className="text-center">4,2</p>
-            </div>
-            <div className="sm:w-1/4 mb-6 text-center">
-              <KartyaErtekeles />
-              <button className="btn btn-sm mt-2 text-center">Értékelem</button>
             </div>
           </div>
         </div>
