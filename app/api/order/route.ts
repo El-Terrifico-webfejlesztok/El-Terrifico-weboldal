@@ -157,45 +157,49 @@ export async function GET(req: NextRequest) {
 
         }
         let orderDetails = null
-        // User csak a saját rendelését kérdezheti le
-        if (session.user?.role !== 'admin') {
-            // Fetch the order details including OrderItems
-            orderDetails = await prisma.order.findUnique({
-                where: {
-                    id: Number(orderId),
-                    user_id: Number(session.user!.id)
-                },
-                include: {
-                    OrderItem: {
-                        select: {
-                            id: true,
-                            name: true,
-                            quantity: true,
-                            price: true,
-                        },
-                    },
-                },
-            });
+        let UserID: number | undefined = 0
+
+        // HA adminos a bejelentkezés akkor UserID undefined => a prisma query nem veszi figyelembe
+        if (session.user?.role === 'admin') {
+            UserID = undefined
         }
-        
-        // Az admin bárkinek a rendelését lekérdezheti
         else {
-            orderDetails = await prisma.order.findUnique({
-                where: {
-                    id: Number(orderId),
-                },
-                include: {
-                    OrderItem: {
-                        select: {
-                            id: true,
-                            name: true,
-                            quantity: true,
-                            price: true,
-                        },
+            UserID = parseInt(session.user!.id)
+        }
+
+        // Lekérdezés
+        orderDetails = await prisma.order.findUnique({
+            where: {
+                id: Number(orderId),
+                user_id: UserID
+            },
+            include: {
+                OrderItem: {
+                    select: {
+                        id: true,
+                        name: true,
+                        quantity: true,
+                        price: true,
                     },
                 },
-            });
-        }
+                User: {
+                    select: {
+                        id: true,
+                        username: true,
+                        email: true,
+                    }
+                },
+                ShippingAddress: { 
+                    select: {
+                        id: true,
+                        recipient_name: true,
+                        street_address: true,
+                        city: true,
+                        postal_code: true,
+                    }
+                }
+            },
+        });
 
         // Check if the order is found
         if (!orderDetails) {
@@ -208,6 +212,8 @@ export async function GET(req: NextRequest) {
             totalPrice: orderDetails.total_price,
             createdAt: orderDetails.created_at,
             OrderItems: orderDetails.OrderItem,
+            User: orderDetails.User,
+            ShippingAddress: orderDetails.ShippingAddress,
         };
 
         return NextResponse.json(response, { status: 200 });
