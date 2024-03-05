@@ -837,7 +837,7 @@ Rendelési Adatok Lekérdezése API
 **Végpont:** `GET /api/order`
 
 **Leírás:**\
-Ez az API végpont lehetővé teszi egy rendelés részleteinek lekérdezését azonosító alapján, beleértve az OrderItemeket is.
+Ez az API végpont lehetővé teszi egy rendelés részleteinek lekérdezését azonosító alapján, beleértve az OrderItemeket, a felhasználó pár adatát, és a szállítási címet is.
 
 **Hitelesítés:**
 
@@ -876,8 +876,22 @@ Ez az API végpont lehetővé teszi egy rendelés részleteinek lekérdezését 
 				"price": 50.00
 			}
 			// ... További OrderItem részletek
-		]
+		],
+		"User": {
+			"id": 123,
+			"username": "felhasznalonev",
+			"email": "felhasznalo@email.com"
+		},
+		"ShippingAddress": {
+			"id": 1,
+			"recipient_name": "John Doe",
+			"street_address": "123 Main Street",
+			"city": "Cityville",
+			"postal_code": "12345"
+		}
+
 	}
+
 	```
 -   **Hiba Válaszok:**
 
