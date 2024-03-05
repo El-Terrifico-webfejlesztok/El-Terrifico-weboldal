@@ -64,7 +64,7 @@ const OrdersAdmin = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ status: newStatus, orderId: orderId}),
+        body: JSON.stringify({ newStatus: newStatus, orderId: orderId}),
       });
       if (!response.ok) {
         throw new Error("Failed to update order status");
