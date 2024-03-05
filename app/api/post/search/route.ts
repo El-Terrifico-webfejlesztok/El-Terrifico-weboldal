@@ -15,6 +15,12 @@ export async function GET(req: NextRequest) {
         const page = parseInt(searchParams.get('page') || '1');
         const skip = count * (page - 1)
 
+        // Hibaellenőrzés
+        if (isNaN(count) || isNaN(page) || isNaN(skip) || count <= 0 || page <= 0 || skip < 0) {
+            return NextResponse.json('Hibás lekérdezési paraméterek', { status: 400 });
+        }
+
+
         // Query the database with Prisma
         const posts = await prisma.post.findMany({
             skip: skip,
@@ -30,8 +36,25 @@ export async function GET(req: NextRequest) {
                 },
             },
             include: {
-                User: true,
-                Comment: true,
+                Category: {select: {
+                    name: true
+                }},
+                User: {select: {
+                    id: true,
+                    username: true,
+                    image: true,
+                }},
+                Comment: {select: {
+                    id: true,
+                    text: true,
+                    User: {select: {
+                        id: true,
+                        username: true,
+                        image: true,
+                    }},
+                    created_at: true,
+                    updated_at: true
+                }},
             },
             orderBy: { created_at: 'desc' }
         });
@@ -41,8 +64,9 @@ export async function GET(req: NextRequest) {
             id: post.id,
             title: post.title,
             text: post.text,
-            user: post.User, // Include user information
-            comments: post.Comment, // Include comments
+            category: post.Category.name,
+            user: post.User, 
+            comments: post.Comment, 
             created_at: post.created_at,
             updated_at: post.updated_at,
         }));

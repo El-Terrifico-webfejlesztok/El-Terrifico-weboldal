@@ -2,14 +2,13 @@
 
 import Komment from "./Komment";
 import { useState } from "react";
+import { PostType } from "@/app/forum/page";
 
 interface props {
-  cim: string;
-  szoveg: string;
-  category: string;
+  post: PostType,
 }
 
-function Poszt({ szoveg, cim, category }: props) {
+const Poszt: React.FC<props> = ({ post }) => {
   const [postContent, setPostContent] = useState("");
 
   const clearInputs = () => {
@@ -17,40 +16,24 @@ function Poszt({ szoveg, cim, category }: props) {
   };
 
   return (
-    <div className="collapse collapse-arrow bg-base-200 sm:w-5/6 w-full mx-auto sm:mb-3 mb-5">
+    <div className="collapse collapse-arrow bg-base-300 sm:w-5/6 w-full mx-auto sm:mb-3 mb-5">
       <input type="checkbox" />
       <div className="collapse-title text-xl font-medium">
-        <div>{cim}</div> <div className=" text-sm font-normal">#{category}</div>
+        <div>{post.title}</div> <div className=" text-sm text-info font-normal">#{post.category}</div>
       </div>
 
       <div className="collapse-content p-1">
-        <p className="bg-white border-2 border-grey p-4 rounded-lg text-black">
-          {szoveg}
+        <p className="bg-neutral-content border-2 border-grey p-4 rounded-lg text-black">
+          {post.text}
         </p>
         <h1 className="text-lg font-medium my-5 ml-2">Hozzászólások:</h1>
         {/*Comments*/}
         <div className="h-48 overflow-x-auto whitespace-no-wrap">
-          <Komment
-            comment="Az én kommentem az első és remélem nem az utolsó."
-            name="Nagy Lajos"
-            image="/HomeTaco.jpg"
-          />
-          <Komment
-            comment="Az én kommentem az első és remélem nem az utolsó."
-            name="Nagy Lajos"
-            image="/HomeTaco.jpg"
-          />
-          <Komment
-            comment="Az én kommentem az első és remélem nem az utolsó."
-            name="Nagy Lajos"
-            image="/HomeTaco.jpg"
-          />
-          <Komment
-            comment="Az én kommentem az első és remélem nem az utolsó."
-            name="Nagy Lajos"
-            image="/HomeTaco.jpg"
-          />
+          {/** Itt renderelődnek a kommentek. Lehet hogy szabni kéne nekik valami határt. */}
+          {post.comments.map(cmnt => <Komment key={cmnt.id} comment={cmnt} />)}
         </div>
+
+
         <div className=" border-2 rounded-md border-grey sm:w-2/6 w-full bg-white mx-auto p-1 mt-3 mb-2">
           <h1 className="text-sm p-1 mb-1 text-black">Hozzászólásod:</h1>
           <div className="flex">
@@ -75,7 +58,7 @@ function Poszt({ szoveg, cim, category }: props) {
                   <path
                     d="M30 50 H70 M50 30 V70"
                     stroke="grey"
-                    stroke-width="10"
+                    strokeWidth="10"
                   />
                 </svg>
               </button>

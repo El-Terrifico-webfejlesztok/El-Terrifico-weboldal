@@ -22,5 +22,4 @@
       calc(var(--s) / 2);
   background-size: var(--s) var(--s);
 
-  padding-bottom: 280px;
 }

@@ -1237,10 +1237,11 @@ Ez az API végpont lehetővé teszi bejegyzések keresését a megadott keresés
 			"id": 1,
 			"title": "Bejegyzés Címe",
 			"text": "Bejegyzés szövege...",
+			"category": "Mexikói",
 			"user": {
 				"id": 123,
 				"username": "felhasznalonev",
-				"email": "felhasznalo@email.com"
+				"image": "public/profile_images/emberkeképe"
 			},
 			"comments": [
 				{
@@ -1249,7 +1250,7 @@ Ez az API végpont lehetővé teszi bejegyzések keresését a megadott keresés
 					"user": {
 						"id": 456,
 						"username": "masikfelhasznalo",
-						"email": "masik@email.com"
+						"image": "public/profile_images/emberkeképe"
 					},
 					"created_at": "2024-02-20T12:30:45Z"
 				}
@@ -1264,34 +1265,43 @@ Ez az API végpont lehetővé teszi bejegyzések keresését a megadott keresés
 
 -   **Hiba Válaszok:**
 
+	-   **HTTP Státuszkód: 400 Internal Server Error:**
+		```json
+		"Hibás lekérdezési paraméterek"
+		```
 	-   **HTTP Státuszkód: 500 Internal Server Error:**
 		```json
 		"Hiba a posztok keresése közben"
 		```
+
 **Példa Használat**:
 
 - **Kérés:**
 	```typescript
-	const searchPosts = async (query: string, category: string, count: number, page: number) => {
+	const searchPosts = async (query?: string, category?: string, count?: number, page?: number) => {
 		try {
-			const response = await fetch(`/api/post/search?
-			query=${query}&category=${category}&count=${count}&page=${page}`, 
-			{
-				method: 'GET',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-			});
+		// Query paraméterek megépítése
+		const queryParams = new URLSearchParams();
+		if (query) queryParams.append('query', query);
+		if (category) queryParams.append('category', category);
+		if (count) queryParams.append('count', count.toString());
+		if (page) queryParams.append('page', page.toString());
 
-			if (!response.ok) {
-				throw new Error("Sikertelen posztkeresés");
-			}
+		const response = await fetch(`/api/post/search?${queryParams.toString()}`, {
+			method: 'GET',
+			headers: {
+			'Content-Type': 'application/json',
+			},
+		});
 
-			const responseData = await response.json();
-			console.log(responseData);
+		if (!response.ok) {
+			throw new Error("Sikertelen posztkeresés");
 		}
-		catch (error) {
-			console.error(error.message);
+
+		const responseData: PostType[] = await response.json();
+		console.log(responseData);
+		} catch (error) {
+		console.error(error);
 		}
 	};
 	```
