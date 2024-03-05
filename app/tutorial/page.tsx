@@ -116,7 +116,7 @@ function Tutorial() {
                 <p className="mb-4">
                   Miután megtaláltad a kívánt terméket a <b>kosár gomb</b>ra
                   kattintva bele teheted azt a kosaradba. Ha többet szeretnél
-                  belőle, akkor a megjelenő "+", illetve "-" gombokkal tudod
+                  belőle, akkor a megjelenő +, illetve - gombokkal tudod
                   növelni, valamint csökkenteni a termék mennyiségét. Miután ezt
                   megtetted az összes terméknél, amit meg szeretnél vásárolni,
                   akkor a <b>képernyő jobb felső sarkában</b> a profilkép
