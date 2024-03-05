@@ -1208,3 +1208,100 @@ Ez az API végpont lehetővé teszi egy rendelés lemondását az azonosító al
 		}
 	};
 	```
+
+### Poszt Keresés API
+
+**Végpont:** `GET /api/post/search`
+
+**Leírás:**\
+Ez az API végpont lehetővé teszi bejegyzések keresését a megadott keresési feltételek alapján, beleértve a címét, szövegét és kategóriáját.
+
+**Kérés:**
+
+-   **Metódus:** GET
+-   **Végpont:** `/api/post/search`
+-   **URL Paraméterek:**
+	-   `query` (Opcionális): A keresési kifejezés, mely lehet a bejegyzés címében vagy szövegében (ha kategória benne van a kategóriát is bele veszi).
+	-   `category` (Opcionális): A kategória neve, amelybe a bejegyzés tartozik (ami nem felel meg ennek nem adja vissza).
+	-   `count` (Opcionális): A lekérdezés során visszaadott bejegyzések száma oldalanként (alapértelmezett: 10).
+	-   `page` (Opcionális): Az oldalszám a lapozáshoz (alapértelmezett: 1).
+	- (Ha nincs megadva semmi visszaadja a legújabb 10 posztot)
+
+
+**Válasz:**
+
+-   **Sikeres Válasz (HTTP Státuszkód: 200 OK):**
+	```json
+	[
+		{
+			"id": 1,
+			"title": "Bejegyzés Címe",
+			"text": "Bejegyzés szövege...",
+			"category": "Mexikói",
+			"user": {
+				"id": 123,
+				"username": "felhasznalonev",
+				"image": "public/profile_images/emberkeképe"
+			},
+			"comments": [
+				{
+					"id": 1,
+					"text": "Hozzászólás szövege...",
+					"user": {
+						"id": 456,
+						"username": "masikfelhasznalo",
+						"image": "public/profile_images/emberkeképe"
+					},
+					"created_at": "2024-02-20T12:30:45Z"
+				}
+				// ... További hozzászólások
+			],
+			"created_at": "2024-02-20T12:30:45Z",
+			"updated_at": "2024-02-21T10:15:30Z"
+		},
+	// ... További posztok
+	]
+	```
+
+-   **Hiba Válaszok:**
+
+	-   **HTTP Státuszkód: 400 Internal Server Error:**
+		```json
+		"Hibás lekérdezési paraméterek"
+		```
+	-   **HTTP Státuszkód: 500 Internal Server Error:**
+		```json
+		"Hiba a posztok keresése közben"
+		```
+
+**Példa Használat**:
+
+- **Kérés:**
+	```typescript
+	const searchPosts = async (query?: string, category?: string, count?: number, page?: number) => {
+		try {
+		// Query paraméterek megépítése
+		const queryParams = new URLSearchParams();
+		if (query) queryParams.append('query', query);
+		if (category) queryParams.append('category', category);
+		if (count) queryParams.append('count', count.toString());
+		if (page) queryParams.append('page', page.toString());
+
+		const response = await fetch(`/api/post/search?${queryParams.toString()}`, {
+			method: 'GET',
+			headers: {
+			'Content-Type': 'application/json',
+			},
+		});
+
+		if (!response.ok) {
+			throw new Error("Sikertelen posztkeresés");
+		}
+
+		const responseData: PostType[] = await response.json();
+		console.log(responseData);
+		} catch (error) {
+		console.error(error);
+		}
+	};
+	```

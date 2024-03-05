@@ -1,10 +1,35 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import styles from "./forumPage.module.css";
 import Poszt from "../components/forum/Poszt";
 import Footer from "../components/footer/Footer";
+import { getPostCategories } from "../server";
+
+export type UserType = {
+  id: number;
+  username: string;
+  image: string,
+};
+export type CommentType = {
+  id: number;
+  text: string;
+  User: UserType;
+  created_at: Date;
+  updated_at: Date;
+};
+export type PostType = {
+  id: number;
+  title: string;
+  text: string;
+  user: UserType;
+  category: string;
+  comments: CommentType[];
+  created_at: Date;
+  updated_at: Date;
+};
+
 
 const Forum = () => {
   const [isSuccessAlertOpen, setIsSuccessAlertOpen] = useState(false);
@@ -12,6 +37,8 @@ const Forum = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [postTitle, setPostTitle] = useState("");
   const [postContent, setPostContent] = useState("");
+  const [posts, setPosts] = useState<PostType[] | null>()
+  const [postCategories, setPostCategories] = useState<string[] | null>()
 
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
@@ -36,10 +63,55 @@ const Forum = () => {
     }
   };
 
+  useEffect(() => {
+
+
+    searchPosts('Mexik')
+    loadCategories()
+  }, [])
+
+  const loadCategories = async () => {
+    try {
+      {/** Itt kipróbáltam a server actionokat. Nem tűnnek rossznak, nem kell külön API-t írni ennek. */ }
+      const fetchedCategories = await getPostCategories();
+      setPostCategories(fetchedCategories);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const searchPosts = async (query?: string, category?: string, count?: number, page?: number) => {
+    try {
+      // Query paraméterek megépítése
+      const queryParams = new URLSearchParams();
+      if (query) queryParams.append('query', query);
+      if (category) queryParams.append('category', category);
+      if (count) queryParams.append('count', count.toString());
+      if (page) queryParams.append('page', page.toString());
+
+      const response = await fetch(`/api/post/search?${queryParams.toString()}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Sikertelen posztkeresés");
+      }
+
+      const responseData: PostType[] = await response.json();
+      setPosts(responseData);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+
   return (
     <>
       <div className={styles.forumOldal}>
-        <div className="navbar bg-success w-1/1 mx-auto shadow-sm rounded-md">
+        <div className="navbar bg-success w-1/1 mx-auto shadow-sm ">
           <div className="navbar-start">
             <h1 className="sm:text-lg text-md text-white font-bold uppercase sm:ml-4">
               Colegauno
@@ -56,13 +128,14 @@ const Forum = () => {
                     />
                   </div>
                 </div>
-                <select className="select select-bordered join-item">
-                  <option disabled selected>
-                    Szűrők
+                <select className="select select-bordered sm:join-item" defaultValue="">
+                  <option disabled value="">
+                    Szűrők...
                   </option>
-                  <option>Sci-fi</option>
-                  <option>Drama</option>
-                  <option>Action</option>
+                  {postCategories ?
+                    postCategories.map((category, index) => <option value={category} key={index}>{category}</option>)
+                    :
+                    <option value={"nothing at all it would seem"}></option>}
                 </select>
                 <div className="indicator">
                   <button className="btn join-item">Keresés</button>
@@ -77,8 +150,8 @@ const Forum = () => {
           </div>
         </div>
 
-        {/*Posts place*/}
-        <div className="bg-neutral-content sm:w-3/4 w-1/1 mx-auto pt-7 rounded-xl shadow-lg pb-4">
+        {/*Posztok helye*/}
+        <div className="min-h-[calc(100vh-409px)] bg-black bg-opacity-75 sm:w-100 w-1/1 mx-auto pt-7 shadow-lg pb-4">
           {/* hidden searchbar */}
           <div className={styles.hiddenSearch}>
             <div className="sm:join">
@@ -103,22 +176,13 @@ const Forum = () => {
               </div>
             </div>
           </div>
+          {/**Posztok renderelése */}
+          {posts ? posts.map(post => <Poszt key={post.id} post={post} />) : <div className="loading"></div>}
 
-          <Poszt
-            cim="Poszt címe"
-            szoveg="A legjobb poszt a világon, mert itt az ElTerrifico oldalán található.
-          Legyél része ennek a szuper, csodálatos szép és mesés oldalnak!"
-            category="Kategória"
-          />
-          <Poszt
-            cim="Poszt címe"
-            szoveg="A legjobb poszt a világon, mert itt az ElTerrifico oldalán található.
-          Legyél része ennek a szuper, csodálatos szép és mesés oldalnak!"
-            category="Kategória"
-          />
+
         </div>
 
-        {/* Toggle card */}
+        {/* Poszt létrehozása */}
         {isExpanded && (
           <div className="absolute inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-10">
             <div className="bg-neutral-content rounded-lg shadow-md p-4 md:w-1/2 lg:1/3">
@@ -203,7 +267,7 @@ const Forum = () => {
                   />
                 </svg>
                 <span>
-                  Sikertlene posztolás! Nincsen mindegyik mező kitöltve!
+                  Sikertelen posztolás! Nincsen mindegyik mező kitöltve!
                 </span>
               </div>
             )}
