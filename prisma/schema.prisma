@@ -21,6 +21,8 @@ model User {
   Review          Review[]
   ShippingAddress ShippingAddress[]
   CartItem        CartItem[]
+  Post            Post[]
+  Comment         Comment[]
 }
 
 model Product {
@@ -154,6 +156,43 @@ model CartItem {
 
   @@index([user_id], map: "user_id_fk_cart_item")
   @@index([product_id], map: "product_id_fk_cart_item")
+}
+
+model PostCategory {
+  id   Int    @id @default(autoincrement()) @db.UnsignedInt
+  name String @unique @db.VarChar(250)
+  Post Post[]
+}
+
+model Post {
+  id          Int      @id @default(autoincrement()) @db.UnsignedInt
+  title       String   @db.VarChar(250)
+  text        String   @db.Text
+  user_id     Int      @db.UnsignedInt
+  category_id Int      @db.UnsignedInt
+  created_at  DateTime @default(now()) @db.Timestamp(0)
+  updated_at  DateTime @default(now()) @db.Timestamp(0)
+
+  User     User         @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "user_id_fk_post")
+  Category PostCategory @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "category_id_fk_post")
+  Comment  Comment[]
+
+  @@index([user_id], map: "user_id_fk_post")
+  @@index([category_id], map: "category_id_fk_post")
+}
+
+model Comment {
+  id         Int      @id @default(autoincrement()) @db.UnsignedInt
+  text       String   @db.Text
+  user_id    Int      @db.UnsignedInt
+  post_id    Int      @db.UnsignedInt
+  created_at DateTime @default(now()) @db.Timestamp(0)
+  updated_at DateTime @default(now()) @db.Timestamp(0)
+  User       User     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "user_id_fk_comment")
+  Post       Post     @relation(fields: [post_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "post_id_fk_comment")
+
+  @@index([user_id], map: "user_id_fk_comment")
+  @@index([post_id], map: "post_id_fk_comment")
 }
 
 enum User_role {
