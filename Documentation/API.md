@@ -1209,8 +1209,8 @@ Ez az API végpont lehetővé teszi egy rendelés lemondását az azonosító al
 	};
 	```
 
-### Poszt Keresés API
-
+Poszt Keresés API
+---------------------------
 **Végpont:** `GET /api/post/search`
 
 **Leírás:**\
@@ -1306,8 +1306,8 @@ Ez az API végpont lehetővé teszi bejegyzések keresését a megadott keresés
 	};
 	```
 
-### Poszt Létrehozása API
-
+Poszt Létrehozása API
+---------------------------
 **Végpont:** `POST /api/post`
 
 **Leírás:**\
@@ -1398,6 +1398,99 @@ Ez az API végpont lehetővé teszi egy új poszt létrehozását a megadott cí
 
 		if (!response.ok) {
 			throw new Error("Sikertelen poszt létrehozás");
+		}
+
+		const responseData = await response.json();
+		console.log(responseData);
+		}
+		catch (error) {
+		console.error("A szerver nem érhető el", error);
+		}
+	};
+	```
+
+
+
+Hozzászólás Létrehozása API
+---------------------------
+**Végpont:** `POST /api/comment`
+
+**Leírás:**\
+Ez az API végpont lehetővé teszi új hozzászólás létrehozását egy adott poszthoz.
+
+**Hitelesítés:**
+
+-   **Szükséges:** Bejelentkezés.
+
+**Kérés:**
+
+-   **Metódus:** POST
+-   **Végpont:** `/api/comment`
+-   **Kérés Body (JSON):**
+
+	```json
+	{
+		"text": "Hozzászólás szövege...",
+		"postId": 123
+	}
+	```
+
+**Válasz:**
+
+-   **Sikeres Válasz (HTTP Státuszkód: 201 Created):**
+
+	```json
+	{
+		"id": 1,
+		"text": "Hozzászólás szövege...",
+		"user_id": 456,
+		"post_id": 123,
+		"created_at": "2024-02-20T12:30:45Z",
+		"updated_at": "2024-02-20T12:30:45Z"
+	}
+	```
+
+-   **Hiba Válaszok:**
+
+	-   **HTTP Státuszkód: 401 Unauthorized:**
+		```json
+		"A hozzászóláshoz be kell jelentkeznie"
+		```
+
+
+
+	-   **HTTP Státuszkód: 400 Bad Request:**
+		```json
+		"A hozzászólásnak legalább 1 karakternek kell lennie"
+		// Itt pontos hibakódot ad az API arról hogy mi rossz
+		```
+
+	-   **HTTP Státuszkód: 404 Not Found:**
+		```json
+		"A megadott poszt nem található"
+		```
+	-   **HTTP Státuszkód: 500 Internal Server Error:**
+		```json
+		"Hiba a hozzászólás létrehozása közben"`
+		```
+**Példa Használat**:
+-   **Kérés:**
+	```typescript
+	const createComment = async (commentData: CommentData) => {
+		try {
+		const response = await fetch('/api/comment', {
+			method: 'POST',
+			headers: {
+			'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+			text: commentData.text,
+			postId: commentData.postId,
+			}),
+		});
+
+		if (!response.ok) {
+			throw new Error("Sikertelen hozzászólás létrehozás");
 		}
 
 		const responseData = await response.json();

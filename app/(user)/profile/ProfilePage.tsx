@@ -10,6 +10,18 @@ import ProfileStats from '@/app/components/user/profile/ProfileStats';
 import OrderView from '@/app/components/user/order/OrderView';
 import Link from 'next/link';
 
+interface postStat {
+    id: number,
+    title: string,
+    created_at: Date,
+    updated_at: Date,
+}
+
+interface commentStat {
+    id: number,
+    created_at: Date,
+    updated_at: Date,
+}
 
 export interface userData {
     id: number;
@@ -21,6 +33,8 @@ export interface userData {
     Order: [Order];
     Payment: [Payment];
     Review: [Review];
+    Post: postStat[]
+    Comment: commentStat[]
     ShippingAddress: [ShippingAddress]
 }
 

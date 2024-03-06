@@ -43,7 +43,22 @@ export async function GET(req: NextRequest) {
                 ShippingAddress: true,
                 Payment: true,
                 Order: true,
-                Review: true
+                Review: true,
+                Post: {
+                    select:{
+                        id: true,
+                        title: true,
+                        created_at: true,
+                        updated_at: true,
+                    }
+                },
+                Comment: {
+                    select:{
+                        id: true,
+                        created_at: true,
+                        updated_at: true
+                    }
+                }
             },
         });
 
@@ -97,7 +112,7 @@ export async function PUT(req: NextRequest) {
             name: username,
             subject: "Adatmódosítás",
             body: compileRegisterTemplate(username, email, "Sikeres adatmódosítás", "Sikeresen módosította adatait az El Terrifico étterem weboldalán ezzel az email címmel! Köszönjük, hogy minket választott, és reméljük, hogy a legmegfelelőbb ételekkel tudjuk Önt szolgálni. Az oldalra visszatérhet a 'Vissza az oldalra' gombbal"),
-          });
+        });
 
         return NextResponse.json(responseData, { status: 200 });
     } catch (error) {

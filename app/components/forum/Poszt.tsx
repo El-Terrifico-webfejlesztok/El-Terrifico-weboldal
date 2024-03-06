@@ -35,6 +35,8 @@ const Poszt: React.FC<props> = ({ post }) => {
         </div>
 
 
+
+        {/** Hozzászólás */}
         <div className=" border-2 rounded-md border-grey sm:w-2/6 w-full bg-white mx-auto p-1 mt-3 mb-2">
           <h1 className="text-sm p-1 mb-1 text-black">Hozzászólásod:</h1>
           <div className="flex">
@@ -66,6 +68,9 @@ const Poszt: React.FC<props> = ({ post }) => {
             </div>
           </div>
         </div>
+
+
+
       </div>
     </div>
   );

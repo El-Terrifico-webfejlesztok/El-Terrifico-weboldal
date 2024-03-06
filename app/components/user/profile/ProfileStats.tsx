@@ -23,14 +23,14 @@ const ProfileStats: React.FC<StatProps> = ({ userdata }) => {
                 </div>
 
                 <div className="stat">
-                    <div className="stat-title">Értékelések</div>
-                    <div className="stat-value">{userdata.Review.length}</div>
+                    <div className="stat-title">Kommentek</div>
+                    <div className="stat-value">{userdata.Comment.length}</div>
                     <div className="stat-desc">Az értékeléseid száma</div>
                 </div>
 
                 <div className="stat">
                     <div className="stat-title">Posztok</div>
-                    <div className="stat-value">{userdata.Review.length}</div>
+                    <div className="stat-value">{userdata.Post.length}</div>
                     <div className="stat-desc">A posztjaid száma</div>
                 </div>
 
