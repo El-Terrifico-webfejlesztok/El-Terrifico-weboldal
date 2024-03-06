@@ -23,7 +23,8 @@ const Poszt: React.FC<props> = ({ post }) => {
       </div>
 
       <div className="collapse-content p-1">
-        <p className="bg-neutral-content border-2 border-grey p-4 rounded-lg text-black">
+        {/** Temporary anti-Söli measures (break all) */}
+        <p className="break-all bg-neutral-content border-2 border-grey p-4 rounded-lg text-black">
           {post.text}
         </p>
         <h1 className="text-lg font-medium my-5 ml-2">Hozzászólások:</h1>

@@ -1305,3 +1305,105 @@ Ez az API végpont lehetővé teszi bejegyzések keresését a megadott keresés
 		}
 	};
 	```
+
+### Poszt Létrehozása API
+
+**Végpont:** `POST /api/post`
+
+**Leírás:**\
+Ez az API végpont lehetővé teszi egy új poszt létrehozását a megadott címmel, szöveggel és kategóriával.
+
+**Hitelesítés:**
+
+-   **Szükséges:** Bejelentkezés.
+
+**Kérés:**
+
+-   **Metódus:** POST
+-   **Végpont:** `/api/post`
+-   **Kérés Body (JSON):**
+	```json
+	{
+		"title": "Poszt Címe",
+		"text": "Poszt szövege...",
+		"category": "Posztkategória"
+	}
+	```
+
+**Válasz:**
+
+-   **Sikeres Válasz (HTTP Státuszkód: 201 Created):**
+	```json
+	{
+		"id": 1,
+		"title": "Poszt Címe",
+		"text": "Poszt szövege...",
+		"user_id": 123,
+		"category_id": 456,
+		"created_at": "2024-02-20T12:30:45Z",
+		"updated_at": "2024-02-20T12:30:45Z"
+	}
+	```
+
+-   **Hiba Válaszok:**
+	-   **HTTP Státuszkód: 401 Unauthorized:**
+		```json
+		{
+			"A posztoláshoz be kell jelentkeznie"
+		}
+		```
+
+	-   **HTTP Státuszkód: 400 Bad Request:**
+		```json
+		{
+			"Hibás posztfeltöltési adatok"
+		}
+		```
+
+
+	-   **HTTP Státuszkód: 404 Not Found:**
+		```json
+		{
+			"Nincs ilyen posztkategória"
+		}
+		```
+
+
+	-   **HTTP Státuszkód: 500 Internal Server Error:**
+		```json
+		{
+			"Hiba a poszt létrehozása közben"
+		}
+		```
+
+
+**Példa Használat**:
+
+-   **Kérés:**	
+	```typescript
+	const createPost = async (postData: PostData) => {
+		try {
+		const response = await fetch('/api/post', {
+			method: 'POST',
+			headers: {
+			'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+			title: postData.title,
+			text: postData.text,
+			category: postData.category,
+			}),
+		});
+
+		if (!response.ok) {
+			throw new Error("Sikertelen poszt létrehozás");
+		}
+
+		const responseData = await response.json();
+		console.log(responseData);
+		}
+		catch (error) {
+		console.error("A szerver nem érhető el", error);
+		}
+	};
+	```
