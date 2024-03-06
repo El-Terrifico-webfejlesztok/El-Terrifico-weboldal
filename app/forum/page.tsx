@@ -6,6 +6,8 @@ import styles from "./forumPage.module.css";
 import Poszt from "../components/forum/Poszt";
 import Footer from "../components/footer/Footer";
 import { getPostCategories } from "../server";
+import { useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
 
 export type UserType = {
   id: number;
@@ -32,13 +34,24 @@ export type PostType = {
 
 
 const Forum = () => {
+  const router = useRouter()
+  const URLsearchParams = useSearchParams();
+  {/** Popup */ }
   const [isSuccessAlertOpen, setIsSuccessAlertOpen] = useState(false);
   const [isWarningAlertOpen, setIsWarningAlertOpen] = useState(false);
+
   const [isExpanded, setIsExpanded] = useState(false);
+
+  {/** Posztfeltöltés adatai */ }
   const [postTitle, setPostTitle] = useState("");
   const [postContent, setPostContent] = useState("");
+  const [postCategory, setPostCategory] = useState("");
+  const [postErrorMessage, setPostErrorMessage] = useState("")
+
+  {/** Posztkereséssel kapcsolatos változók */ }
   const [posts, setPosts] = useState<PostType[] | null>()
   const [postCategories, setPostCategories] = useState<string[] | null>()
+  const [loading, setLoading] = useState<boolean>(false)
 
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
@@ -47,26 +60,30 @@ const Forum = () => {
   const clearInputs = () => {
     setPostTitle("");
     setPostContent("");
+    setPostCategory("")
+    setPostErrorMessage("")
   };
 
-  const handleFeedback = () => {
-    if (postTitle === "" || postContent === "") {
+  const handleFeedback = (success: boolean) => {
+
+    if (!success) {
       setIsWarningAlertOpen(true);
       setTimeout(() => {
         setIsWarningAlertOpen(false);
-      }, 4000);
-    } else {
+      },
+        4000);
+    }
+    else {
       setIsSuccessAlertOpen(true);
       setTimeout(() => {
         setIsSuccessAlertOpen(false);
-      }, 4000);
+      },
+        4000);
     }
   };
 
   useEffect(() => {
-
-
-    searchPosts('Mexik')
+    searchPosts(URLsearchParams)
     loadCategories()
   }, [])
 
@@ -80,68 +97,132 @@ const Forum = () => {
     }
   };
 
-  const searchPosts = async (query?: string, category?: string, count?: number, page?: number) => {
-    try {
-      // Query paraméterek megépítése
-      const queryParams = new URLSearchParams();
-      if (query) queryParams.append('query', query);
-      if (category) queryParams.append('category', category);
-      if (count) queryParams.append('count', count.toString());
-      if (page) queryParams.append('page', page.toString());
+  const setPath = (queryParams: URLSearchParams) => {
+    // Build new URL with updated parameters
+    const newUrl = `/forum?${queryParams.toString()}`;
+    // Use router.push to update the URL
+    router.push(newUrl, { scroll: false });
+  };
 
-      const response = await fetch(`/api/post/search?${queryParams.toString()}`, {
+  const buildForumQuery = (query?: string, category?: string, count?: number, page?: number) => {
+    const queryParams = new URLSearchParams();
+    if (query) queryParams.append('query', query);
+    if (category) queryParams.append('category', category);
+    if (count) queryParams.append('count', count.toString());
+    if (page) queryParams.append('page', page.toString());
+    return queryParams
+  }
+  {/** Posztok keresése */ }
+  const handleSearch = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const formData = new FormData(event.currentTarget);
+    const query = formData.get('query') as string;
+    const category = formData.get('category') as string;
+
+    const queryParams = buildForumQuery(query, category, 10, 1);
+    searchPosts(queryParams);
+  };
+  const searchPosts = async (queryParams?: URLSearchParams) => {
+    setLoading(true)
+    try {
+      const response = await fetch(`/api/post/search?${queryParams ? queryParams!.toString() : ''}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
         },
       });
-
       if (!response.ok) {
         throw new Error("Sikertelen posztkeresés");
-      }
 
+      }
       const responseData: PostType[] = await response.json();
       setPosts(responseData);
+      queryParams ? setPath(queryParams) : null
+
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false)
     }
   };
 
+  {/** Posztok létrehozása */ }
+  const createPost = async (title: string, text: string, category: string) => {
+    setLoading(true)
+    console.log(title, text, category)
+    try {
+      if (!title || !text || !category) {
+        handleFeedback(false);
+        throw new Error("Nincs minden mező kitöltve")
+      }
+      const response = await fetch('/api/post', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          title: title,
+          text: text,
+          category: category,
+        }),
+      });
+
+      if (!response.ok) {
+        handleFeedback(false);
+        const responseData: string = await response.json();
+        setPostErrorMessage(responseData)
+        throw new Error("Sikertelen poszt létrehozás");
+      }
+      
+      searchPosts(buildForumQuery(title))
+      clearInputs();
+      setIsExpanded(false)
+      handleFeedback(true);
+    }
+    catch (error) {
+      console.error("A szerver nem érhető el", error);
+    }
+    finally {
+      setLoading(false)
+    }
+  };
 
   return (
     <>
       <div className={styles.forumOldal}>
         <div className="navbar bg-success w-1/1 mx-auto shadow-sm ">
           <div className="navbar-start">
-            <h1 className="sm:text-lg text-md text-white font-bold uppercase sm:ml-4">
+            <a className="sm:text-lg text-md text-white font-bold uppercase sm:ml-4" href="/forum">
               Colegauno
-            </h1>
+            </a>
           </div>
           <div className="navbar-center hidden lg:flex">
-            <div className="form-control">
+            <form className="form-control" name="searchform" onSubmit={handleSearch}>
               <div className="join">
                 <div>
                   <div>
                     <input
                       className="input input-bordered join-item"
                       placeholder="Keresés.."
+                      name="query"
                     />
                   </div>
                 </div>
-                <select className="select select-bordered sm:join-item" defaultValue="">
-                  <option disabled value="">
+                <select defaultValue="" name="category" className="select select-bordered sm:join-item" >
+                  <option value="">
                     Szűrők...
                   </option>
                   {postCategories ?
                     postCategories.map((category, index) => <option value={category} key={index}>{category}</option>)
                     :
-                    <option value={"nothing at all it would seem"}></option>}
+                    <option></option>}
                 </select>
                 <div className="indicator">
-                  <button className="btn join-item">Keresés</button>
+                  <button className="btn join-item w-24" type="submit"><span className={loading ? 'loading' : ''}>Keresés</span></button>
                 </div>
               </div>
-            </div>
+            </form>
           </div>
           <div className="navbar-end">
             <a className="btn p-0 sm:p-4 " onClick={toggleExpand}>
@@ -154,27 +235,26 @@ const Forum = () => {
         <div className="min-h-[calc(100vh-409px)] bg-black bg-opacity-75 sm:w-100 w-1/1 mx-auto pt-7 shadow-lg pb-4">
           {/* hidden searchbar */}
           <div className={styles.hiddenSearch}>
-            <div className="sm:join">
-              <div>
-                <div>
-                  <input
-                    className="input input-bordered sm:join-item"
-                    placeholder="Keresés.."
-                  />
-                </div>
+            <form className="sm:join" name="searchform" onSubmit={handleSearch}>
+
+              <div className="join">
+                <input
+                  className="input input-bordered join-item w-full "
+                  placeholder="Keresés.."
+                  name="query"
+                />
+                <select defaultValue="" name="category" className="select select-bordered join-item sm:float-none float-left" >
+                  <option value="">
+                    Szűrők...
+                  </option>
+                  {postCategories ?
+                    postCategories.map((category, index) => <option value={category} key={index}>{category}</option>)
+                    :
+                    <option></option>}
+                </select>
               </div>
-              <select className="select select-bordered sm:join-item">
-                <option disabled selected>
-                  Szűrők
-                </option>
-                <option>Sci-fi</option>
-                <option>Drama</option>
-                <option>Action</option>
-              </select>
-              <div className="indicator">
-                <button className="btn sm:join-item">Keresés</button>
-              </div>
-            </div>
+              <button className="btn w-64 join-item mt-2" type="submit"><span className={loading ? 'loading' : ''}>Keresés</span></button>
+            </form>
           </div>
           {/**Posztok renderelése */}
           {posts ? posts.map(post => <Poszt key={post.id} post={post} />) : <div className="loading"></div>}
@@ -187,9 +267,11 @@ const Forum = () => {
           <div className="absolute inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-10">
             <div className="bg-neutral-content rounded-lg shadow-md p-4 md:w-1/2 lg:1/3">
               <h3 className="text-lg font-semibold mb-2">Új poszt létrehozása</h3>
+
               <div className="label">
                 <span className="label-text">Cím:</span>
               </div>
+
               <input
                 type="text"
                 placeholder="Poszt címe"
@@ -197,16 +279,39 @@ const Forum = () => {
                 value={postTitle}
                 onChange={(e) => setPostTitle(e.target.value)}
               />
+
+
+              <div className="label">
+                <span className="label-text">Kategória:</span>
+              </div>
+
+              <select
+                name="category"
+                className="select select-bordered join-item sm:float-none float-left"
+                onChange={(e) => setPostCategory(e.target.value)}
+                defaultValue={""}
+              >
+                <option disabled hidden value={""}></option>
+                {postCategories ?
+                  postCategories.map((category, index) => <option value={category} key={index}>{category}</option>)
+                  :
+                  <option></option>}
+              </select>
+
+
               <div className="label">
                 <span className="label-text">Szöveg:</span>
               </div>
+
               <textarea
                 className="textarea textarea-bordered h-24 w-full"
                 placeholder="Mi jár a fejedben?"
                 value={postContent}
                 onChange={(e) => setPostContent(e.target.value)}
               ></textarea>
-              <div className="flex justify-between">
+
+
+              <div className="flex justify-between items-center">
                 <button
                   onClick={() => {
                     toggleExpand();
@@ -216,17 +321,18 @@ const Forum = () => {
                 >
                   Bezárás
                 </button>
+                <p className="mt-2 text-error">{postErrorMessage}</p>
                 <button
                   className="text-white hover:underline mt-2 btn btn-info "
                   onClick={() => {
-                    clearInputs();
-                    handleFeedback();
+                    createPost(postTitle, postContent, postCategory)
                   }}
                 >
-                  Küldés
+                  <span className={loading ? 'loading' : ''}>Küldés</span>
                 </button>
               </div>
             </div>
+            {/** Hibaüzenetek */}
             {isSuccessAlertOpen && (
               <div
                 role="alert"
@@ -267,7 +373,7 @@ const Forum = () => {
                   />
                 </svg>
                 <span>
-                  Sikertelen posztolás! Nincsen mindegyik mező kitöltve!
+                  Sikertelen posztolás!
                 </span>
               </div>
             )}

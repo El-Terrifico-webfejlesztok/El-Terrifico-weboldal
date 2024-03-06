@@ -23,7 +23,8 @@ const Poszt: React.FC<props> = ({ post }) => {
       </div>
 
       <div className="collapse-content p-1">
-        <p className="bg-neutral-content border-2 border-grey p-4 rounded-lg text-black">
+        {/** Temporary anti-Söli measures (break all) */}
+        <p className="break-all bg-neutral-content border-2 border-grey p-4 rounded-lg text-black">
           {post.text}
         </p>
         <h1 className="text-lg font-medium my-5 ml-2">Hozzászólások:</h1>
@@ -34,6 +35,8 @@ const Poszt: React.FC<props> = ({ post }) => {
         </div>
 
 
+
+        {/** Hozzászólás */}
         <div className=" border-2 rounded-md border-grey sm:w-2/6 w-full bg-white mx-auto p-1 mt-3 mb-2">
           <h1 className="text-sm p-1 mb-1 text-black">Hozzászólásod:</h1>
           <div className="flex">
@@ -65,6 +68,9 @@ const Poszt: React.FC<props> = ({ post }) => {
             </div>
           </div>
         </div>
+
+
+
       </div>
     </div>
   );

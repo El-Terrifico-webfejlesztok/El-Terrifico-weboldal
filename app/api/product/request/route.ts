@@ -80,6 +80,9 @@ export async function GET(req: NextRequest) {
             },
           },
           productId && { id: productId }, // Apply ID filtering if the 'id' query parameter is present
+          {
+            is_active: true, // A terméknek aktívnak kell lennie
+          },
         ].filter(Boolean) as ProductWhere[], // Remove undefined filters and cast to the defined type
       },
       // Include the related fields
