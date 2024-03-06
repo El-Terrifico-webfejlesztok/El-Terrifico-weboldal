@@ -1356,7 +1356,8 @@ Ez az API végpont lehetővé teszi egy új poszt létrehozását a megadott cí
 	-   **HTTP Státuszkód: 400 Bad Request:**
 		```json
 		{
-			"Hibás posztfeltöltési adatok"
+			"A címnek legalább 4 karakternek kell lennie" 
+			// Itt pontos hibakódot ad az API arról hogy mi rossz
 		}
 		```
 
