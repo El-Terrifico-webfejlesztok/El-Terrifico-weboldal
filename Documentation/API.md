@@ -1500,6 +1500,76 @@ Ez az API végpont lehetővé teszi egy adott poszt részletes lekérdezését a
 	};
 	```
 
+### Poszt Törlése API
+
+**Végpont:** `DELETE /api/post`
+
+**Leírás:**\
+Ez az API végpont lehetővé teszi egy poszt törlését az azonosítója alapján. Csak a poszt létrehozója vagy adminisztrátor jogosultsággal rendelkező felhasználó tudja törölni a posztot. A poszttal a hozzátartozó kommentek is automatikusan törlődnek
+
+**Hitelesítés:**
+
+-   **Szükséges:** 
+	- Bejelentkezés saját poszt törléséhez. 
+	- Adminos bejelentkezés akármelyik poszt törléséhez.
+
+**Kérés:**
+
+-   **Metódus:** DELETE
+-   **Végpont:** `/api/post`
+-   **URL Paraméterek:**
+	-   `id`: A törlendő poszt azonosítója.
+
+**Válasz:**
+
+-   **Sikeres Válasz (HTTP Státuszkód: 200 OK):**
+	```json
+	"A poszt sikeresen törölve lett"
+	```
+
+-   **Hiba Válaszok:**
+
+	-   **HTTP Státuszkód: 401 Unauthorized:**
+		```json
+		"Csak bejelentkezett felhasználók törlőhetnek posztokat"
+		```
+
+	-   **HTTP Státuszkód: 404 Not Found:**
+		```json
+		"Nem található ilyen poszt vagy nem törölheted"
+		```
+
+	-   **HTTP Státuszkód: 500 Internal Server Error:**
+		```json
+		"Hiba a poszt törlése közben"
+		```
+
+**Példa Használat**:
+
+-   **Kérés:**
+	```typescript
+	const deletePost = async (postId: number) => {
+		try {
+			const response = await fetch(`/api/post?id=${postId}`, {
+				method: 'DELETE',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			});
+
+			if (!response.ok) {
+				throw new Error("Sikertelen poszt törlés");
+			}
+
+			const responseData = await response.json();
+			console.log(responseData);
+		} catch (error) {
+			console.error(error.message);
+		}
+	};
+	```
+
+
 
 Hozzászólás Létrehozása API
 ---------------------------
