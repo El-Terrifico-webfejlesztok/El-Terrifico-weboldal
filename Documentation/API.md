@@ -1410,8 +1410,8 @@ Ez az API végpont lehetővé teszi egy új poszt létrehozását a megadott cí
 	```
 
 
-### Poszt Lekérése API
-
+Poszt Lekérése API
+---------------------------
 **Végpont:** `GET /api/post`
 
 **Leírás:**\
