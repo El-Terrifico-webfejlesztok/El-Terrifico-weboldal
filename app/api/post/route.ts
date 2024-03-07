@@ -66,3 +66,59 @@ export async function POST(req: NextRequest) {
     return NextResponse.json('Hiba a poszt létrehozása közben', { status: 500 });
   }
 }
+
+
+export async function GET(req: NextRequest) {
+  try {
+    const searchParams = req.nextUrl.searchParams;
+    const postID = parseInt(searchParams.get('id')?.toLowerCase() || '');
+
+    if (isNaN(postID)) {
+      return NextResponse.json('Nem létező vagy hibás poszt azonosító a kérésben', { status: 400 });
+    }
+
+    const post = await prisma.post.findUnique({
+      where: {
+        id: postID
+      },
+      include: {
+        Category: {
+          select: {
+            name: true
+          }
+        },
+        User: {
+          select: {
+            id: true,
+            username: true,
+            image: true,
+          }
+        },
+        Comment: {
+          select: {
+            id: true,
+            text: true,
+            User: {
+              select: {
+                id: true,
+                username: true,
+                image: true,
+              }
+            },
+            created_at: true,
+            updated_at: true
+          }
+        },
+      },
+    });
+
+    if (!post) {
+      return NextResponse.json('Nem található ilyen poszt', { status: 404 });
+    }
+
+    return NextResponse.json(post, { status: 200 });
+  } catch (error) {
+    console.error('Error retrieving post:', error);
+    return NextResponse.json('Hiba a poszt lekérése közben', { status: 500 });
+  }
+}

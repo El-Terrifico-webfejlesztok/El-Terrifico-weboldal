@@ -6,6 +6,35 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
+
+
+
+  /*A react-toastify színeket a daisyui színekkel megegyeztetjük itt */
+  /*
+
+  --toastify-color-light: oklch(var(--nc));
+  --toastify-color-dark: oklch(var(--nc));
+  --toastify-color-info: oklch(var(--in));
+  --toastify-color-success: oklch(var(--su));
+  --toastify-color-warning: oklch(var(--wa));
+  --toastify-color-error: oklch(var(--er));
+  --toastify-color-transparent: rgba(255, 255, 255, 0.7);
+
+  --toastify-icon-color-info: var(--toastify-color-info);
+  --toastify-icon-color-success: var(--toastify-color-success);
+  --toastify-icon-color-warning: var(--toastify-color-warning);
+  --toastify-icon-color-error: var(--toastify-color-error);
+
+
+  --toastify-text-color-info: #fff;
+  --toastify-text-color-success: #fff;
+  --toastify-text-color-warning: #fff;
+  --toastify-text-color-error: #fff;
+
+  --toastify-spinner-color: #616161;
+  --toastify-spinner-color-empty-area: #e0e0e0;
+  
+  */
 }
 
 p {

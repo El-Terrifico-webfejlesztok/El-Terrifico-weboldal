@@ -7,7 +7,6 @@ import Poszt from "../components/forum/Poszt";
 import Footer from "../components/footer/Footer";
 import { getPostCategories } from "../server";
 import { useRouter, useSearchParams } from "next/navigation";
-import Link from "next/link";
 
 export type UserType = {
   id: number;

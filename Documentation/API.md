@@ -1410,6 +1410,96 @@ Ez az API végpont lehetővé teszi egy új poszt létrehozását a megadott cí
 	```
 
 
+### Poszt Lekérése API
+
+**Végpont:** `GET /api/post`
+
+**Leírás:**\
+Ez az API végpont lehetővé teszi egy adott poszt részletes lekérdezését az azonosító alapján, beleértve a hozzászólásokat, a kategóriát és a felhasználói információkat.
+
+**Kérés:**
+
+-   **Metódus:** GET
+-   **Végpont:** `/api/post`
+-   **URL Paraméterek:**
+	-   `id` (Kötelező): A poszt azonosítója.
+
+**Válasz:**
+
+-   **Sikeres Válasz (HTTP Státuszkód: 200 OK):**
+	```json
+	{
+		"id": 1,
+		"title": "Poszt Címe",
+		"text": "Poszt szövege...",
+		"created_at": "2024-02-20T12:30:45Z",
+		"updated_at": "2024-02-20T14:45:30Z",
+		"Category": {
+			"name": "Kategória Neve"
+		},
+		"User": {
+			"id": 123,
+			"username": "Felhasználói név",
+			"image": "felhasznalo-kep.jpg"
+		},
+		"Comment": [
+			{
+				"id": 1,
+				"text": "Hozzászólás szövege...",
+				"User": {
+					"id": 456,
+					"username": "Hozzászóló Felhasználó",
+					"image": "hozzaszolo-kep.jpg"
+				},
+				"created_at": "2024-02-20T13:15:00Z",
+				"updated_at": "2024-02-20T13:45:30Z"
+			},
+			// ... További hozzászólások
+		]
+	}
+	```
+-   **Hiba Válaszok:**
+
+	-   **HTTP Státuszkód: 400 Bad Request:**
+		```json
+		"Nem létező vagy hibás poszt azonosító a kérésben"
+		```
+	-   **HTTP Státuszkód: 404 Not Found:**
+		```json
+		"Nem található ilyen poszt"
+		```
+	-   **HTTP Státuszkód: 500 Internal Server Error:**
+		```json
+		"Hiba a poszt lekérése közben"
+		```
+
+**Példa Használat**:
+
+-   **Kérés:**
+
+	```typescript
+	const getPostDetails = async (postId: number) => {
+		try {
+		const response = await fetch(`/api/post?id=${postId}`, {
+			method: 'GET',
+			headers: {
+			'Content-Type': 'application/json',
+			},
+		});
+
+		if (!response.ok) {
+			throw new Error("Sikertelen poszt lekérdezés");
+		}
+
+		const responseData = await response.json();
+		console.log(responseData);
+		}
+		catch (error) {
+		console.error("A szerver nem érhető el", error);
+		}
+	};
+	```
+
 
 Hozzászólás Létrehozása API
 ---------------------------
@@ -1478,7 +1568,7 @@ Ez az API végpont lehetővé teszi új hozzászólás létrehozását egy adott
 	```typescript
 	const createComment = async (commentData: CommentData) => {
 		try {
-		const response = await fetch('/api/comment', {
+		const response = await fetch('/api/post/comment', {
 			method: 'POST',
 			headers: {
 			'Content-Type': 'application/json',
