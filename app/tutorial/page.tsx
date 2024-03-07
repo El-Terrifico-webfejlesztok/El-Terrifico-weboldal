@@ -46,6 +46,96 @@ function Tutorial() {
 
         <div className="collapse bordered border-4 border-base-100 my-4">
           <input type="checkbox" />
+          <div className="collapse-title text-xl font-medium">Profil oldal</div>
+          <div className="collapse-content">
+            <div className="collapse bg-base-100 my-3">
+              <input type="checkbox" />
+              <div className="collapse-title text-xl font-medium">
+                Adatok módosítása
+              </div>
+              <div className="collapse-content">
+                <p>Ez csak akkor érvényes, ha be vagy jelentkezve!!!</p>
+                <p>
+                  Kattints a képernyő jobb felső sarkában lévő profilképedre.
+                  Ezután a lenyíló menüsorból válaszd ki{" "}
+                  <b>Beállítások menüpont</b>ot. Az oldal alján három gomb
+                  található, amelyek sorban a következők:{" "}
+                  <b>Adatok módosítása</b>, Jelszó megváltoztatása, Profilkép
+                  megváltoztatása. Kattints az Adatok módosítása gombra. Ekkor
+                  megjelenő űrlapon meg tudod változtatni a felhasználó nevedet
+                  illetve e-mail címedet. Miután átírtad kattints az{" "}
+                  <b>Adatok elmentése gomb</b>ra. A sikeres mentés után újra be
+                  kell jelentkezni.
+                </p>
+              </div>
+            </div>
+            <div className="collapse bg-base-100 my-3">
+              <input type="checkbox" />
+              <div className="collapse-title text-xl font-medium">
+                Jelszó megváltoztatása
+              </div>
+              <div className="collapse-content">
+                <p>Ez csak akkor érvényes, ha be vagy jelentkezve!!!</p>
+                <p>
+                  Kattints a képernyő jobb felső sarkában lévő profilképedre.
+                  Ezután a lenyíló menüsorból válaszd ki{" "}
+                  <b>Beállítások menüpont</b>ot. Az oldal alján három gomb
+                  található, amelyek sorban a következők: Adatok módosítása,{" "}
+                  <b>Jelszó megváltoztatása</b>, Profilkép megváltoztatása.
+                  Kattints az Jelszó megváltoztatása gombra. Ekkor megjelenő
+                  űrlapon meg tudod változtatni a jelszavadat a jelenlegi
+                  jelszavad és az új, kívánt jelszó beírásával. Miután beírtad
+                  kattints az <b>Jelszó megváltoztatása gomb</b>ra.
+                </p>
+              </div>
+            </div>
+            <div className="collapse bg-base-100 my-3">
+              <input type="checkbox" />
+              <div className="collapse-title text-xl font-medium">
+                Profilkép megváltoztatása
+              </div>
+              <div className="collapse-content">
+                <p>Ez csak akkor érvényes, ha be vagy jelentkezve!!!</p>
+                <p>
+                  Kattints a képernyő jobb felső sarkában lévő profilképedre.
+                  Ezután a lenyíló menüsorból válaszd ki{" "}
+                  <b>Beállítások menüpont</b>ot. Az oldal alján három gomb
+                  található, amelyek sorban a következők: Adatok módosítása,
+                  Jelszó megváltoztatása, <b>Profilkép megváltoztatása</b>.
+                  Kattints az Jelszó megváltoztatása gombra. Kattints az
+                  Profilkép megváltoztatása gombra. Ekkor megjelenik a jelenlegi
+                  profilképed. Kattints rá és válaszd ki a kívánt profilképet.
+                  Miután ezt megtetted kattints a <b>Kép feltöltése gomb</b>ra.
+                  A sikeres feltöltés után újra be kell jelentkezned!
+                </p>
+              </div>
+            </div>
+            <div className="collapse bg-base-100 my-3">
+              <input type="checkbox" />
+              <div className="collapse-title text-xl font-medium">
+                Szállítási cím beállításai
+              </div>
+              <div className="collapse-content">
+                <p>Ez csak akkor érvényes, ha be vagy jelentkezve!!!</p>
+                <p>
+                  Kattints a képernyő jobb felső sarkában lévő profilképedre.
+                  Ezután a lenyíló menüsorból válaszd ki{" "}
+                  <b>Beállítások menüpont</b>ot. Az oldalon megjelenő{" "}
+                  <b>Szállítási cím hozzáadása gomb</b>ra kattints rá. Ekkor
+                  megjelenő űrlapot töltsd ki a megfelelő adatokkal. Ezután
+                  kattints a <b>Feltöltés gomb</b>ra. Ekkor meg fog jeleni a
+                  feltöltött cím a Szállítási címek alatt. Ha rá kattintasz,
+                  akkor a megfelelő gombra rányomva tudod azt a címet{" "}
+                  <b>törölni</b>, <b>módosítani</b>, vagy{" "}
+                  <b>alapértelmezetté állítani</b> (ha nem alapértelmezett már).
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="collapse bordered border-4 border-base-100 my-4">
+          <input type="checkbox" />
           <div className="collapse-title text-xl font-medium">Főoldal</div>
           <div className="collapse-content">
             <p>
