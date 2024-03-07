@@ -96,7 +96,7 @@ export async function POST(req: NextRequest) {
       body: compileRegisterTemplate(
         name,
         mail,
-        "Sikeres eendelés",
+        "Sikeres rendelés",
         "Sikeresen elküldte rendelését az El Terrifico étterem weboldalán ezzel az email címmel! Köszönjük, hogy minket választott, és reméljük, hogy a legmegfelelőbb ételekkel tudjuk Önt szolgálni. A rendelése részleteit a profilképére, utána a Beállítások menüpontra kattintva megtalálja az oldalon Rendelések cím alatt. Az oldalra visszatérhet a 'Vissza az oldalra' gombbal"
       ),
     });
