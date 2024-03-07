@@ -71,26 +71,63 @@ const Poszt: React.FC<props> = ({ post , reload}) => {
     createComment()
   };
 
+  const formatDate = (dateString: string): string => {
+    const date = new Date(dateString);
+    const formattedDate = date
+      .toLocaleDateString("hu-HU", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      })
+      .replace(/\//g, "-"); // Replace slashes with hyphens
+
+    const formattedTime = date.toLocaleTimeString("hu-HU", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false, // 24-hour format
+    });
+
+    return `${formattedDate}, ${formattedTime}`;
+  };
+  
+
   return (
     <div className="collapse collapse-arrow bg-base-300 sm:w-5/6 w-full mx-auto sm:mb-3 mb-5">
       <input type="checkbox" />
-      <div className="collapse-title text-xl font-medium">
-        <div>{post.title}</div> <div className=" text-sm text-info font-normal">#{post.category}</div>
+      <div className="collapse-title text-xl font-medium flex justify-between items-center">
+        <div>
+          <div><p>{post.title}</p></div>
+          <div className="text-sm text-info font-normal">#{post.category}</div>
+        </div>
+
+        <div className="flex items-center">
+          <div tabIndex={0} className="circle avatar mr-2">
+            <span className="mr-1">{post.user.username}</span>
+            <div className="w-10 rounded-full max-h-10">
+              <img
+                alt="Profilkép"
+                title={post.user.username}
+                src={`https://terrifico.zapto.org/${post.user.image}`}
+              />
+            </div>
+          </div>
+        </div>
       </div>
 
       <div className="collapse-content p-1">
+        <p className="m-4">Készült: {formatDate(post.created_at.toDateString())}</p>
         {/** Temporary anti-Söli measures (break all) */}
-        <p className="break-all bg-neutral-content border-2 border-grey p-4 rounded-lg text-black">
-          {post.text}
-        </p>
+        <div className="bg-neutral-content border-2 border-grey p-3 rounded-lg">
+          <p className=" text-black">{post.text}</p>
+        </div>
         <h1 className="text-lg font-medium my-5 ml-2">Hozzászólások:</h1>
         {/*Comments*/}
-        <div className="h-48 overflow-x-auto whitespace-no-wrap">
+        <div className="max-h-48 overflow-x-auto whitespace-no-wrap">
           {/** Itt renderelődnek a kommentek. Lehet hogy szabni kéne nekik valami határt. */}
-          {post.comments.map(cmnt => <Komment key={cmnt.id} comment={cmnt} />)}
+          {post.comments.map((cmnt) => (
+            <Komment key={cmnt.id} comment={cmnt} />
+          ))}
         </div>
-
-
 
         {/** Hozzászólás */}
         <div className=" border-2 rounded-md border-grey sm:w-2/6 w-full bg-white mx-auto p-1 mt-3 mb-2">
@@ -122,12 +159,9 @@ const Poszt: React.FC<props> = ({ post , reload}) => {
             </div>
           </div>
         </div>
-
-
-
       </div>
     </div>
   );
-}
+};
 
 export default Poszt;
