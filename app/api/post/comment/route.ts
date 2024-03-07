@@ -62,3 +62,67 @@ export async function POST(req: NextRequest) {
     return NextResponse.json('Hiba a hozzászólás létrehozása közben', { status: 500 });
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+export async function DELETE(req: NextRequest) {
+  try {
+    // Check if the user is authenticated
+    const searchParams = req.nextUrl.searchParams;
+    const commentID = parseInt(searchParams.get('id')?.toLowerCase() || '');
+    let userID
+
+    const session = await getServerSession(authOptions);
+    if (!session) {
+      return NextResponse.json('Csak bejelentkezett felhasználók törlöhetnek hozzászólásokat', { status: 401 });
+    }
+    // User ID meghatározása a prisma queryhez
+    if (session.user!.role === 'admin') {
+      userID = undefined
+    }
+    else {
+      userID = parseInt(session.user!.id)
+    }
+
+    // Check if the post exists
+    const post = await prisma.comment.findUnique({
+      where: {
+        id: commentID,
+        user_id: userID
+
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    if (!post) {
+      return NextResponse.json('Nem található ilyen hozzászólás vagy nem törölheted', { status: 404 });
+    }
+
+    // Delete the comment
+    await prisma.comment.delete({
+      where: {
+        id: commentID,
+        user_id: userID
+      },
+    });
+
+    return NextResponse.json('A hozzászólás sikeresen törölve lett', { status: 200 });
+  } catch (error) {
+    console.error('Error deleting post:', error);
+    return NextResponse.json('Hiba a hozzászólás törlése közben', { status: 500 });
+  }
+}
