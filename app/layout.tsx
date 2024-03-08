@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "./globals.css";
 import NavBar from "./components/navbar/NavBar";
-import Footer from "./components/footer/Footer";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/ReactToastify.css'
 // sessionok
 import { getServerSession } from "next-auth";
 import SessionProvider from "./components/SessionProvider";
+
+import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -28,6 +30,18 @@ export default async function RootLayout({
           <NavBar />
           <main>{children}</main>
         </SessionProvider>
+        {/** Toast container a toasthoz */}
+        <ToastContainer
+          position="top-center"
+          autoClose={2500}
+          hideProgressBar={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="colored"
+        />
       </body>
     </html>
   );

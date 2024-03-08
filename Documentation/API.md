@@ -702,7 +702,371 @@ Ez a API végpont lehetővé teszi egy felhasználóhoz tartozó szállítási c
 	};
 	```
 
+# Fórum APIk
+Ez a szekció a fórum részről szól
+## Poszt APIk
 
+Itt a fórumon belül a posztokkal kapcsolatos APIk találahtók
+
+Poszt Keresés API
+---------------------------
+**Végpont:** `GET /api/post/search`
+
+**Leírás:**\
+Ez az API végpont lehetővé teszi bejegyzések keresését a megadott keresési feltételek alapján, beleértve a címét, szövegét és kategóriáját.
+
+**Kérés:**
+
+-   **Metódus:** GET
+-   **Végpont:** `/api/post/search`
+-   **URL Paraméterek:**
+	-   `query` (Opcionális): A keresési kifejezés, mely lehet a bejegyzés címében vagy szövegében (ha kategória benne van a kategóriát is bele veszi).
+	-   `category` (Opcionális): A kategória neve, amelybe a bejegyzés tartozik (ami nem felel meg ennek nem adja vissza).
+	-   `count` (Opcionális): A lekérdezés során visszaadott bejegyzések száma oldalanként (alapértelmezett: 10).
+	-   `page` (Opcionális): Az oldalszám a lapozáshoz (alapértelmezett: 1).
+	- (Ha nincs megadva semmi visszaadja a legújabb 10 posztot)
+
+
+**Válasz:**
+
+-   **Sikeres Válasz (HTTP Státuszkód: 200 OK):**
+	```json
+	[
+		{
+			"id": 1,
+			"title": "Bejegyzés Címe",
+			"text": "Bejegyzés szövege...",
+			"category": "Mexikói",
+			"user": {
+				"id": 123,
+				"username": "felhasznalonev",
+				"image": "public/profile_images/emberkeképe"
+			},
+			"comments": [
+				{
+					"id": 1,
+					"text": "Hozzászólás szövege...",
+					"user": {
+						"id": 456,
+						"username": "masikfelhasznalo",
+						"image": "public/profile_images/emberkeképe"
+					},
+					"created_at": "2024-02-20T12:30:45Z"
+				}
+				// ... További hozzászólások
+			],
+			"created_at": "2024-02-20T12:30:45Z",
+			"updated_at": "2024-02-21T10:15:30Z"
+		},
+	// ... További posztok
+	]
+	```
+
+-   **Hiba Válaszok:**
+
+	-   **HTTP Státuszkód: 400 Internal Server Error:**
+		```json
+		"Hibás lekérdezési paraméterek"
+		```
+	-   **HTTP Státuszkód: 500 Internal Server Error:**
+		```json
+		"Hiba a posztok keresése közben"
+		```
+
+**Példa Használat**:
+
+- **Kérés:**
+	```typescript
+	const searchPosts = async (query?: string, category?: string, count?: number, page?: number) => {
+		try {
+		// Query paraméterek megépítése
+		const queryParams = new URLSearchParams();
+		if (query) queryParams.append('query', query);
+		if (category) queryParams.append('category', category);
+		if (count) queryParams.append('count', count.toString());
+		if (page) queryParams.append('page', page.toString());
+
+		const response = await fetch(`/api/post/search?${queryParams.toString()}`, {
+			method: 'GET',
+			headers: {
+			'Content-Type': 'application/json',
+			},
+		});
+
+		if (!response.ok) {
+			throw new Error("Sikertelen posztkeresés");
+		}
+
+		const responseData: PostType[] = await response.json();
+		console.log(responseData);
+		} catch (error) {
+		console.error(error);
+		}
+	};
+	```
+
+Poszt Létrehozása API
+---------------------------
+**Végpont:** `POST /api/post`
+
+**Leírás:**\
+Ez az API végpont lehetővé teszi egy új poszt létrehozását a megadott címmel, szöveggel és kategóriával.
+
+**Hitelesítés:**
+
+-   **Szükséges:** Bejelentkezés.
+
+**Kérés:**
+
+-   **Metódus:** POST
+-   **Végpont:** `/api/post`
+-   **Kérés Body (JSON):**
+	```json
+	{
+		"title": "Poszt Címe",
+		"text": "Poszt szövege...",
+		"category": "Posztkategória"
+	}
+	```
+
+**Válasz:**
+
+-   **Sikeres Válasz (HTTP Státuszkód: 201 Created):**
+	```json
+	{
+		"id": 1,
+		"title": "Poszt Címe",
+		"text": "Poszt szövege...",
+		"user_id": 123,
+		"category_id": 456,
+		"created_at": "2024-02-20T12:30:45Z",
+		"updated_at": "2024-02-20T12:30:45Z"
+	}
+	```
+
+-   **Hiba Válaszok:**
+	-   **HTTP Státuszkód: 401 Unauthorized:**
+		```json
+		{
+			"A posztoláshoz be kell jelentkeznie"
+		}
+		```
+
+	-   **HTTP Státuszkód: 400 Bad Request:**
+		```json
+		{
+			"A címnek legalább 4 karakternek kell lennie" 
+			// Itt pontos hibakódot ad az API arról hogy mi rossz
+		}
+		```
+
+
+	-   **HTTP Státuszkód: 404 Not Found:**
+		```json
+		{
+			"Nincs ilyen posztkategória"
+		}
+		```
+
+
+	-   **HTTP Státuszkód: 500 Internal Server Error:**
+		```json
+		{
+			"Hiba a poszt létrehozása közben"
+		}
+		```
+
+
+**Példa Használat**:
+
+-   **Kérés:**	
+	```typescript
+	const createPost = async (postData: PostData) => {
+		try {
+		const response = await fetch('/api/post', {
+			method: 'POST',
+			headers: {
+			'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+			title: postData.title,
+			text: postData.text,
+			category: postData.category,
+			}),
+		});
+
+		if (!response.ok) {
+			throw new Error("Sikertelen poszt létrehozás");
+		}
+
+		const responseData = await response.json();
+		console.log(responseData);
+		}
+		catch (error) {
+		console.error("A szerver nem érhető el", error);
+		}
+	};
+	```
+
+
+Poszt Lekérése API
+---------------------------
+**Végpont:** `GET /api/post`
+
+**Leírás:**\
+Ez az API végpont lehetővé teszi egy adott poszt részletes lekérdezését az azonosító alapján, beleértve a hozzászólásokat, a kategóriát és a felhasználói információkat.
+
+**Kérés:**
+
+-   **Metódus:** GET
+-   **Végpont:** `/api/post`
+-   **URL Paraméterek:**
+	-   `id` (Kötelező): A poszt azonosítója.
+
+**Válasz:**
+
+-   **Sikeres Válasz (HTTP Státuszkód: 200 OK):**
+	```json
+	{
+		"id": 1,
+		"title": "Poszt Címe",
+		"text": "Poszt szövege...",
+		"created_at": "2024-02-20T12:30:45Z",
+		"updated_at": "2024-02-20T14:45:30Z",
+		"Category": {
+			"name": "Kategória Neve"
+		},
+		"User": {
+			"id": 123,
+			"username": "Felhasználói név",
+			"image": "felhasznalo-kep.jpg"
+		},
+		"Comment": [
+			{
+				"id": 1,
+				"text": "Hozzászólás szövege...",
+				"User": {
+					"id": 456,
+					"username": "Hozzászóló Felhasználó",
+					"image": "hozzaszolo-kep.jpg"
+				},
+				"created_at": "2024-02-20T13:15:00Z",
+				"updated_at": "2024-02-20T13:45:30Z"
+			},
+			// ... További hozzászólások
+		]
+	}
+	```
+-   **Hiba Válaszok:**
+
+	-   **HTTP Státuszkód: 400 Bad Request:**
+		```json
+		"Nem létező vagy hibás poszt azonosító a kérésben"
+		```
+	-   **HTTP Státuszkód: 404 Not Found:**
+		```json
+		"Nem található ilyen poszt"
+		```
+	-   **HTTP Státuszkód: 500 Internal Server Error:**
+		```json
+		"Hiba a poszt lekérése közben"
+		```
+
+**Példa Használat**:
+
+-   **Kérés:**
+
+	```typescript
+	const getPostDetails = async (postId: number) => {
+		try {
+		const response = await fetch(`/api/post?id=${postId}`, {
+			method: 'GET',
+			headers: {
+			'Content-Type': 'application/json',
+			},
+		});
+
+		if (!response.ok) {
+			throw new Error("Sikertelen poszt lekérdezés");
+		}
+
+		const responseData = await response.json();
+		console.log(responseData);
+		}
+		catch (error) {
+		console.error("A szerver nem érhető el", error);
+		}
+	};
+	```
+
+Poszt Törlése API
+---------------------------
+**Végpont:** `DELETE /api/post`
+
+**Leírás:**\
+Ez az API végpont lehetővé teszi egy poszt törlését az azonosítója alapján. Csak a poszt létrehozója vagy adminisztrátor jogosultsággal rendelkező felhasználó tudja törölni a posztot. A poszttal a hozzátartozó kommentek is automatikusan törlődnek
+
+**Hitelesítés:**
+
+-   **Szükséges:** 
+	- Bejelentkezés saját poszt törléséhez. 
+	- Adminos bejelentkezés akármelyik poszt törléséhez.
+
+**Kérés:**
+
+-   **Metódus:** DELETE
+-   **Végpont:** `/api/post`
+-   **URL Paraméterek:**
+	-   `id`: A törlendő poszt azonosítója.
+
+**Válasz:**
+
+-   **Sikeres Válasz (HTTP Státuszkód: 200 OK):**
+	```json
+	"A poszt sikeresen törölve lett"
+	```
+
+-   **Hiba Válaszok:**
+
+	-   **HTTP Státuszkód: 401 Unauthorized:**
+		```json
+		"Csak bejelentkezett felhasználók törlőhetnek posztokat"
+		```
+
+	-   **HTTP Státuszkód: 404 Not Found:**
+		```json
+		"Nem található ilyen poszt vagy nem törölheted"
+		```
+
+	-   **HTTP Státuszkód: 500 Internal Server Error:**
+		```json
+		"Hiba a poszt törlése közben"
+		```
+
+**Példa Használat**:
+
+-   **Kérés:**
+	```typescript
+	const deletePost = async (postId: number) => {
+		try {
+			const response = await fetch(`/api/post?id=${postId}`, {
+				method: 'DELETE',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			});
+
+			if (!response.ok) {
+				throw new Error("Sikertelen poszt törlés");
+			}
+
+			const responseData = await response.json();
+			console.log(responseData);
+		} catch (error) {
+			console.error(error.message);
+		}
+	};
+	```
 
 
 
@@ -1209,214 +1573,14 @@ Ez az API végpont lehetővé teszi egy rendelés lemondását az azonosító al
 	};
 	```
 
-Poszt Keresés API
----------------------------
-**Végpont:** `GET /api/post/search`
-
-**Leírás:**\
-Ez az API végpont lehetővé teszi bejegyzések keresését a megadott keresési feltételek alapján, beleértve a címét, szövegét és kategóriáját.
-
-**Kérés:**
-
--   **Metódus:** GET
--   **Végpont:** `/api/post/search`
--   **URL Paraméterek:**
-	-   `query` (Opcionális): A keresési kifejezés, mely lehet a bejegyzés címében vagy szövegében (ha kategória benne van a kategóriát is bele veszi).
-	-   `category` (Opcionális): A kategória neve, amelybe a bejegyzés tartozik (ami nem felel meg ennek nem adja vissza).
-	-   `count` (Opcionális): A lekérdezés során visszaadott bejegyzések száma oldalanként (alapértelmezett: 10).
-	-   `page` (Opcionális): Az oldalszám a lapozáshoz (alapértelmezett: 1).
-	- (Ha nincs megadva semmi visszaadja a legújabb 10 posztot)
 
 
-**Válasz:**
-
--   **Sikeres Válasz (HTTP Státuszkód: 200 OK):**
-	```json
-	[
-		{
-			"id": 1,
-			"title": "Bejegyzés Címe",
-			"text": "Bejegyzés szövege...",
-			"category": "Mexikói",
-			"user": {
-				"id": 123,
-				"username": "felhasznalonev",
-				"image": "public/profile_images/emberkeképe"
-			},
-			"comments": [
-				{
-					"id": 1,
-					"text": "Hozzászólás szövege...",
-					"user": {
-						"id": 456,
-						"username": "masikfelhasznalo",
-						"image": "public/profile_images/emberkeképe"
-					},
-					"created_at": "2024-02-20T12:30:45Z"
-				}
-				// ... További hozzászólások
-			],
-			"created_at": "2024-02-20T12:30:45Z",
-			"updated_at": "2024-02-21T10:15:30Z"
-		},
-	// ... További posztok
-	]
-	```
-
--   **Hiba Válaszok:**
-
-	-   **HTTP Státuszkód: 400 Internal Server Error:**
-		```json
-		"Hibás lekérdezési paraméterek"
-		```
-	-   **HTTP Státuszkód: 500 Internal Server Error:**
-		```json
-		"Hiba a posztok keresése közben"
-		```
-
-**Példa Használat**:
-
-- **Kérés:**
-	```typescript
-	const searchPosts = async (query?: string, category?: string, count?: number, page?: number) => {
-		try {
-		// Query paraméterek megépítése
-		const queryParams = new URLSearchParams();
-		if (query) queryParams.append('query', query);
-		if (category) queryParams.append('category', category);
-		if (count) queryParams.append('count', count.toString());
-		if (page) queryParams.append('page', page.toString());
-
-		const response = await fetch(`/api/post/search?${queryParams.toString()}`, {
-			method: 'GET',
-			headers: {
-			'Content-Type': 'application/json',
-			},
-		});
-
-		if (!response.ok) {
-			throw new Error("Sikertelen posztkeresés");
-		}
-
-		const responseData: PostType[] = await response.json();
-		console.log(responseData);
-		} catch (error) {
-		console.error(error);
-		}
-	};
-	```
-
-Poszt Létrehozása API
----------------------------
-**Végpont:** `POST /api/post`
-
-**Leírás:**\
-Ez az API végpont lehetővé teszi egy új poszt létrehozását a megadott címmel, szöveggel és kategóriával.
-
-**Hitelesítés:**
-
--   **Szükséges:** Bejelentkezés.
-
-**Kérés:**
-
--   **Metódus:** POST
--   **Végpont:** `/api/post`
--   **Kérés Body (JSON):**
-	```json
-	{
-		"title": "Poszt Címe",
-		"text": "Poszt szövege...",
-		"category": "Posztkategória"
-	}
-	```
-
-**Válasz:**
-
--   **Sikeres Válasz (HTTP Státuszkód: 201 Created):**
-	```json
-	{
-		"id": 1,
-		"title": "Poszt Címe",
-		"text": "Poszt szövege...",
-		"user_id": 123,
-		"category_id": 456,
-		"created_at": "2024-02-20T12:30:45Z",
-		"updated_at": "2024-02-20T12:30:45Z"
-	}
-	```
-
--   **Hiba Válaszok:**
-	-   **HTTP Státuszkód: 401 Unauthorized:**
-		```json
-		{
-			"A posztoláshoz be kell jelentkeznie"
-		}
-		```
-
-	-   **HTTP Státuszkód: 400 Bad Request:**
-		```json
-		{
-			"A címnek legalább 4 karakternek kell lennie" 
-			// Itt pontos hibakódot ad az API arról hogy mi rossz
-		}
-		```
-
-
-	-   **HTTP Státuszkód: 404 Not Found:**
-		```json
-		{
-			"Nincs ilyen posztkategória"
-		}
-		```
-
-
-	-   **HTTP Státuszkód: 500 Internal Server Error:**
-		```json
-		{
-			"Hiba a poszt létrehozása közben"
-		}
-		```
-
-
-**Példa Használat**:
-
--   **Kérés:**	
-	```typescript
-	const createPost = async (postData: PostData) => {
-		try {
-		const response = await fetch('/api/post', {
-			method: 'POST',
-			headers: {
-			'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({
-			title: postData.title,
-			text: postData.text,
-			category: postData.category,
-			}),
-		});
-
-		if (!response.ok) {
-			throw new Error("Sikertelen poszt létrehozás");
-		}
-
-		const responseData = await response.json();
-		console.log(responseData);
-		}
-		catch (error) {
-		console.error("A szerver nem érhető el", error);
-		}
-	};
-	```
-
-
-
-Hozzászólás Létrehozása API
+Komment Létrehozása API
 ---------------------------
 **Végpont:** `POST /api/comment`
 
 **Leírás:**\
-Ez az API végpont lehetővé teszi új hozzászólás létrehozását egy adott poszthoz.
+Ez az API végpont lehetővé teszi új Komment létrehozását egy adott poszthoz.
 
 **Hitelesítés:**
 
@@ -1478,7 +1642,7 @@ Ez az API végpont lehetővé teszi új hozzászólás létrehozását egy adott
 	```typescript
 	const createComment = async (commentData: CommentData) => {
 		try {
-		const response = await fetch('/api/comment', {
+		const response = await fetch('/api/post/comment', {
 			method: 'POST',
 			headers: {
 			'Content-Type': 'application/json',
@@ -1498,6 +1662,77 @@ Ez az API végpont lehetővé teszi új hozzászólás létrehozását egy adott
 		}
 		catch (error) {
 		console.error("A szerver nem érhető el", error);
+		}
+	};
+	```
+
+
+### Hozzászólás Törlése API
+---------------------------
+**Végpont:** `DELETE /api/post/comment`
+
+**Leírás:**\
+Ez az API végpont lehetővé teszi egy komment törlését az azonosítója alapján. Csak a komment létrehozója vagy adminisztrátor jogosultsággal rendelkező felhasználó tudja törölni a kommentet.
+
+**Hitelesítés:**
+
+-   **Szükséges:** 
+	- Bejelentkezés saját komment törléséhez. 
+	- Adminos bejelentkezés akármelyik komment törléséhez.
+
+**Kérés:**
+
+-   **Metódus:** DELETE
+-   **Végpont:** `/api/post/comment`
+-   **URL Paraméterek:**
+	-   `id`: A törlendő hozzászólás azonosítója.
+
+**Válasz:**
+
+-   **Sikeres Válasz (HTTP Státuszkód: 200 OK):**
+	```json
+	"A hozzászólás sikeresen törölve lett"
+	```
+
+-   **Hiba Válaszok:**
+
+	-   **HTTP Státuszkód: 401 Unauthorized:**
+		```json
+		"Csak bejelentkezett felhasználók törlőhetnek hozzászólásokat"
+		```
+
+	-   **HTTP Státuszkód: 404 Not Found:**
+		```json
+		"Nem található ilyen hozzászólás vagy nem törölheted"
+		```
+
+	-   **HTTP Státuszkód: 500 Internal Server Error:**
+		```json
+		"Hiba a hozzászólás törlése közben"
+		```
+
+**Példa Használat**:
+
+-   **Kérés:**
+
+	```typescript
+	const deleteComment = async (commentId: number) => {
+		try {
+			const response = await fetch(`/api/post/comment?id=${commentId}`, {
+				method: 'DELETE',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			});
+
+			if (!response.ok) {
+				throw new Error("Sikertelen komment törlés");
+			}
+
+			const responseData = await response.json();
+			console.log(responseData);
+		} catch (error) {
+			console.error(error.message);
 		}
 	};
 	```

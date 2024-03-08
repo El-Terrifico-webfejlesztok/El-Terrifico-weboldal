@@ -66,3 +66,116 @@ export async function POST(req: NextRequest) {
     return NextResponse.json('Hiba a poszt létrehozása közben', { status: 500 });
   }
 }
+
+
+export async function GET(req: NextRequest) {
+  try {
+    const searchParams = req.nextUrl.searchParams;
+    const postID = parseInt(searchParams.get('id')?.toLowerCase() || '');
+
+    if (isNaN(postID)) {
+      return NextResponse.json('Nem létező vagy hibás poszt azonosító a kérésben', { status: 400 });
+    }
+
+    const post = await prisma.post.findUnique({
+      where: {
+        id: postID
+      },
+      include: {
+        Category: {
+          select: {
+            name: true
+          }
+        },
+        User: {
+          select: {
+            id: true,
+            username: true,
+            image: true,
+          }
+        },
+        Comment: {
+          select: {
+            id: true,
+            text: true,
+            User: {
+              select: {
+                id: true,
+                username: true,
+                image: true,
+              }
+            },
+            created_at: true,
+            updated_at: true
+          }
+        },
+      },
+    });
+
+    if (!post) {
+      return NextResponse.json('Nem található ilyen poszt', { status: 404 });
+    }
+
+    return NextResponse.json(post, { status: 200 });
+  } catch (error) {
+    console.error('Error retrieving post:', error);
+    return NextResponse.json('Hiba a poszt lekérése közben', { status: 500 });
+  }
+}
+
+export async function DELETE(req: NextRequest) {
+  try {
+    // Check if the user is authenticated
+    const searchParams = req.nextUrl.searchParams;
+    const postID = parseInt(searchParams.get('id')?.toLowerCase() || '');
+    let userID
+
+    const session = await getServerSession(authOptions);
+    if (!session) {
+      return NextResponse.json('Csak bejelentkezett felhasználók törlöhetnek posztokat', { status: 401 });
+    }
+    // User ID meghatározása a prisma queryhez
+    if (session.user!.role === 'admin') {
+      userID = undefined
+    }
+    else {
+      userID = parseInt(session.user!.id)
+    }
+
+    // Check if the post exists
+    const post = await prisma.post.findUnique({
+      where: {
+        id: postID,
+        user_id: userID
+
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    if (!post) {
+      return NextResponse.json('Nem található ilyen poszt vagy nem törölheted', { status: 404 });
+    }
+
+    // Delete associated comments
+    await prisma.comment.deleteMany({
+      where: {
+        post_id: postID,
+      },
+    });
+
+    // Delete the post
+    await prisma.post.delete({
+      where: {
+        id: postID,
+        user_id: userID
+      },
+    });
+
+    return NextResponse.json('A poszt sikeresen törölve lett', { status: 200 });
+  } catch (error) {
+    console.error('Error deleting post:', error);
+    return NextResponse.json('Hiba a poszt törlése közben', { status: 500 });
+  }
+}

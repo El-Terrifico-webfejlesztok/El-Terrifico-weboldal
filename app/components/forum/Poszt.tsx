@@ -3,16 +3,72 @@
 import Komment from "./Komment";
 import { useState } from "react";
 import { PostType } from "@/app/forum/page";
+import { toast } from "react-toastify";
 
 interface props {
-  post: PostType;
+  post: PostType,
+  reload?: Function
 }
 
-const Poszt: React.FC<props> = ({ post }) => {
+const Poszt: React.FC<props> = ({ post , reload}) => {
   const [postContent, setPostContent] = useState("");
+
+
+  const createComment = async () => {
+    const toastId = toast.loading("Komment feltöltése...")
+
+    try {
+      const response = await fetch('/api/post/comment', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          text: postContent,
+          postId: post.id
+        }),
+      });
+      const responseData = await response.json();
+      if (!response.ok) {
+        toast.update(toastId, {
+          render: `${responseData}`,
+          type: "error",
+          isLoading: false,
+          autoClose: 5000,
+          closeOnClick: true,
+          draggable: true,
+        });
+        return
+      }
+
+      toast.update(toastId, {
+        render: "Sikeres kommentelés!",
+        type: "success", // Replace with "error" if there's an error
+        isLoading: false,
+        autoClose: 5000,
+        closeOnClick: true,
+        draggable: true,
+      });
+    }
+    catch (error) {
+      toast.update(toastId, {
+        render: "A szerver nem érhető el",
+        type: "warning",
+        isLoading: false,
+        autoClose: 5000,
+        closeOnClick: true,
+        draggable: true,
+      });
+    }
+  };
 
   const clearInputs = () => {
     setPostContent("");
+
+  };
+
+  const handleComment = () => {
+    createComment()
   };
 
   const formatDate = (dateString: Date): string => {
@@ -86,9 +142,7 @@ const Poszt: React.FC<props> = ({ post }) => {
             />
             <div className="w-1/2 justify-end items-end text-right p-0 m-0">
               <button
-                onClick={() => {
-                  clearInputs();
-                }}
+                onClick={() => { handleComment() }}
               >
                 <svg
                   width="40"
