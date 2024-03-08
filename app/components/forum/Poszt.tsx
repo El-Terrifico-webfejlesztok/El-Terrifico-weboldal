@@ -3,7 +3,6 @@
 import Komment from "./Komment";
 import { useState } from "react";
 import { PostType } from "@/app/forum/page";
-import formatDate from "@/lib/helper functions/formatDate";
 
 interface props {
   post: PostType;
@@ -16,14 +15,33 @@ const Poszt: React.FC<props> = ({ post }) => {
     setPostContent("");
   };
 
-  
+  const formatDate = (dateString: Date): string => {
+    const date = new Date(dateString);
+    const formattedDate = date
+      .toLocaleDateString("hu-HU", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      })
+      .replace(/\//g, "-"); // Replace slashes with hyphens
+
+    const formattedTime = date.toLocaleTimeString("hu-HU", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false, // 24-hour format
+    });
+
+    return `${formattedDate}, ${formattedTime}`;
+  };
 
   return (
     <div className="collapse collapse-arrow bg-base-300 sm:w-5/6 w-full mx-auto sm:mb-3 mb-5">
       <input type="checkbox" />
       <div className="collapse-title text-xl font-medium flex justify-between items-center">
         <div>
-          <div><p>{post.title}</p></div>
+          <div>
+            <p>{post.title}</p>
+          </div>
           <div className="text-sm text-info font-normal">#{post.category}</div>
         </div>
 
@@ -45,7 +63,7 @@ const Poszt: React.FC<props> = ({ post }) => {
         <p className="m-4">Készült: {formatDate(post.created_at)}</p>
         {/** Temporary anti-Söli measures (break all) */}
         <div className="bg-neutral-content border-2 border-grey p-3 rounded-lg">
-          <p className=" text-black">{post.text}</p>
+          <p className=" text-black max-w-fit">{post.text}</p>
         </div>
         <h1 className="text-lg font-medium my-5 ml-2">Hozzászólások:</h1>
         {/*Comments*/}
