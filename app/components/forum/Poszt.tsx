@@ -3,6 +3,7 @@
 import Komment from "./Komment";
 import { useState } from "react";
 import { PostType } from "@/app/forum/page";
+import formatDate from "@/lib/helper functions/formatDate";
 
 interface props {
   post: PostType;
@@ -15,24 +16,6 @@ const Poszt: React.FC<props> = ({ post }) => {
     setPostContent("");
   };
 
-  const formatDate = (dateString: string): string => {
-    const date = new Date(dateString);
-    const formattedDate = date
-      .toLocaleDateString("hu-HU", {
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-      })
-      .replace(/\//g, "-"); // Replace slashes with hyphens
-
-    const formattedTime = date.toLocaleTimeString("hu-HU", {
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: false, // 24-hour format
-    });
-
-    return `${formattedDate}, ${formattedTime}`;
-  };
   
 
   return (
@@ -59,7 +42,7 @@ const Poszt: React.FC<props> = ({ post }) => {
       </div>
 
       <div className="collapse-content p-1">
-        <p className="m-4">Készült: {formatDate(post.created_at.toDateString())}</p>
+        <p className="m-4">Készült: {formatDate(post.created_at)}</p>
         {/** Temporary anti-Söli measures (break all) */}
         <div className="bg-neutral-content border-2 border-grey p-3 rounded-lg">
           <p className=" text-black">{post.text}</p>
