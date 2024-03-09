@@ -5,6 +5,8 @@ import KartyaCheckbox from "./KartyaCheckbox";
 import KartyaErtekeles from "./KartyaErtekeles";
 import KartyaKosarba from "./KartyaKosarba";
 import styles from "./product.module.css";
+import { useSession } from 'next-auth/react'
+import Link from "next/link";
 
 interface props {
   title: string;
@@ -25,12 +27,17 @@ const Kartya: React.FC<props> = ({
   images,
   product,
 }) => {
+
+  const { data: session} = useSession()
+
+
   return (
     <div className={styles.kartya}>
       <div className="card lg:card-side bg-base-100 shadow-xl">
         <div className="card-body">
-          <h1 className="card-title text-3xl mb-4">{title}</h1>
-          <div className="sm:flex my-auto">
+          <h1 className="card-title text-3xl">{title}</h1>
+          {session?.user?.role === 'admin' ? <Link className="btn btn-xs w-min whitespace-nowrap btn-info" href={`/admin/products/update/${product.id}`}>Termék módosítása</Link> : <></>}
+          <div className="sm:flex my-auto mt-2">
             <div className="sm:w-3/4 mb-8">
               <h2 className="flex justify-start text-start text-1xl font-bold mb-2">
                 Leírás:

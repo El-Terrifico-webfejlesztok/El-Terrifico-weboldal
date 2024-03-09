@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
 
     // If the user is not authenticated, return an unauthorized response
     if (session?.user?.role !== 'admin') {
-      return NextResponse.json('Unauthorized', { status: 401 });
+      return NextResponse.json('Nincs jogosultsága a termékek módisításához', { status: 401 });
     }
 
     const body = await req.json();
@@ -28,8 +28,7 @@ export async function POST(req: NextRequest) {
     const validation = uploadProductSchema.safeParse(body);
 
     if (!validation.success) {
-      const errorList = validation.error.errors.map((error) => error.message);
-      return NextResponse.json(errorList, { status: 400 });
+      return NextResponse.json(validation.error.errors[0].message, { status: 400 });
     }
 
     // Fetch or create categories and store them in an array
@@ -37,8 +36,10 @@ export async function POST(req: NextRequest) {
       body.categories.map(async (categoryName: string) => {
         const existingCategory = await prisma.category.findUnique({
           where: { name: categoryName },
+          select: {
+            id: true
+          }
         });
-        console.log(existingCategory)
         if (existingCategory) {
           return existingCategory;
         }
@@ -46,18 +47,36 @@ export async function POST(req: NextRequest) {
         // Create new category if it doesn't exist
         return prisma.category.create({
           data: { name: categoryName },
+          select: {
+            id: true
+          }
         });
       })
     );
+
+    // duplikált kategóriák szűrése (chatgpt nem jött rá > én írtam > undorító kód)
+
+    // get the IDs out of the objects that prisma returns
+    const categoriesmapped: number[] = categories.map(category => category.id)
+    // convert to set to filter (disgusting but what can you do)
+    const helperset = new Set(categoriesmapped);
+    // convert back to array
+    const uniqueCategoryIds = Array.from(helperset);
 
     // Check if an ID is provided
     if (body.id) {
       const existingProduct = await prisma.product.findUnique({
         where: { id: body.id },
       })
-      if (!existingProduct){
-        return NextResponse.json("Nem létezik a frissíteni ", { status: 200 });
+      if (!existingProduct) {
+        return NextResponse.json("Nem létezik a frissítendő termék", { status: 200 });
       }
+
+      // Delete existing associations
+      await prisma.productCategoryLink.deleteMany({
+        where: { product_id: body.id },
+      });
+
       // Update the existing product with the specified ID
       const updatedProduct = await prisma.product.update({
         where: { id: body.id },
@@ -67,15 +86,21 @@ export async function POST(req: NextRequest) {
           price: body.price,
           stock: body.stock,
           ProductCategoryLink: {
-            deleteMany: { category_id: { notIn: categories.map((category) => category.id) } },
-            create: categories.map((category) => ({
-              category_id: category.id,
+            create: uniqueCategoryIds.map((category) => ({
+              category_id: category,
             })),
           },
         },
       });
 
-      console.log('Product update successful');
+      // Cleanup: Delete categories with no associations
+      await prisma.category.deleteMany({
+        where: {
+          ProductCategoryLink: { none: {} },
+        },
+      });
+
+      console.log('Termék sikeresen frissítve');
       return NextResponse.json(updatedProduct, { status: 200 });
     } else {
       // Create a new product
@@ -86,14 +111,14 @@ export async function POST(req: NextRequest) {
           price: body.price,
           stock: body.stock,
           ProductCategoryLink: {
-            create: categories.map((category) => ({
-              category_id: category.id,
+            create: uniqueCategoryIds.map((category) => ({
+              category_id: category,
             })),
           },
         },
       });
 
-      console.log('Product creation successful');
+      console.log('Termék sikeresen létrehozva');
       return NextResponse.json(newProduct, { status: 201 });
     }
   } catch (error) {

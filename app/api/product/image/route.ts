@@ -54,3 +54,57 @@ export async function POST(req: NextRequest) {
     return NextResponse.json('Hiba a termékkép feltöltése közben', { status: 500 });
   }
 }
+
+export async function DELETE(req: NextRequest) {
+  try {
+    // Get the user's session
+    const session = await getServerSession(authOptions);
+
+    // If the user is not authenticated or not an admin, return an unauthorized response
+    if (!session || session.user!.role !== 'admin') {
+      return NextResponse.json('Csak admin törlhet termékképeket', { status: 401 });
+    }
+
+    // Extract image ID from the URL
+    const searchParams = req.nextUrl.searchParams;
+    const id = searchParams.get('id')?.toLowerCase() || undefined;
+
+    if (!id) {
+      return NextResponse.json('Nincs kép ID megadva a kérésben', { status: 400 });
+    }
+
+    const imageId = parseInt(id);
+
+    // Check if the image exists
+    const existingImage = await prisma.productImage.findUnique({
+      where: {
+        id: imageId,
+      },
+    });
+
+    if (!existingImage) {
+      return NextResponse.json('Nem létezik ilyen kép', { status: 404 });
+    }
+
+    // Delete the image file from the server
+    try {
+      const fs = require('fs').promises;
+      await fs.unlink(existingImage.image_path);
+    }
+    // Ha nem találja akkor is haladjon tovább
+    catch (error){
+      console.log(error)
+    }
+    // Delete the image record from the database
+    await prisma.productImage.delete({
+      where: {
+        id: imageId,
+      },
+    });
+
+    return NextResponse.json('Kép sikeresen törölve', { status: 200 });
+  } catch (error) {
+    console.error('Error during image deletion:', error);
+    return NextResponse.json('Hiba a kép törlése közben', { status: 500 });
+  }
+}

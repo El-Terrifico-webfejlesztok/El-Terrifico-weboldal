@@ -9,7 +9,7 @@ const Links = () => {
     const links = [
         { name: 'Áttekintés', href: '/admin'},
         { name: 'Rendelések', href: '/admin/orders' },
-        { name: 'Termékfeltöltés', href: '/admin/upload' },
+        { name: 'Termékfeltöltés', href: '/admin/products/upload' },
     ];
 
     const linkclass = ''
