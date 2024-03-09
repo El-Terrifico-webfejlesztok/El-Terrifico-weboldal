@@ -75,6 +75,98 @@ Ez a API végpont lehetővé teszi termékek keresését a megadott kritériumok
         }};
     ```
 
+Termék Részleteinek Lekérése API
+---------------------------
+**Végpont:** `GET /api/product`
+
+**Leírás:**\
+Ez az API végpont lehetővé teszi egy termék részleteinek lekérését az azonosítója alapján. Csak az adminisztrátor jogosultságokkal rendelkező felhasználók képesek lekérdezni a termék részleteit.
+
+**Hitelesítés:**
+
+-   **Szükséges:** Adminisztrátori jogosultságokkal rendelkező bejelentkezés.
+
+**Kérés:**
+
+-   **Metódus:** GET
+-   **Végpont:** `/api/product`
+-   **URL Paraméterek:**
+	-   `id`: A lekérdezendő termék azonosítója.
+
+**Válasz:**
+
+-   **Sikeres Válasz (HTTP Státuszkód: 200 OK):**
+	```json
+	{
+		"id": 123,
+		"name": "Termék neve",
+		"description": "Termék leírása",
+		"price": 99.99,
+		"ProductImage": [
+			{
+				"id": 1,
+				"url": "https://example.com/image1.jpg"
+			},
+			// ... További képek
+		],
+		"Categories": [
+			{
+				"id": 1,
+				"name": "Kategória neve"
+			},
+			// ... További kategóriák
+		]
+	}
+	```
+-   **Hiba Válaszok:**
+
+	-   **HTTP Státuszkód: 401 Unauthorized:**
+		```json
+		"Nincs jogosultsága a termék részleteit lekérni"
+		```
+
+	-   **HTTP Státuszkód: 400 Bad Request:**
+		```json
+		"Nincs termék megadva a kérésben"
+		```
+	
+
+
+	-   **HTTP Státuszkód: 404 Not Found:**
+		```json
+		"Nem található ilyen termék"
+		```
+
+	-   **HTTP Státuszkód: 500 Internal Server Error:**
+	```json
+	"Hiba a termék részleteinek lekérése közben"
+	```
+	
+**Példa Használat**:
+
+-   **Kérés:**
+	```typescript
+	const getProductDetails = async (productId: number) => {
+		try {
+			const response = await fetch(`/api/product?id=${productId}`, {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			});
+
+			if (!response.ok) {
+				throw new Error("Sikertelen termék részleteinek lekérése");
+			}
+
+			const responseData = await response.json();
+			console.log(responseData);
+		} catch (error) {
+			console.error(error.message);
+		}
+	};
+	```
+
 Termék Kategóriák API
 ---------------------------
 **Végpont:** `GET /api/product/categories`
@@ -1667,7 +1759,7 @@ Ez az API végpont lehetővé teszi új Komment létrehozását egy adott poszth
 	```
 
 
-### Hozzászólás Törlése API
+Hozzászólás Törlése API
 ---------------------------
 **Végpont:** `DELETE /api/post/comment`
 
@@ -1736,3 +1828,164 @@ Ez az API végpont lehetővé teszi egy komment törlését az azonosítója ala
 		}
 	};
 	```
+
+Termékkép Feltöltése API
+---------------------------
+
+**Végpont:** `POST /api/product/image`
+
+**Leírás:**\
+Ez az API végpont lehetővé teszi egy termékkép feltöltését a termékazonosító megadásával
+
+**Hitelesítés:**
+
+-   **Szükséges:** Adminisztrátor.
+
+**Kérés:**
+
+-   **Metódus:** POST
+-   **Végpont:** `/api/product/image`
+-   **Multipart Form adatok:**
+	-   `product_id`: A termék azonosítója, amelyhez a kép tartozik.
+	-   `file`: A feltöltendő képfájl.
+
+**Válasz:**
+
+-   **Sikeres Válasz (HTTP Státuszkód: 201 Created):**
+	```json
+	{
+		"id": 123,
+		"product_id": 456,
+		// Az adatbázisban így vannak tárolva a képútvonalak
+		"image_path": "public/product_images/uniqueid_filename.jpg"
+		
+	}
+	```
+
+-   **Hiba Válaszok:**
+
+	-   **HTTP Státuszkód: 401 Unauthorized:**
+		```json
+		"Unauthorized"
+		```
+	-   **HTTP Státuszkód: 400 Bad Request:**
+		```json
+		"Product ID vagy kép hiányzik a requestből"
+		// Vagy
+		"A kép túllépi a {MAX_FILE_SIZE_MB}MB képméret határt"
+		// Jelenleg 10MB, de a jövőben változhat
+		```
+	-   **HTTP Státuszkód: 500 Internal Server Error:**
+		```json
+		"Hiba a termékkép feltöltése közben"`
+		```
+
+**Példa Használat**:
+
+- **Formdata létrehozása:**
+	```typescript
+	const productId = 123; 
+	const fileInput = document.getElementById('fileInput') as HTMLInputElement; 
+	const file = fileInput.files[0];
+
+	const formData = new FormData();
+	formData.append('product_id', productId.toString());
+	formData.append('file', file);
+	```
+
+-   **Kérés:**
+
+	```typescript
+	// Fontos hogy az API csak egy képet tud egyszerre feltölteni. Több kép esetében a frontenden kell megoldani több kép küldését egymás után
+	async function uploadProductImage(productId: number, file: File) {
+		try {
+			// Prepare the FormData
+			const formData = new FormData();
+			formData.append('product_id', productId.toString());
+			formData.append('file', file);
+
+			// Make the API request
+			const response = await fetch(`/api/product/image`, {
+				method: 'POST',
+				body: formData,
+			});
+
+			// Check if the request was successful
+			if (!response.ok) {
+				throw new Error(`Sikertelen termékkép feltöltés`);
+			}
+
+			// Parse and log the response data
+			const responseData = await response.json();
+			console.log(responseData);
+		} catch (error) {
+			console.error('Hiba a termékkép feltöltésekor:', error);
+		}
+	}
+	```
+
+Termék Kép Törlése API
+---------------------------
+
+**Végpont:** `DELETE /api/product/image`
+
+**Leírás:**
+Ez a API végpont lehetővé teszi egy termékhez tartozó kép törlését. 
+**Hitelesítés:**
+-   **Szükséges:** Adminisztrátor.
+
+**Kérés:**
+-   **Metódus:** DELETE
+-   **Végpont:** `/api/product/image`
+-   **URL Paraméterek:**
+    -   `id`: A törlendő kép azonosítója.
+
+**Válasz:**
+-   **Sikeres Válaszok:**
+    **HTTP Státuszkód: 200 OK:**
+	```json
+	"Kép sikeresen törölve"
+	```
+-   **Hiba Válaszok:**
+    -   **HTTP Státuszkód: 400 Bad Request:**
+		```json
+		"Nincs kép ID megadva a kérésben"
+		```
+	-   **HTTP Státuszkód: 401 Unauthorized:**
+		```json
+		"Csak admin törlhet termékképeket"
+		```
+	-   **HTTP Státuszkód: 404 Not Found:**
+		```json
+		"Nem létezik ilyen kép"
+		```
+	-   **HTTP Státuszkód: 500 Internal Server Error:**
+		```json
+		"Hiba a kép törlése közben"
+		```
+
+**Példa Használat**:
+
+-   **Kérés:**
+	```typescript
+	const deleteImage = async (imageId: number) => {
+	    try {
+	        const response = await fetch(`/api/product/image?id=${imageId}`, {
+	            method: 'DELETE',
+	            headers: {
+	                'Content-Type': 'application/json',
+	            },
+	        });
+
+	        if (!response.ok) {
+	            throw new Error("Sikertelen képtörlés");
+	        }
+
+	        const responseBody = await response.json();
+	        console.log(responseBody);
+	    } catch (error) {
+	        console.error("A szerver nem érhető el", error);
+	    }
+	};
+	```
+

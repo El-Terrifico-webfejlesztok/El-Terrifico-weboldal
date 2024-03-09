@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react';
 
 interface CategorySelectorProps {
     onCategoriesChange: (categories: string[]) => void;
+    // Opcionális létező kategóriák
+    currentCategories?: string[];
 }
 
-const CategorySelector: React.FC<CategorySelectorProps> = ({ onCategoriesChange }) => {
+const CategorySelector: React.FC<CategorySelectorProps> = ({ onCategoriesChange, currentCategories }) => {
     const [displayedCategories, setDisplayedCategories] = useState<string[]>([]);
-    const [checkedCategories, setCheckedCategories] = useState<string[]>([]);
+    const [checkedCategories, setCheckedCategories] = useState<string[]>(currentCategories || []);
     const [newCategory, setNewCategory] = useState<string>('');
 
     useEffect(() => {
@@ -30,11 +32,6 @@ const CategorySelector: React.FC<CategorySelectorProps> = ({ onCategoriesChange 
         fetchCategories();
     }, []);
 
-    // Function to check if a category already exists
-    const isCategoryDuplicate = (category: string): boolean => {
-        return displayedCategories.some((c) => c.trim() === category.trim());
-    };
-
     // Function to handle category checkbox change
     const handleCategoryChange = (category: string) => {
         // Check if the category is already in the checked list
@@ -47,9 +44,6 @@ const CategorySelector: React.FC<CategorySelectorProps> = ({ onCategoriesChange 
 
         setCheckedCategories(updatedCheckedCategories);
         onCategoriesChange(updatedCheckedCategories);
-
-        // Log the updated checked categories for testing
-        // console.log('Updated Checked Categories:', updatedCheckedCategories);
     };
 
     // Function to handle new category input change
@@ -124,7 +118,8 @@ const CategorySelector: React.FC<CategorySelectorProps> = ({ onCategoriesChange 
             </div>
 
             Kategóriák kiválasztása:
-            
+            <br />
+            <p className='truncate text-xs my-1 p-1 text-info'>{checkedCategories.length > 0 ? `(${checkedCategories.length})` : null} {checkedCategories.map(category => `"${category}" `)}</p>
             <div className='max-h-32 overflow-auto'>
                 <div className='grid grid-cols-2 gap-1'>
                     {displayedCategories.map((category) => (

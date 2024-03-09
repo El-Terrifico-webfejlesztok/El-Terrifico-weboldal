@@ -174,23 +174,21 @@ export async function GET(req: NextRequest) {
     // Validation - Check if the user is authenticated
     const session = await getServerSession(authOptions);
 
-    if (!session) {
-      return NextResponse.json(
-        "A rendelési adatok lekéréséhez be kell jelentkeznie",
-        { status: 401 }
-      );
-    }
+        if (!session) {
+            return NextResponse.json('A rendelési adatok lekéréséhez be kell jelentkeznie', { status: 401 });
+        }
 
-    // Get the orderId from the query parameters
-    const searchParams = req.nextUrl.searchParams;
-    const orderId: number = parseInt(searchParams.get("id") || "");
-    if (!orderId) {
-      return NextResponse.json("Nincs rendelés megadva a kérésben", {
-        status: 401,
-      });
-    }
-    let orderDetails = null;
-    let UserID: number | undefined = 0;
+        // Get the orderId from the query parameters
+        const searchParams = req.nextUrl.searchParams;
+        const orderId: number = parseInt(searchParams.get('id') || '');
+        if (!orderId || isNaN(orderId)) {
+            return NextResponse.json('Nincs rendelés megadva a kérésben', { status: 401 });
+        }
+
+        
+        let orderDetails = null
+        let UserID: number | undefined = 0
+
 
     // HA adminos a bejelentkezés akkor UserID undefined => a prisma query nem veszi figyelembe
     if (session.user?.role === "admin") {
