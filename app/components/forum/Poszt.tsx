@@ -4,13 +4,14 @@ import Komment from "./Komment";
 import { useState } from "react";
 import { PostType } from "@/app/forum/page";
 import { toast } from "react-toastify";
+import updateToast from "@/lib/helper functions/updateToast";
 
 interface props {
   post: PostType,
   reload?: Function
 }
 
-const Poszt: React.FC<props> = ({ post , reload}) => {
+const Poszt: React.FC<props> = ({ post, reload }) => {
   const [postContent, setPostContent] = useState("");
 
 
@@ -30,35 +31,15 @@ const Poszt: React.FC<props> = ({ post , reload}) => {
       });
       const responseData = await response.json();
       if (!response.ok) {
-        toast.update(toastId, {
-          render: `${responseData}`,
-          type: "error",
-          isLoading: false,
-          autoClose: 5000,
-          closeOnClick: true,
-          draggable: true,
-        });
+        updateToast(toastId, 'error', responseData)
         return
       }
 
-      toast.update(toastId, {
-        render: "Sikeres kommentelés!",
-        type: "success", // Replace with "error" if there's an error
-        isLoading: false,
-        autoClose: 5000,
-        closeOnClick: true,
-        draggable: true,
-      });
+      updateToast(toastId, 'success', 'Sikeres kommentelés!')
     }
     catch (error) {
-      toast.update(toastId, {
-        render: "A szerver nem érhető el",
-        type: "warning",
-        isLoading: false,
-        autoClose: 5000,
-        closeOnClick: true,
-        draggable: true,
-      });
+      updateToast(toastId, 'warning', 'A szerver nem elérhető!')
+
     }
   };
 

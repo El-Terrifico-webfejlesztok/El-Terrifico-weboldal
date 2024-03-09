@@ -1,7 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react';
-import ImageUploader from '../../components/admin/upload/imageuploader';
-import CategorySelector from '../../components/admin/upload/CategorySelector';
+import ImageUploader from '../../../components/admin/products/upload/imageuploader';
+import CategorySelector from '../../../components/admin/products/upload/CategorySelector';
 
 const UploadProduct = () => {
   const [name, setName] = useState('');
@@ -58,7 +58,7 @@ const UploadProduct = () => {
         formData.append('file', image);
         formData.append('product_id', responseBody.id);
 
-        const imageResponse = await fetch('/api/product/uploadimage', {
+        const imageResponse = await fetch('/api/product/image', {
           method: 'POST',
           body: formData,
         });
@@ -95,7 +95,8 @@ const UploadProduct = () => {
 
   return (
     <div className='mx-auto justify-center max-w-lg pt-5'>
-      <form onSubmit={handleSubmit} className='flex flex-col gap-3 mx-auto mt-12 p-2'>
+      <p className='text-center text-3xl font-bold mt-6 mb-3'>Termékfeltöltés</p>
+      <form onSubmit={handleSubmit} className='flex flex-col gap-3 mx-auto p-2'>
         <div>
           <label className='form-control' htmlFor='name'>
             Termék neve:

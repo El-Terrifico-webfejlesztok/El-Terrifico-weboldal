@@ -152,10 +152,11 @@ export async function GET(req: NextRequest) {
         // Get the orderId from the query parameters
         const searchParams = req.nextUrl.searchParams;
         const orderId: number = parseInt(searchParams.get('id') || '');
-        if (!orderId) {
+        if (!orderId || isNaN(orderId)) {
             return NextResponse.json('Nincs rendelés megadva a kérésben', { status: 401 });
-
         }
+
+        
         let orderDetails = null
         let UserID: number | undefined = 0
 

@@ -65,22 +65,26 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ onImagesChange }) => {
 
     return (
         <div>
-            <button type='button' onClick={handleAddImage} className='btn btn-neutral w-full'>
+            <div className='divider'>Képfeltöltés</div>
+            <button type='button' onClick={handleAddImage} className='btn text-lg btn-neutral w-full'>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
+                </svg>
                 Képek hozzáadása
             </button>
             {imagePreviews.length > 0 && (
                 <div className='mt-3'>
                     <ul className='grid grid-cols-1  lg:grid-cols-2 gap-4'>
                         {imagePreviews.map((preview, index) => (
-                            <li key={index} className='border-solid border-2 rounded-md p-1 border-accent'>
+                            <li key={index} className='border-solid border-2 rounded-md p-1 border-accent border-opacity-75'>
                                 <img
                                     src={preview.preview}
                                     alt={`Preview ${index}`}
                                     className='rounded-md object-scale-down w-full lg:h-52'
                                 />
-                                <p className='text-center mt-1 truncate'>{preview.name}</p>
-                                <button type='button' onClick={() => handleRemoveImage(index)} className='badge hover:bg-accent rounded-md w-full mt-1.5'>
-                                    Eltávolítás
+                                <p className='text-center mt-1 truncate text-lg'>{preview.name}</p>
+                                <button type='button' onClick={() => handleRemoveImage(index)} className='btn btn-xs text-base rounded-md w-full mt-1.5'>
+                                    Eltávolítás a feltöltésből
                                 </button>
                             </li>
                         ))}
