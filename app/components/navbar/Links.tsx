@@ -10,6 +10,7 @@ const Links = () => {
         { name: 'Termékek', href: '/products' },
         { name: 'Fórum', href: '/forum' },
         { name: 'Rólunk', href: '/aboutus' },
+        { name: 'Útmutató', href: '/tutorial' },
     ];
 
     const linkclass = ''

@@ -3,22 +3,14 @@ import { Order } from '@prisma/client';
 import Link from 'next/link';
 import { OrderDetail } from '../../admin/overview/Orders';
 import getOrderStatusText from '@/lib/helper functions/getOrderStatusText';
+import formatDate from '@/lib/helper functions/formatDate';
 
 const OrderView: React.FC<{ order: Order | OrderDetail; reload: Function }> = ({ order, reload }) => {
   // Format the date to a readable format
   const orderDate = new Date(order.created_at);
-  const currentDate = new Date();
 
-  const formattedDate =
-    orderDate.getFullYear() === currentDate.getFullYear()
-      ? orderDate.toLocaleString('hu-HU', { month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric' })
-      : orderDate.toLocaleString('hu-HU', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric',
-      });
+  // Ezt cseréld ki
+  const formattedDate = formatDate(orderDate)
 
   return (
     <div className='grid grid-cols-12 gap-4 my-1'>
