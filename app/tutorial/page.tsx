@@ -438,7 +438,7 @@ function Tutorial() {
           <div className="md:w-3/5">
             <iframe
               className={styles.youtube}
-              src={`https://www.youtube.com/embed/SIsgpllRsEM`}
+              src={`https://www.youtube.com/embed/F8de2yk_Fj4`}
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
             ></iframe>
           </div>
