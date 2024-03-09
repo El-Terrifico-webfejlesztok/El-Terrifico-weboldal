@@ -8,7 +8,7 @@ export default function updateToast(toastId: Id, type: TypeOptions, message?: st
         type: type,
         isLoading: false,
         autoClose: 5000,
-        closeOnClick: true,
+        closeButton: true,
         draggable: true,
     });
 
