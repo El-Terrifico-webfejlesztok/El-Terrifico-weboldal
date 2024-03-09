@@ -42,7 +42,7 @@ const ProductUpdater: React.FC<{ product: ProductData, reload: Function }> = ({ 
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        const toastId = toast.loading("Termék feltöltése...")
+        const toastId = toast.loading("Termék frissítése...")
         setMessage(['Feltöltés..']);
 
 

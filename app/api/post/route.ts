@@ -7,7 +7,7 @@ import { z } from "zod";
 const postschema = z.object({
   title: z.string()
     .min(4, { message: 'A címnek legalább 4 karakternek kell lennie' })
-    .max(250, { message: 'A cím maximum 250 karakter hoszzú lehet' }),
+    .max(80, { message: 'A cím maximum 80 karakter hoszzú lehet' }),
   text: z.string()
     .min(1, { message: 'Posztnak kell hogy legyen valami tartalma' })
     .max(30000, { message: 'A maximális posztméret 30000 karakter' }),
