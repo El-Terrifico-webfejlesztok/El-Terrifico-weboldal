@@ -1,13 +1,13 @@
 import { toast, Id, TypeOptions } from "react-toastify";
 
 
-export default function updateToast(toastId: Id, type: TypeOptions, message?: string) {
+export default function updateToast(toastId: Id, type: TypeOptions, message?: string, countdown?: number | false) {
 
     toast.update(toastId, {
         render: message,
         type: type,
         isLoading: false,
-        autoClose: 5000,
+        autoClose: (countdown || 5000),
         closeButton: true,
         draggable: true,
     });

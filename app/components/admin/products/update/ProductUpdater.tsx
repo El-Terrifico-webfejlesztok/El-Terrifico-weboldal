@@ -22,8 +22,8 @@ export interface ProductData {
     price: number;
     stock: number;
     is_active: boolean;
-    created_at: Date; 
-    updated_at: Date; 
+    created_at: Date;
+    updated_at: Date;
     ProductImage: ProductImage[];
     Categories: Category[];
 }
@@ -143,6 +143,61 @@ const ProductUpdater: React.FC<{ product: ProductData, reload: Function }> = ({ 
         // console.log(selectedCategories);
     };
 
+    const deactivateProduct = async (productId: number) => {
+        const toastId = toast.loading("Termék inaktiválása...")
+        try {
+            const response = await fetch(`/api/product?id=${productId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (!response.ok) {
+                const responseBody = await response.json();
+                updateToast(toastId, 'error', responseBody)
+                throw new Error("Sikertelen termék inaktiválás");
+            }
+            updateToast(toastId, 'success', 'Sikeres termék inaktiválás', 1000)
+            if (reload) await reload()
+
+        } catch (error) {
+            console.error("A szerver nem elérhető:", error);
+            updateToast(toastId, 'warning', 'A szerver nem elérhető')
+
+        }
+    };
+
+    const activateProduct = async (productId: number) => {
+        const toastId = toast.loading("Termék aktiválása...")
+
+        try {
+            const response = await fetch(`/api/product?id=${productId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (!response.ok) {
+                const responseBody = await response.json();
+                updateToast(toastId, 'error', responseBody)
+                throw new Error("Sikertelen termék aktiválás");
+            }
+            updateToast(toastId, 'success', 'Sikeres termék aktiválás', 1000)
+
+            if (reload) await reload()
+
+        } catch (error) {
+            console.error("A szerver nem elérhető:", error);
+            updateToast(toastId, 'warning', 'A szerver nem elérhető')
+
+        }
+    };
+
+    const toggleStatus = async () => {
+        product.is_active ? deactivateProduct(product.id) : activateProduct(product.id)
+    }
 
     return (
         <div className='mx-auto justify-center max-w-lg pt-5'>
@@ -151,8 +206,15 @@ const ProductUpdater: React.FC<{ product: ProductData, reload: Function }> = ({ 
             <form onSubmit={handleSubmit} className='flex flex-col gap-3 mx-auto p-2'>
                 <div className=''>
                     <p className='text-info'><b>ID: </b>{product.id}<Tooltip message="A termékre utaló megváltoztathatatlan ID" /></p>
-                    <p className='text-info'><b>Státusz: </b>{product.is_active ? 'Aktív' : 'Inaktív'}<Tooltip message="A termék láthatósága. Ha ''Inaktív'' akkor nem látható." /></p>
+                    <p className='text-info'><b>Státusz: </b>
+                        {product.is_active ? 'Aktív' : 'Inaktív'}
+
+                        <Tooltip message="A termék láthatósága. Ha ''Inaktív'' akkor nem látható." />
+
+                        <button className='mx-1 btn btn-xs btn-outline btn-info float-right' type='button' onClick={() => toggleStatus()}>Termék {product.is_active ? 'Deaktiválása' : 'Aktiválása'}</button>
+                    </p>
                     <p className='text-info'><b>Képek száma: </b>{product.ProductImage.length}</p>
+                    <hr className='h-px my-1 bg-accent opacity-30 border-0' />
                     <p className='text-info'><b>Feltöltve: </b>{formatDate(product.updated_at)}</p>
                     <p className='text-info'><b>Utolsó frissítés: </b>{formatDate(product.updated_at)}</p>
                 </div>
@@ -219,7 +281,7 @@ const ProductUpdater: React.FC<{ product: ProductData, reload: Function }> = ({ 
                 </div>
 
                 <CategorySelector onCategoriesChange={handleCategoriesChange} currentCategories={selectedCategories} />
-                <ImageUploader onImagesChange={handleImageChange} key={resetKey}/>
+                <ImageUploader onImagesChange={handleImageChange} key={resetKey} />
                 <div className='divider'>Meglévő képek</div>
                 <ExistingImages images={product.ProductImage} reload={reload} />
 
