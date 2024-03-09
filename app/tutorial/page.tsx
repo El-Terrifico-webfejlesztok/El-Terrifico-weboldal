@@ -271,7 +271,21 @@ function Tutorial() {
                 Poszt létrehozása
               </div>
               <div className="collapse-content">
-                <p>hello</p>
+                <p className="mb-4">
+                  Ez a rész csak akkor érvényes, ha be vagy jelentkezve!!{" "}
+                </p>{" "}
+                <p>
+                  {" "}
+                  A menüsorból válaszd ki a <b>Fórum</b> lehetőséget. Ekkor
+                  megjelenik a fórum oldala. A képernyő jobb felső sarkában, a
+                  profilkép alatt a zöld menüsoron található az{" "}
+                  <b>Új poszt gomb</b>. Kattints rá. Ekkor megjelenik az{" "}
+                  <b>Új poszt létrehozása</b>. Itt töltsd ki a kívánt címmel,
+                  szöveggel és válaszd ki a legmegfelelőbb kategóriát. A{" "}
+                  <b>Küldés gomb</b>bal pedig tudod posztolni, ami meg is fog
+                  jelen az oldalon. Ekkor csak a te új posztod látható, de ha
+                  szeretnéd látni a többit, akkor kattints a keresés gombra.
+                </p>
               </div>
             </div>
             <div className="collapse bg-base-100 my-3">
@@ -280,7 +294,18 @@ function Tutorial() {
                 Hozzászólás létrehozása
               </div>
               <div className="collapse-content">
-                <p>hello</p>
+                <p className="mb-4">
+                  Ez a rész csak akkor érvényes, ha be vagy jelentkezve!!{" "}
+                </p>{" "}
+                <p>
+                  {" "}
+                  A menüsorból válaszd ki a <b>Fórum</b> lehetőséget. Ekkor
+                  megjelenik a fórum oldala. Kattints a kívánt poszt címére.
+                  Ekkor megjelenik a poszt tartalma. Alatta a hozzászólások
+                  részben található <b>Hozzászólásod</b> cím alatt írd be a
+                  hozzászólásod és a <b>+ gomb</b>bal, pedig már meg is tudod
+                  osztani.
+                </p>
               </div>
             </div>
             <div className="collapse bg-base-100 my-3">
@@ -289,7 +314,18 @@ function Tutorial() {
                 Keresés a posztok között
               </div>
               <div className="collapse-content">
-                <p>hello</p>
+                <p className="mb-4">
+                  Ez a rész csak akkor érvényes, ha be vagy jelentkezve!!{" "}
+                </p>{" "}
+                <p>
+                  {" "}
+                  A menüsorból válaszd ki a <b>Fórum</b> lehetőséget. Ekkor
+                  megjelenik a fórum oldala. Az oldal tetején található egy
+                  kereső rész. Itt kereshetsz a kívánt poszt <b>cím</b>ére, vagy
+                  kiválaszthatsz egy tetszőleges <b>kategóriát</b>. Ezután
+                  kattints a<b>Keresés gomb</b>ra. Ekkor megfognak jelenni azok
+                  a posztok, amelyeket szerettél volna.
+                </p>
               </div>
             </div>
           </div>
