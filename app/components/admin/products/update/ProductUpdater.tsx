@@ -7,7 +7,6 @@ import ExistingImages from './ExistingImages';
 import CategorySelector from '../upload/CategorySelector';
 import { Id, toast } from 'react-toastify';
 import updateToast from '@/lib/helper functions/updateToast';
-import { render } from 'react-dom';
 
 
 interface Category {

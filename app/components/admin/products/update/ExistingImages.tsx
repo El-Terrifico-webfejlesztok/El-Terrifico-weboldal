@@ -53,9 +53,9 @@ const ExistingImages: React.FC<ExistingImagesProps> = ({ images, reload }) => {
           <ul className='grid grid-cols-1 lg:grid-cols-2 gap-4'>
 
             {images.map((preview) => (
-              <div className={loadingimage === preview.id ? 'skeleton' : ''}>
+              <div key={preview.id} className={loadingimage === preview.id ? 'skeleton' : ''}>
 
-                <li key={preview.id} className='border-solid border-2 rounded-md p-1 border-accent border-opacity-75'>
+                <li className='border-solid border-2 rounded-md p-1 border-accent border-opacity-75'>
                   <img
                     src={`https://terrifico.zapto.org/${preview.image_path}`}
                     alt={`Preview ${preview.id}`}
