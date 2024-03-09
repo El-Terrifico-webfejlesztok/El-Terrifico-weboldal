@@ -166,7 +166,7 @@ model PostCategory {
 
 model Post {
   id          Int      @id @default(autoincrement()) @db.UnsignedInt
-  title       String   @db.VarChar(250)
+  title       String   @db.VarChar(80)
   text        String   @db.Text
   user_id     Int      @db.UnsignedInt
   category_id Int      @db.UnsignedInt
