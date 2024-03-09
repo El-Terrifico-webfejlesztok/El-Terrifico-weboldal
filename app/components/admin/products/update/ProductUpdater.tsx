@@ -7,6 +7,7 @@ import ExistingImages from './ExistingImages';
 import CategorySelector from '../upload/CategorySelector';
 import { Id, toast } from 'react-toastify';
 import updateToast from '@/lib/helper functions/updateToast';
+import formatDate from '@/lib/helper functions/formatDate';
 
 
 interface Category {
@@ -21,8 +22,8 @@ export interface ProductData {
     price: number;
     stock: number;
     is_active: boolean;
-    created_at: string; // Assuming this is a timestamp in string format
-    updated_at: string; // Assuming this is a timestamp in string format
+    created_at: Date; 
+    updated_at: Date; 
     ProductImage: ProductImage[];
     Categories: Category[];
 }
@@ -125,7 +126,6 @@ const ProductUpdater: React.FC<{ product: ProductData, reload: Function }> = ({ 
         }
     };
 
-
     const resetimages = async () => {
         setResetKey((prevKey) => prevKey + 1);
         setFormImages([])
@@ -153,8 +153,8 @@ const ProductUpdater: React.FC<{ product: ProductData, reload: Function }> = ({ 
                     <p className='text-info'><b>ID: </b>{product.id}<Tooltip message="A termékre utaló megváltoztathatatlan ID" /></p>
                     <p className='text-info'><b>Státusz: </b>{product.is_active ? 'Aktív' : 'Inaktív'}<Tooltip message="A termék láthatósága. Ha ''Inaktív'' akkor nem látható." /></p>
                     <p className='text-info'><b>Képek száma: </b>{product.ProductImage.length}</p>
-                    <p className='text-info'><b>Feltöltve: </b>{product.created_at}</p>
-                    <p className='text-info'><b>Utolsó frissítés: </b>{product.updated_at}</p>
+                    <p className='text-info'><b>Feltöltve: </b>{formatDate(product.updated_at)}</p>
+                    <p className='text-info'><b>Utolsó frissítés: </b>{formatDate(product.updated_at)}</p>
                 </div>
                 <div>
                     <label className='form-control' htmlFor='name'>
