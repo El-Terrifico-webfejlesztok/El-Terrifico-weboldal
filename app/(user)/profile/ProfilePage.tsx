@@ -106,12 +106,21 @@ const ProfilePage = () => {
 
     return (
         <div className='px-2 max-w-4xl mx-auto  my-4'>
+            {/** Profil fontos adatok div */}
+            <div className=' flex justify-center mt-12 space-x-6 '>
 
-            <div className='text-center mt-12'>
-                <h1 className="text-2xl  mb-4">Üdvözlünk <strong>{user.name}</strong>!</h1>
-                Email: <strong>{user.email}</strong>
+                <img src={session?.user?.image || undefined} className='p-1 bg-stone-50 h-20 rounded-full aspect-square' alt="Profilkép" />
+
+                <div className='text-center'>
+                    <h1 className="text-2xl  mb-4">Üdvözlünk <strong>{user.name}</strong>!</h1>
+                    Email: <strong>{user.email}</strong>
+                </div>
+
+                <div className='w-20'></div>
+
             </div>
-
+        
+            {/** Statisztikák */}
             <div className='text-center mt-4'>
                 <ProfileStats userdata={userData} />
             </div>
@@ -144,22 +153,38 @@ const ProfilePage = () => {
 
             <div id='order' className="divider py-4">Rendelések</div>
             {/** This is for displaying all of the orders the user has */}
-            <div>
-                {userData && userData.Order.length > 0 ? (
-                    userData.Order.map((order) => (
-                        <OrderView key={order.id} order={order} reload={fetchData} />
-                    ))
-                ) : (
-                    loading ? <div className='mx-auto loading loading-dots'></div> :
+            <div className='overflow-x-auto h-96'>
+                {userData && userData.Order.length > 0 ?
+                    (
+                        <table className={`table table-pin-rows`}>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Státusz</th>
+                                    <th>Rendelve</th>
+                                    <th>Teljes ár</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {userData.Order.map((order) => (
+                                    <OrderView key={order.id} order={order} reload={fetchData} />
+                                ))}
+                            </tbody>
+                        </table>
+                    )
+                    :
+                    loading ? (
+                        <div className="mx-auto loading loading-dots"></div>
+                    ) : (
                         <>
-                            <p className='text-center truncate mb-4 font-bold'>Még nincsenek rendeléseid</p>
-
-                            <div className='text-center'>
+                            <p className="text-center truncate mb-4 font-bold">Még nincsenek rendeléseid</p>
+                            <div className="text-center">
                                 <Link href="/products" className="btn btn-lg btn-primary">Termékek</Link>
                             </div>
                         </>
-                )}
+                    )}
             </div>
+
 
 
             {/* 
