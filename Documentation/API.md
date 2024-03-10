@@ -396,6 +396,108 @@ Ez a API végpont lehetővé teszi termékhez tartozó képek feltöltését.
 		}; 
 	</script>
 	```
+
+Termék Inaktívvá Tétele API
+---------------------------
+
+**Végpont:** `DELETE /api/product`
+
+**Leírás:**
+Ez a API végpont lehetővé teszi egy termék inaktiválását az azonosítója alapján. Az inaktivált termékek nem lesznek láthatók a felhasználók számára, de adataik megmaradnak az adatbázisban.
+
+**Hitelesítés:**
+- **Szükséges:** Adminisztrátor
+
+**Kérés:**
+- **Metódus:** DELETE
+- **Végpont:** `/api/product`
+- **URL Paraméterek:**
+  - `id`: A termék azonosítója, amelyet inaktiválni szeretnénk.
+
+**Válaszok:**
+- **Sikeres Válasz (HTTP Státuszkód: 200 OK):**
+  - `"Termék inaktívvá téve"`
+- **Hiba Válaszok:**
+  - HTTP Státuszkód: 400 Bad Request:
+    - `"Nincs termék megadva a kérésben"`
+  - HTTP Státuszkód: 500 Internal Server Error:
+    - `"Hiba a termék inaktiválása közben"`
+
+**Példa Használat:**
+- Kérés:
+  ```javascript
+  const inactivateProduct = async (productId: number) => {
+      try {
+          const response = await fetch(`/api/product?id=${productId}`, {
+              method: 'DELETE',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+          });
+
+          if (!response.ok) {
+              throw new Error("Sikertelen termék inaktiválás");
+          }
+
+          const responseBody = await response.json();
+          console.log(responseBody);
+      } catch (error) {
+          console.error("A szerver nem elérhető:", error);
+      }
+  };
+  ```
+
+Termék Aktiválási API
+---------------------------
+**Végpont:** `PATCH /api/product`
+
+**Leírás:**
+Ez a API végpont lehetővé teszi egy termék aktiválását az azonosítója alapján.
+
+**Hitelesítés:**
+- **Szükséges:** Adminisztrátor
+
+**Kérés:**
+- **Metódus:** PATCH
+- **Végpont:** `/api/product`
+- **URL Paraméterek:**
+  - `id`: A termék azonosítója, amelyet aktiválni szeretnénk.
+
+**Válaszok:**
+- **Sikeres Válasz (HTTP Státuszkód: 200 OK):**
+  - `"Termék aktívvá téve"`
+- **Hiba Válaszok:**
+  - HTTP Státuszkód: 400 Bad Request:
+    - `"Nincs termék megadva a kérésben"`
+  - HTTP Státuszkód: 401 Unauthorized:
+    - `"Nincs jogosultsága a termék aktívvá tételéhez"`
+  - HTTP Státuszkód: 500 Internal Server Error:
+    - `"Hiba a termék aktiválása közben"`
+
+**Példa Használat:**
+- Kérés:
+  ```javascript
+  const activateProduct = async (productId: number) => {
+      try {
+          const response = await fetch(`/api/product?id=${productId}`, {
+              method: 'PATCH',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+          });
+
+          if (!response.ok) {
+              throw new Error("Sikertelen termék aktiválás");
+          }
+
+          const responseBody = await response.json();
+          console.log(responseBody);
+      } catch (error) {
+          console.error("A szerver nem elérhető:", error);
+      }
+  };
+  ```
+
 # Felhasználó APIk
 Regisztrációs API
 ---------------------------
