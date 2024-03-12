@@ -75,17 +75,17 @@ const Poszt: React.FC<props> = ({ post, reload }) => {
     <div className="collapse collapse-arrow bg-base-300 sm:w-5/6 w-full mx-auto sm:mb-3 mb-5">
       <input type="checkbox" />
       <div className="collapse-title text-xl font-medium flex justify-between items-center">
-        <div>
+        <div className="mr-9 sm:mr-0 ">
           <div>
-            <p>{post.title}</p>
+            <p className="text-base sm:text-lg">{post.title}</p>
           </div>
-          <div className="text-sm text-info font-normal">#{post.category}</div>
+          <div className=" text-xs sm:text-sm text-info font-normal">#{post.category}</div>
         </div>
 
         <div className="flex items-center">
-          <div tabIndex={0} className="circle avatar mr-2">
-            <span className="mr-1">{post.user.username}</span>
-            <div className="w-10 rounded-full max-h-10">
+          <div tabIndex={0} className="circle avatar">
+            <span className="mr-1 text-sm sm:text-lg">{post.user.username}</span>
+            <div className="w-8 sm:w-10 rounded-full max-h-8 sm:max-h-10">
               <img
                 alt="Profilkép"
                 title={post.user.username}
@@ -123,20 +123,10 @@ const Poszt: React.FC<props> = ({ post, reload }) => {
             />
             <div className="w-1/2 justify-end items-end text-right p-0 m-0">
               <button
-                onClick={() => { handleComment() }}
+                onClick={() => { handleComment(); clearInputs() }}
+                className="btn btn-sm sm:btn-sm md:btn-md"
               >
-                <svg
-                  width="40"
-                  height="40"
-                  viewBox="0 0 100 100"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M30 50 H70 M50 30 V70"
-                    stroke="grey"
-                    strokeWidth="10"
-                  />
-                </svg>
+                Küldés
               </button>
             </div>
           </div>
