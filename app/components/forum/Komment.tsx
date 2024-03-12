@@ -1,4 +1,5 @@
 import { CommentType } from "@/app/forum/page";
+import formatDate from "@/lib/helper functions/formatDate";
 
 interface props {
   comment: CommentType;
@@ -17,7 +18,10 @@ const Komment: React.FC<props> = ({comment}) => {
         </div>
       </div>
       <div>
-        <h1 className=" my-auto font-medium text-md ml-3 text-black">{comment.User.username}</h1>
+        <div className="flex space-x-2 items-center">
+          <h1 className="my-auto font-medium text-md ml-3 text-black">{comment.User.username}</h1>
+          <p className="text-xs font-light">{formatDate(comment.created_at)}</p>
+        </div>
         <p className="ml-3 text-sm text-black">{comment.text}</p>
       </div>
     </div>
