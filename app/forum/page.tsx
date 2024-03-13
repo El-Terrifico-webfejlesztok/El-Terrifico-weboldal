@@ -7,6 +7,8 @@ import Poszt from "../components/forum/Poszt";
 import Footer from "../components/footer/Footer";
 import { getPostCategories } from "../server";
 import { useRouter, useSearchParams } from "next/navigation";
+import { toast } from "react-toastify";
+import updateToast from "@/lib/helper functions/updateToast";
 
 export type UserType = {
   id: number;
@@ -83,9 +85,13 @@ const Forum = () => {
   };
 
   useEffect(() => {
-    searchPosts(URLsearchParams);
     loadCategories();
+    searchPosts(URLsearchParams);
   }, []);
+
+  const reload = () => {
+    searchPosts(URLsearchParams);
+  }
 
   const loadCategories = async () => {
     try {
@@ -129,7 +135,8 @@ const Forum = () => {
     const query = formData.get("query") as string;
     const category = formData.get("category") as string;
 
-    const queryParams = buildForumQuery(query, category, 10, 1);
+    // Jelenleg 50 posztot ad vissza az első oldalról defaultból, majd lehet ezt változtatni
+    const queryParams = buildForumQuery(query, category, 50, 1);
     searchPosts(queryParams);
   };
   const searchPosts = async (queryParams?: URLSearchParams) => {
@@ -162,11 +169,14 @@ const Forum = () => {
   }
   const createPost = async (title: string, text: string, category: string) => {
     setLoading(true);
+    const toastId = toast.loading("Poszt feltöltése...")
+
     console.log(title, text, category);
     try {
       if (!title || !text || !category) {
         handleFeedback(false);
-        throw new Error("Nincs minden mező kitöltve");
+        updateToast(toastId, 'warning', 'Nincs minden mező kitöltve')
+        return
       }
       const response = await fetch("/api/post", {
         method: "POST",
@@ -183,15 +193,17 @@ const Forum = () => {
       if (!response.ok) {
         handleFeedback(false);
         const responseData: string = await response.json();
+        updateToast(toastId, 'error', responseData)
         setPostErrorMessage(responseData);
         throw new Error("Sikertelen poszt létrehozás");
       }
-
       searchPosts(buildForumQuery(title));
       clearInputs();
       setIsExpanded(false);
       handleFeedback(true);
+      updateToast(toastId, 'success', `Sikeres posztolás (${title})`)
     } catch (error) {
+      updateToast(toastId, 'error', 'A szerver nem érhető el')
       console.error("A szerver nem érhető el", error);
     } finally {
       setLoading(false);
@@ -292,7 +304,7 @@ const Forum = () => {
           </div>
           {/**Posztok renderelése */}
           {posts ? (
-            posts.map((post) => <Poszt key={post.id} post={post} />)
+            posts.map((post) => <Poszt key={post.id} post={post} reload={reload}/>)
           ) : (
             <div className="loading"></div>
           )}
