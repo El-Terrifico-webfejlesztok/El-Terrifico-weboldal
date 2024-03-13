@@ -12,7 +12,7 @@ function FigyelemFel() {
       <h1 className={`${textclass} bg-white`}>
         Ennél egyet?
       </h1>
-      <h1 className={`${textclass} bg-green-500`}>
+      <h1 className={`${textclass} bg-red-500`}>
         Itt a helyed!
       </h1>
     </div>
