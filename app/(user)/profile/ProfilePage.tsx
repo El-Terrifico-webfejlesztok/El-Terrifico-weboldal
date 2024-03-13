@@ -153,7 +153,7 @@ const ProfilePage = () => {
 
             <div id='order' className="divider py-4">Rendelések</div>
             {/** This is for displaying all of the orders the user has */}
-            <div className='overflow-x-auto h-96'>
+            <div className='overflow-x-auto max-h-96'>
                 {userData && userData.Order.length > 0 ?
                     (
                         <table className={`table table-pin-rows`}>

@@ -46,7 +46,7 @@ const Poszt: React.FC<props> = ({ post, reload }) => {
       if (reload) reload()
     }
     catch (error) {
-      updateToast(toastId, 'warning', 'A szerver nem elérhető!')
+      updateToast(toastId, 'warning', 'A szerver nem elérhető')
     }
   };
 
@@ -135,8 +135,8 @@ const Poszt: React.FC<props> = ({ post, reload }) => {
         {/** Cím jobb odal */}
         <div className="flex items-center">
           {post.user.username === session?.user?.name || session?.user?.role === 'admin' ?
-            <button onClick={() => deletePost(post.id)} className="z-20 btn btn-sm btn-circle bg-warning  btn-outline mx-5">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
+            <button onClick={() => deletePost(post.id)} className="z-20 btn btn-sm btn-circle bg-warning btn-outline mx-5">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="black" className="w-5 h-5">
                 <path fillRule="evenodd" d="M8.75 1A2.75 2.75 0 0 0 6 3.75v.443c-.795.077-1.584.176-2.365.298a.75.75 0 1 0 .23 1.482l.149-.022.841 10.518A2.75 2.75 0 0 0 7.596 19h4.807a2.75 2.75 0 0 0 2.742-2.53l.841-10.52.149.023a.75.75 0 0 0 .23-1.482A41.03 41.03 0 0 0 14 4.193V3.75A2.75 2.75 0 0 0 11.25 1h-2.5ZM10 4c.84 0 1.673.025 2.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69 0-1.25.56-1.25 1.25v.325C8.327 4.025 9.16 4 10 4ZM8.58 7.72a.75.75 0 0 0-1.5.06l.3 7.5a.75.75 0 1 0 1.5-.06l-.3-7.5Zm4.34.06a.75.75 0 1 0-1.5-.06l-.3 7.5a.75.75 0 1 0 1.5.06l.3-7.5Z" clipRule="evenodd" />
               </svg>
             </button> :
@@ -150,7 +150,7 @@ const Poszt: React.FC<props> = ({ post, reload }) => {
               <img
                 alt="Profilkép"
                 title={post.user.username}
-                src={`https://terrifico.zapto.org/${post.user.image}`}
+                src={post.user.image ? `https://terrifico.zapto.org/${post.user.image}` : 'https://terrifico.zapto.org/public/profile_images/defaultpfp.png'}
               />
             </div>
           </div>
@@ -168,7 +168,7 @@ const Poszt: React.FC<props> = ({ post, reload }) => {
         <div className="overflow-x-auto whitespace-no-wrap">
           {/** Itt renderelődnek a kommentek. Lehet hogy szabni kéne nekik valami határt. */}
           {post.comments.length > 0 ? post.comments.map((cmnt) => (
-            <Komment key={cmnt.id} comment={cmnt} />
+            <Komment key={cmnt.id} comment={cmnt} reload={reload}/>
           ))
             : <h1 className="text-center text-lg font-bold mb-6 mt-2 opacity-40 select-none">Légy az első aki hozzászól!</h1>}
         </div>
