@@ -34,7 +34,7 @@ const Komment: React.FC<props> = ({ comment, reload }) => {
         updateToast(toastId, 'error', responseData)
         return
       }
-      updateToast(toastId, 'success', 'Sikeres komment törlés!')
+      updateToast(toastId, 'success', 'Komment sikeresen törölve!')
       if (reload) reload()
 
     } catch (error) {
@@ -49,7 +49,8 @@ const Komment: React.FC<props> = ({ comment, reload }) => {
           <img
             alt="Profilkép"
             title={comment.User.username}
-            src={session?.user ? session.user.image ?? 'https://terrifico.zapto.org/public/profile_images/defaultpfp.png' : 'https://terrifico.zapto.org/public/profile_images/defaultpfp.png'} />
+            src={comment.User.image ? `https://terrifico.zapto.org/${comment.User.image}` : 'https://terrifico.zapto.org/public/profile_images/defaultpfp.png'} 
+            />
         </div>
       </div>
       <div className="overflow-hidden">
