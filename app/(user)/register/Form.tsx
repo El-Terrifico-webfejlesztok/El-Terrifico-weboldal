@@ -2,6 +2,9 @@
 
 import React, { FormEvent, useState } from 'react'
 import { useRouter } from 'next/navigation';
+import { signIn } from 'next-auth/react';
+import { toast } from 'react-toastify';
+import updateToast from '@/lib/helper functions/updateToast';
 
 
 const Form = () => {
@@ -11,6 +14,8 @@ const Form = () => {
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        const toastId = toast.loading("Regisztrálás...")
+
         // Töltés effekt a gombon
         setButton("loading loading-dots loading-lg mx-auto");
         // formdata
@@ -22,6 +27,7 @@ const Form = () => {
         if (formData.get('password') !== formData.get('passwordverify')) {
             setButton('btn btn-big btn-error');
             setFeedbackText('A jelszavak nem egyeznek meg.');
+            updateToast(toastId, 'warning', 'A jelszavak nem egyeznek meg')
             return;
         }
 
@@ -39,12 +45,27 @@ const Form = () => {
         if (response.ok) {
             setButton('btn btn-big btn-success')
             setFeedbackText('Sikeres regisztráció!')
-            setTimeout(() => {
-                console.log("After 1 second");
-                router.push('/login')
-            }, 1000);
-        } else {
+            updateToast(toastId, 'success', 'Sikeres regisztráció!')
+            const response = await signIn("credentials", {
+                email: formData.get("email"),
+                password: formData.get("password"),
+                redirect: false,
+            });
+            if (response?.ok) {
+                toast.info('Átirányítás...')
+                setTimeout(() => {
+                    router.push('/profile')
+                }, 200);
+            }
+            else{
+                setTimeout(() => {
+                    router.push('/login')
+                }, 200);
+            }
+        }
+        else {
             setButton('btn btn-big btn-error')
+            updateToast(toastId, 'error', 'Sikeretelen regisztráció')
             const errorData = await response.json();
             setFeedbackText(
                 (Array.isArray(errorData) && errorData.length > 0) // Check if it's an array with at least one error
