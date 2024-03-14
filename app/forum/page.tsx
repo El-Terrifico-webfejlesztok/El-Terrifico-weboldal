@@ -312,7 +312,7 @@ const Forum = () => {
 
         {/* Poszt létrehozása */}
         {isExpanded && (
-          <div className="absolute inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-10">
+          <div className="absolute inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-30">
             <div className="bg-neutral-content rounded-lg shadow-md p-4 md:w-1/2 lg:1/3">
               <h3 className="text-lg font-semibold mb-2">
                 Új poszt létrehozása
