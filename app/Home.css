@@ -15,9 +15,8 @@
 /* Flip card eleje */
 .flip-card {
   background-color: transparent;
-  width: 300px;
-  height: 532px;
-  border: 1px solid #f1f1f1;
+  width: 280px;
+  height: 555px;
   perspective: 1000px;
   border-radius: 50px;
   cursor: pointer;
@@ -45,13 +44,13 @@
   backface-visibility: hidden;
 }
 .flip-card-front {
-  background-image: url("/TelefonHatter.jpg");
-  background-size: cover;
+  background-color: oklch(var(--wa));
   border-radius: 50px;
-  color: black;
+  color: white;
   display: flex;
   justify-content: center;
   align-items: center;
+  border: 8px oklch(var(--b3)) solid;
 }
 
 .flip-card-back {

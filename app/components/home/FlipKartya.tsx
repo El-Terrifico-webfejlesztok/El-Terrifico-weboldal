@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 interface props {
   video: string;
@@ -10,44 +10,54 @@ interface props {
 
 const FlipKartya = ({ video, szoveg }: props) => {
   const [isFlipped, setIsFlipped] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
-  const flipCard = () => {
+  const handleFlip = () => {
     setIsFlipped(!isFlipped);
-  };
-
-  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
-
-  const handleVideoClick = (event: React.MouseEvent) => {
-    // Check if the click is on the controller (e.g., a button)
-    if (event.target instanceof Element && !event.target.classList.contains("controller")) {
-      // Prevent the default video behavior (play/pause)
-      event.preventDefault();
-
-      // Toggle the play state of the video
-      setIsVideoPlaying(!isVideoPlaying);
+    if (videoRef.current) {
+      if (!isFlipped) {
+        videoRef.current
+          .play()
+          ?.catch((error) => console.error("Video play error:", error));
+      } else {
+        videoRef.current.pause();
+      }
     }
   };
 
   return (
-    <div
-      className={`flip-card ${isFlipped ? "clicked" : ""}`}
-      onClick={flipCard}
-    >
-      <div className="flip-card-inner">
-        <div className="flip-card-front">
-          <h1>{szoveg}</h1>
-        </div>
-        <div className="flip-card-back">
-          <video
-            id="myVideo"
-            controls
-            loop
-            onClick={handleVideoClick}
-            controlsList="nodownload nofullscreen"
-          >
-            <source src={video} type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
+    <div>
+      <div className={`flip-card ${isFlipped ? "clicked" : ""}`}>
+        <div className="flip-card-inner">
+          <div className="flip-card-front">
+            <div className="content-wrapper">
+              <h1 className="mb-8">{szoveg}</h1>
+              <button className="btn bg-base-300" onClick={handleFlip}>
+                Fordítsd meg
+              </button>
+            </div>
+          </div>
+          <div className="flip-card-back">
+            <div className="content-wrapper bg-warning-content rounded-3xl border-8 border-warning">
+              <video
+                id="myVideo"
+                controls
+                loop
+                controlsList="nodownload nofullscreen"
+                ref={videoRef}
+                className="rounded-t-2xl"
+              >
+                <source src={video} type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+              <button
+                className="btn btn-sm bg-base-300 m-3"
+                onClick={handleFlip}
+              >
+                Vissza
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
