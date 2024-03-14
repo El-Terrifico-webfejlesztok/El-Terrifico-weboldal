@@ -18,16 +18,42 @@ function Videok() {
         </div>
       </div>
       <div className="md:flex ">
-        <div className="md:w-2/4 flex items-center justify-center mb-8">
+        <div className="md:w-1/3 flex items-center justify-center mb-8">
           <FlipKartya
             szoveg="Ettől azért én is megijedtem."
             video="/Franco3.mp4"
           />
         </div>
-        <div className="md:w-2/4 flex items-center justify-center">
+        <div className="md:w-1/3 flex items-center justify-center">
           <FlipKartya
             szoveg="Egy kis zene mindig felvidít."
             video="/Franco4.mp4"
+          />
+        </div>
+        <div className="md:w-1/3 flex items-center justify-center">
+          <FlipKartya
+            szoveg="Imádom a karit."
+            video="/Franco6.mp4"
+          />
+        </div>
+      </div>
+      <div className="md:flex ">
+        <div className="md:w-1/3 flex items-center justify-center mb-8">
+          <FlipKartya
+            szoveg="Vericsíra."
+            video="/Franco7.mp4"
+          />
+        </div>
+        <div className="md:w-1/3 flex items-center justify-center">
+          <FlipKartya
+            szoveg="Daza kodulo."
+            video="/Franco8.mp4"
+          />
+        </div>
+        <div className="md:w-1/3 flex items-center justify-center">
+          <FlipKartya
+            szoveg="Mi van niggerek."
+            video="/Franco9.mp4"
           />
         </div>
       </div>
