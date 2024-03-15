@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
         const searchTerm = searchParams.get('query')?.toLowerCase() || undefined;
         const category = searchParams.get('category')?.toLowerCase() || undefined;
         // const order = searchParams.get('order')?.toLowerCase() || 'desc';
-        const count = parseInt(searchParams.get('count') || '10');
+        const count = parseInt(searchParams.get('count') || '50');
         const page = parseInt(searchParams.get('page') || '1');
         const skip = count * (page - 1)
 
