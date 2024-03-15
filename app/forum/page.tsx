@@ -152,12 +152,13 @@ const Forum = () => {
         }
       );
       if (!response.ok) {
-        throw new Error("Sikertelen posztkeresés");
+        toast.error('Valami hiba történt')
       }
       const responseData: PostType[] = await response.json();
       setPosts(responseData);
       queryParams ? setPath(queryParams) : null;
     } catch (error) {
+      toast.error('A szerver nem érhető el')
       console.error(error);
     } finally {
       setLoading(false);
@@ -195,7 +196,6 @@ const Forum = () => {
         const responseData: string = await response.json();
         updateToast(toastId, 'error', responseData)
         setPostErrorMessage(responseData);
-        throw new Error("Sikertelen poszt létrehozás");
       }
       searchPosts(buildForumQuery(title));
       clearInputs();
@@ -204,7 +204,6 @@ const Forum = () => {
       updateToast(toastId, 'success', `Sikeres posztolás (${title})`)
     } catch (error) {
       updateToast(toastId, 'error', 'A szerver nem érhető el')
-      console.error("A szerver nem érhető el", error);
     } finally {
       setLoading(false);
     }
@@ -304,7 +303,7 @@ const Forum = () => {
           </div>
           {/**Posztok renderelése */}
           {posts ? (
-            posts.map((post) => <Poszt key={post.id} post={post} reload={reload}/>)
+            posts.map((post) => <Poszt key={post.id} post={post} reload={reload} />)
           ) : (
             <div className="loading"></div>
           )}
