@@ -114,7 +114,7 @@ const Poszt: React.FC<props> = ({ post, reload }) => {
       <div className="collapse-title max-w-full text-xl font-medium grid grid-cols-12 justify-between items-center">
         
         {/** Cím bal odal */}
-        <div className="sm:mr-0 col-span-7">
+        <div className="sm:mr-0 col-span-8">
           {/** Cím */}
           <p className="text-base truncate text-left sm:text-lg">{post.title}</p>
 
@@ -140,7 +140,7 @@ const Poszt: React.FC<props> = ({ post, reload }) => {
         </div>
 
         {/** Cím jobb odal */}
-        <div className="col-span-5 justify-end flex items-end flex-col sm:flex-row sm:items-center">
+        <div className="col-span-4 justify-end flex items-end flex-col sm:flex-row sm:items-center">
           {post.user.username === session?.user?.name || session?.user?.role === 'admin' ?
             <button onClick={() => deletePost(post.id)} className="z-20 opacity-50 hover:opacity-100 btn btn-sm btn-circle hover:bg-warning  sm:mr-5 mr-2">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="black" className="w-5 h-5">
