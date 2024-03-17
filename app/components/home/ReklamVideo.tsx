@@ -8,7 +8,7 @@ function ReklamVideo() {
       </div>
       <div className="md:w-2/5">
         <iframe
-          className="youtube rounded-r-md"
+          className="youtube aspect-video rounded-r-md"
           src={`https://www.youtube.com/embed/wLKPwPXm9HM`}
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
         ></iframe>

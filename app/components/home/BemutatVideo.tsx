@@ -7,7 +7,7 @@ function BemutatVideo({ videoId }: props) {
     <div className="md:flex reszek">
       <div className="md:w-2/5">
         <iframe
-          className="youtube rounded-l-md"
+          className="youtube rounded-l-md aspect-video"
           src={`https://www.youtube.com/embed/${videoId}`}
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
         ></iframe>
