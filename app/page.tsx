@@ -9,6 +9,7 @@ import Ajanlatok from "./components/home/Ajanlatok";
 import "./Home.css";
 import BemutatVideo from "./components/home/BemutatVideo";
 import Footer from "./components/footer/Footer";
+import ReklamVideo from "./components/home/ReklamVideo";
 
 export default function Home() {
   return (
@@ -17,6 +18,7 @@ export default function Home() {
       <Koszonto />
       <Bemutatkozas />
       <BemutatVideo videoId="SIsgpllRsEM" />
+      <ReklamVideo />
       <Informaciok />
       <Ajanlatok />
       <EtteremTortenete />
