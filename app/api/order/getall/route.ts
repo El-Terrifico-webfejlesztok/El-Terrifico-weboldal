@@ -24,26 +24,23 @@ export async function GET(req: NextRequest) {
         }
         // extract search params from the request
         const searchParams = req.nextUrl.searchParams;
-        
+
         // Number of orders to return
-        const pageSize = 5; // Number of orders to return per page
+        const pageSize = parseInt(searchParams.get('count') || '5'); // Number of orders to return per page
 
         // Get the page number from the query parameters
         const page = parseInt(searchParams.get('page') || '1');
         const skip = (page - 1) * pageSize;
 
         // Optional type for the request with type checking
-        const typeString: string | null = searchParams.get('type');
-        const type: Order_status = typeString && typeString in Order_status ? (typeString as Order_status) : 'created';
+        const typeString: Order_status | undefined  = searchParams.get('type') === 'all' ? undefined : searchParams.get('type') as Order_status || undefined;
 
         // Fetch the order details including OrderItems
         const orderDetails = await prisma.order.findMany({
             take: pageSize,
             skip: skip,
             where: {
-                status: {
-                    equals: type,
-                },
+                status: typeString,
             },
             orderBy: {
                 created_at: 'desc',
@@ -65,8 +62,18 @@ export async function GET(req: NextRequest) {
         if (!orderDetails || orderDetails.length === 0) {
             return NextResponse.json(`Nem található ilyen rendelés`, { status: 404 });
         }
+        const count = await prisma.order.count({
+            where: {
+                status: typeString,
+            }
+        })
+        const totalPages = Math.ceil(count / pageSize);
+        const response = {
+            pages: totalPages,
+            orderDetails,
+        };
 
-        return NextResponse.json(orderDetails, { status: 200 });
+        return NextResponse.json(response, { status: 200 });
     } catch (error) {
         console.error('Hiba a rendelési adatok lekérdezésekor:', error);
         return NextResponse.json('Hiba a rendelési adatok lekérdezése közben', { status: 500 });

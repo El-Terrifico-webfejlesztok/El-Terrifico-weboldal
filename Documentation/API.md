@@ -1514,6 +1514,7 @@ Ez az API végpont lehetővé teszi az összes rendelés lekérdezését. Csak a
 -   **Végpont:** `/api/order/getall`
 -   **URL Paraméterek:**
     -   `page` (Opcionális): Az oldal száma (alapértelmezett: 1).
+	-	`count` (Opcionális): A visszaadott rendelések száma oldalanként (alapértelmezett: 1)
     -   `type` (Opcionális): A rendelés típusa, érvényes értékek: 'created', 'preparing', 'shipping', 'completed', 'canceled' (alapértelmezett: 'created'). (Ha hibás a típus akkor az alapértelemezett típussal rendelkező rendeléseket adja vissza)
 
 **Válasz:**
@@ -1565,9 +1566,9 @@ Ez az API végpont lehetővé teszi az összes rendelés lekérdezését. Csak a
 
 -   **Kérés:**
 	```typescript
-	const getAllOrders = async (page = 1, type = 'created') => {
+	const getAllOrders = async (page = 1, type = 'created', count= 5) => {
 		try {
-		const response = await fetch(`/api/order/getall?page=${page}&type=${type}`, {
+		const response = await fetch(`/api/order/getall?page=${page}&type=${type}&count=${count}`, {
 			method: 'GET',
 			headers: {
 			'Content-Type': 'application/json',

@@ -52,8 +52,8 @@ const ProductList = () => {
     const minPrice = formData.get("minPrice") as string;
     const maxPrice = formData.get("maxPrice") as string;
     const categories = formData.getAll("category") as string[];
-    const minRating = formData.get("minRating") as string;
-    const maxRating = formData.get("maxRating") as string;
+    // const minRating = formData.get("minRating") as string;
+    // const maxRating = formData.get("maxRating") as string;
 
     // Ha lesz input validálás akkor itt kell még.
     // Útvonal megváltozattása erre a címre
