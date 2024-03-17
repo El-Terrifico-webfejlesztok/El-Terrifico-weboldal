@@ -210,6 +210,7 @@ export async function GET(req: NextRequest) {
             name: true,
             quantity: true,
             price: true,
+            product_id: true,
           },
         },
         User: {
@@ -244,6 +245,8 @@ export async function GET(req: NextRequest) {
       orderId: orderDetails.id,
       totalPrice: orderDetails.total_price,
       createdAt: orderDetails.created_at,
+      status: orderDetails.status,
+      updatedAt: orderDetails.updated_at,
       OrderItems: orderDetails.OrderItem,
       User: orderDetails.User,
       ShippingAddress: orderDetails.ShippingAddress,

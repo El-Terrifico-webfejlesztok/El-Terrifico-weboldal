@@ -25,7 +25,7 @@ export async function GET(req: NextRequest) {
         // Check for authentication and authorization (assuming server-side context)
         const session = await getServerSession(authOptions);
         if (!session) {
-            return NextResponse.json('Unauthorized', { status: 401 });
+            return NextResponse.json('A felhasználói adatok lekérdezéséhez be kell jelentkeznie', { status: 401 });
         }
         // Access user data if authorized based on your requirements
         const userId = parseInt(session.user?.id as string);
@@ -42,10 +42,22 @@ export async function GET(req: NextRequest) {
                 created_at: true,
                 ShippingAddress: true,
                 Payment: true,
-                Order: true,
+                Order: {
+                    select: {
+                        id: true,
+                        created_at: true,
+                        shipping_id: true,
+                        status: true,
+                        total_price: true,
+                        updated_at: true,
+                    },
+                    orderBy: {
+                        created_at: "desc"
+                    }
+                },
                 Review: true,
                 Post: {
-                    select:{
+                    select: {
                         id: true,
                         title: true,
                         created_at: true,
@@ -53,7 +65,7 @@ export async function GET(req: NextRequest) {
                     }
                 },
                 Comment: {
-                    select:{
+                    select: {
                         id: true,
                         created_at: true,
                         updated_at: true
@@ -63,13 +75,13 @@ export async function GET(req: NextRequest) {
         });
 
         if (!data) {
-            return NextResponse.json({ message: 'Data not found' }, { status: 404 });
+            return NextResponse.json({ message: 'Nem található ilyen felhasználó' }, { status: 404 });
         }
 
         return NextResponse.json(data, { status: 200 });
     } catch (error) {
         console.error('Error fetching data:', error);
-        return NextResponse.json({ message: 'An error occurred' }, { status: 500 });
+        return NextResponse.json({ message: 'Hiba az adatok lekérése közben' }, { status: 500 });
     }
 }
 
@@ -78,7 +90,7 @@ export async function PUT(req: NextRequest) {
         // Check for authentication and authorization (assuming server-side context)
         const session = await getServerSession(authOptions);
         if (!session) {
-            return NextResponse.json('Unauthorized', { status: 401 });
+            return NextResponse.json('Az adatok frissítéséhez be kell jelentkeznie', { status: 401 });
         }
         session.user?.email
         session.user?.name
@@ -99,7 +111,7 @@ export async function PUT(req: NextRequest) {
         });
 
         if (!updatedData) {
-            return NextResponse.json({ message: 'Update failed' }, { status: 400 });
+            return NextResponse.json({ message: 'Az adatok frissítése sikertelen' }, { status: 400 });
         }
 
         // Here you can see my utter incompetence

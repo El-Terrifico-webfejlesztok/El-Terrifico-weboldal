@@ -5,9 +5,8 @@ const AdminOldal = () => {
   return (
     <>
     
-    <div>Ez itt a jövőbeli overview oldal</div>
+    <div className='text-3xl font-bold text-center mt-12'>Üdvözöljük, adminisztrátor</div>
 
-    <Orders/>
     </>
   )
 }

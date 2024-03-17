@@ -23,8 +23,10 @@ export async function PUT(req: NextRequest) {
         }
 
         // Extract data from the request body
-        const { orderId }: { orderId: number } = await req.json();
+        const { id }: { id: string | undefined } = await req.json();
+        const orderId = parseInt(id || '0')
 
+        console.log(orderId)
         // Fetch the order to cancel
         const existingOrder = await prisma.order.findUnique({
             where: {
@@ -33,9 +35,15 @@ export async function PUT(req: NextRequest) {
         });
 
         // Check if the order exists
-        if (!existingOrder) {
-            return NextResponse.json(`Nem található rendelés az azonosítóval: ${orderId}`, { status: 404 });
+        if (!existingOrder || existingOrder.status !== 'created') {
+            return NextResponse.json(`A rendelés nem mondható le: (${orderId})`, { status: 404 });
         }
+
+        if (parseInt(session.user!.id) !== existingOrder?.user_id && session.user!.role !== 'admin') {
+            return NextResponse.json(`Nincs jogosultsága a rendelést lemondani`, { status: 404 });
+        }
+
+
 
         // Update the order status to "canceled"
         const canceledOrder = await prisma.order.update({

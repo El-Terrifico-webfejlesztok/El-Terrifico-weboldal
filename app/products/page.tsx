@@ -31,7 +31,7 @@ const ProductList = () => {
   // Az URLsearchParams egy változó ami tükrözi a kérdőjel után lévő részt az URL-ben, automatikusan updatel
   const URLsearchParams = useSearchParams();
   // data az egy lista productokkal
-  const [data, setData] = useState<Product[]>([]);
+  const [data, setData] = useState<Product[] | undefined>(undefined);
   // Loading változó a fetch-hez hogy legyen valami feedback a kattintásnál
   const [loading, setLoading] = useState<Boolean>();
   // routerrel lehet útvonalat változtatni
@@ -52,8 +52,8 @@ const ProductList = () => {
     const minPrice = formData.get("minPrice") as string;
     const maxPrice = formData.get("maxPrice") as string;
     const categories = formData.getAll("category") as string[];
-    const minRating = formData.get("minRating") as string;
-    const maxRating = formData.get("maxRating") as string;
+    // const minRating = formData.get("minRating") as string;
+    // const maxRating = formData.get("maxRating") as string;
 
     // Ha lesz input validálás akkor itt kell még.
     // Útvonal megváltozattása erre a címre
@@ -166,27 +166,31 @@ const ProductList = () => {
 
         {/**Kárty renderelés a visszakapott eredményekkel */}
         <div className={styles.kartyak}>
-          {data.map((item) => (
-            <Kartya
-              product={{
-                id: item.id,
-                name: item.name,
-                description: item.description,
-                price: item.price,
-                stock: item.stock,
-                is_active: true,
-                created_at: new Date(0),
-                updated_at: new Date(0),
-              }}
-              key={item.id}
-              title={item.name}
-              description={item.description}
-              category={item.categories}
-              images={item.images}
-              price={item.price} />
-          ))}
+          {data ?
+            data.length > 0 ?
+              data.map((item) => (
+                <Kartya
+                  product={{
+                    id: item.id,
+                    name: item.name,
+                    description: item.description,
+                    price: item.price,
+                    stock: item.stock,
+                    is_active: true,
+                    created_at: new Date(0),
+                    updated_at: new Date(0),
+                  }}
+                  key={item.id}
+                  title={item.name}
+                  description={item.description}
+                  category={item.categories}
+                  images={item.images}
+                  price={item.price} />
+              ))
+              : <p className="text-3xl font-bold bg-base-300 outline p-2 rounded-sm">Nem található ilyen termék</p>
+            : (<div className="flex flex-grow mx-auto w-[50%] h-[50%] loading loading-ball bg-base-100"></div>)
+          }
         </div>
-        <div className="h-12"></div>
       </div><Footer />
     </>
   );

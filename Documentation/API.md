@@ -1419,7 +1419,9 @@ Ez az API végpont lehetővé teszi egy rendelés részleteinek lekérdezését 
 	{
 		"orderId": 987,
 		"totalPrice": 150.00,
+		"status": "created",
 		"createdAt": "2024-02-20T12:30:45Z",
+		"updatedAt": "2024-02-20T12:30:45Z",
 		"OrderItems": [
 			{
 				"id": 1,
@@ -1512,6 +1514,7 @@ Ez az API végpont lehetővé teszi az összes rendelés lekérdezését. Csak a
 -   **Végpont:** `/api/order/getall`
 -   **URL Paraméterek:**
     -   `page` (Opcionális): Az oldal száma (alapértelmezett: 1).
+	-	`count` (Opcionális): A visszaadott rendelések száma oldalanként (alapértelmezett: 1)
     -   `type` (Opcionális): A rendelés típusa, érvényes értékek: 'created', 'preparing', 'shipping', 'completed', 'canceled' (alapértelmezett: 'created'). (Ha hibás a típus akkor az alapértelemezett típussal rendelkező rendeléseket adja vissza)
 
 **Válasz:**
@@ -1529,13 +1532,15 @@ Ez az API végpont lehetővé teszi az összes rendelés lekérdezését. Csak a
 					"id": 1,
 					"name": "Product A",
 					"quantity": 2,
-					"price": 100.00
+					"price": 100.00,
+					"product_id": 65,
 				},
 				{
 					"id": 2,
 					"name": "Product B",
 					"quantity": 1,
-					"price": 50.00
+					"price": 50.00,
+					"product_id": 31,
 				}
 				// ... További rendelésitemek
 			]
@@ -1561,9 +1566,9 @@ Ez az API végpont lehetővé teszi az összes rendelés lekérdezését. Csak a
 
 -   **Kérés:**
 	```typescript
-	const getAllOrders = async (page = 1, type = 'created') => {
+	const getAllOrders = async (page = 1, type = 'created', count= 5) => {
 		try {
-		const response = await fetch(`/api/order/getall?page=${page}&type=${type}`, {
+		const response = await fetch(`/api/order/getall?page=${page}&type=${type}&count=${count}`, {
 			method: 'GET',
 			headers: {
 			'Content-Type': 'application/json',
@@ -1703,7 +1708,7 @@ Ez az API végpont lehetővé teszi egy rendelés lemondását az azonosító al
 
 **Hitelesítés:**
 
--   **Szükséges:** Bejelentkezés
+-   **Szükséges:** Bejelentkezés, adminisztrátorral bárki rendelését le lehet mondani
 
 **Kérés:**
 
@@ -1726,12 +1731,12 @@ Ez az API végpont lehetővé teszi egy rendelés lemondását az azonosító al
 
     -   **HTTP Státuszkód: 401 Unauthorized:**
 		```json
-		"A rendelés lemondásához be kell jelentkeznie vagy adminisztrátornak lennie"
+		"A rendelés lemondásához be kell jelentkeznie"
 		```
 
     -   **HTTP Státuszkód: 404 Not Found:**
 		```json
-		"Nem található rendelés az azonosítóval: 987"
+		"A rendelés nem lemondható: 987"
 		```
 
     -   **HTTP Státuszkód: 500 Internal Server Error:**
