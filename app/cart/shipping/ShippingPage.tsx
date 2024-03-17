@@ -31,18 +31,7 @@ interface userData {
 function ShippingPage() {
   const [userData, setUserData] = useState<userData | null>(null);
   const [loading, setLoading] = useState(true);
-  const [isEditing, setIsEditing] = useState(false);
   const [userView, setUserView] = useState<UserView>();
-  const [selectedAddress, setSelectedAddress] = useState(null);
-
-
-  const handleAddressEditClick = () => {
-    setIsEditing(true);
-  };
-
-  const handleAddressCancelClick = () => {
-    setIsEditing(false);
-  };
 
   async function fetchData() {
     setLoading(true);
@@ -101,7 +90,6 @@ function ShippingPage() {
 
       <div className="sm:w-1/2 mx-auto mb-4">
         <ShippingAddressFormCart
-          onCancel={handleAddressCancelClick}
           reload={fetchData}
         />
       </div>

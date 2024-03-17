@@ -165,9 +165,7 @@ const Forum = () => {
     }
   };
 
-  {
-    /** Posztok létrehozása */
-  }
+  {/** Posztok létrehozása */ }
   const createPost = async (title: string, text: string, category: string) => {
     setLoading(true);
     const toastId = toast.loading("Poszt feltöltése...")

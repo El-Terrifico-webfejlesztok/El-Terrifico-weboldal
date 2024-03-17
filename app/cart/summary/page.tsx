@@ -5,6 +5,8 @@ import useCartService from "@/lib/hooks/useCartStore";
 import SummaryKartya from "@/app/components/cart/summary/SummaryKartya";
 import { redirect, useSearchParams, useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast } from "react-toastify";
+import updateToast from "@/lib/helper functions/updateToast";
 
 export interface OrderItem {
   id: number;
@@ -39,6 +41,8 @@ function CartSummary() {
 
   const createOrder = async (orderData: OrderData) => {
     setLoading(true)
+    const toastId = toast.loading("Rendelés...")
+
     try {
       const response = await fetch('/api/order', {
         method: 'POST',
@@ -55,6 +59,7 @@ function CartSummary() {
       });
 
       if (response.ok) {
+        updateToast(toastId, 'success', 'Sikeres rendelés!')
         await Success()
       }
       // Call the success function
@@ -62,9 +67,8 @@ function CartSummary() {
         const responseData = await response.json();
         setButtonColor('btn-error')
         setButtonText(responseData)
-        throw new Error("Sikertelen rendelés létrehozás");
+        updateToast(toastId, 'error', responseData)
       }
-
 
     } catch (error) {
       console.error("A szerver nem érhető el", error);
@@ -92,7 +96,6 @@ function CartSummary() {
         quantity: item.quantity,
       })),
     };
-
     createOrder(orderData);
   };
 
@@ -117,8 +120,16 @@ function CartSummary() {
               item={item}
             />
           ))}
+          <div className="divider"></div>
+          <p className="text-center text-lg">
+            Szállítás: {shippingPrice} Ft
+          </p>
+          <p className="text-center text-lg">
+            Termékek: {itemsPrice} Ft
+          </p>
+          <p></p>
           <h1 className="text-center my-2 text-xl font-bold">
-            Összesen: {totalPrice} Ft{" "}
+            Összesen: {totalPrice} Ft
           </h1>
         </div>
         <div className="lg:w-1/2 border-4 border-black border-dotted lg:ml-2 lg:my-0 my-6 h-fit p-4 pt-0">

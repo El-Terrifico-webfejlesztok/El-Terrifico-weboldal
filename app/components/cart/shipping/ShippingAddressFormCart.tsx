@@ -30,6 +30,7 @@ const ShippingAddressFormCart = ({
   const [postalCode, setPostalCode] = useState<string | undefined>(
     shippingAddress.postal_code || undefined
   );
+
   // Reszponzivitás érdekében
   const [loading, setLoading] = useState<boolean>(false);
   const [feedback, setFeedfback] = useState<string | undefined>(undefined);
@@ -103,7 +104,7 @@ const ShippingAddressFormCart = ({
   };
 
   const data =
-    recipientName + "_" + postalCode + "_" + city + "_" + streetAddress;
+    recipientName + "_" + postalCode + "_" + city + "_" + streetAddress + "_" + shippingAddress.id;
 
   return (
     <>

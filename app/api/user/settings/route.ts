@@ -42,10 +42,22 @@ export async function GET(req: NextRequest) {
                 created_at: true,
                 ShippingAddress: true,
                 Payment: true,
-                Order: true,
+                Order: {
+                    select: {
+                        id: true,
+                        created_at: true,
+                        shipping_id: true,
+                        status: true,
+                        total_price: true,
+                        updated_at: true,
+                    },
+                    orderBy: {
+                        created_at: "desc"
+                    }
+                },
                 Review: true,
                 Post: {
-                    select:{
+                    select: {
                         id: true,
                         title: true,
                         created_at: true,
@@ -53,7 +65,7 @@ export async function GET(req: NextRequest) {
                     }
                 },
                 Comment: {
-                    select:{
+                    select: {
                         id: true,
                         created_at: true,
                         updated_at: true
