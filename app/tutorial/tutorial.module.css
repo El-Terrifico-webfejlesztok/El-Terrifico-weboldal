@@ -1,20 +1,22 @@
 @media screen and (max-width: 420px) {
-    .youtube {
-      width: 100%;
-      margin-left: auto;
-      margin-right: auto;
-    }
-  }
   .youtube {
-    height: 100%;
     width: 100%;
+    margin-left: auto;
+    margin-right: auto;
   }
-  
-  @media (min-width: 420px) and (max-width: 770px) {
-    .youtube {
-      width: 80%;
-      margin-left: auto;
-      margin-right: auto;
-      margin-top: 25px;
-    }
+}
+
+.youtube {
+  aspect-ratio: 16 / 9;
+  height: 100%;
+  width: 100%;
+}
+
+@media (min-width: 420px) and (max-width: 770px) {
+  .youtube {
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 25px;
   }
+}
