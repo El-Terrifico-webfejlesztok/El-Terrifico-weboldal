@@ -300,11 +300,10 @@ const Forum = () => {
             </form>
           </div>
           {/**Posztok renderelése */}
-          {posts ? (
-            posts.map((post) => <Poszt key={post.id} post={post} reload={reload} />)
-          ) : (
-            <div className="loading"></div>
-          )}
+          {posts ? posts.length > 0 ?
+            (posts.map((post) => <Poszt key={post.id} post={post} reload={reload} />))
+            : <p className="mx-auto mt-4 max-w-md text-center text-3xl font-bold bg-base-300 outline p-2 rounded-sm">Nem található ilyen poszt</p>
+            : (<div className="flex flex-grow mx-auto w-[50%] loading loading-ball bg-base-100"></div>)}
         </div>
 
         {/* Poszt létrehozása */}

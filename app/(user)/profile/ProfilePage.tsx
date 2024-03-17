@@ -96,7 +96,7 @@ const ProfilePage = () => {
         fetchData()
     }, [])
 
-    const { data: session, status: sessionStatus } = useSession();
+    const { data: session } = useSession();
     // should go unused
     /*if (sessionStatus === 'loading') {
         return <div>Loading...</div>;
@@ -119,7 +119,7 @@ const ProfilePage = () => {
                 <div className='w-20'></div>
 
             </div>
-        
+
             {/** Statisztikák */}
             <div className='text-center mt-4'>
                 <ProfileStats userdata={userData} />
@@ -185,13 +185,9 @@ const ProfilePage = () => {
                     )}
             </div>
 
-
-
             {/* 
             <button className='btn btn-outline w-full no-animation' onClick={fetchData}><p className={loading ? "loading" : ""}>Adatok lekérése</p></button> 
             */}
-
-
 
             <div id='settings' className="divider py-4">Fiókbeállítások</div>
 
