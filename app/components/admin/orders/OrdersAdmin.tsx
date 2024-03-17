@@ -65,10 +65,11 @@ const OrdersAdmin = () => {
           },
         }
       );
-      if (!response.ok) {
-        throw new Error("Failed to fetch orders");
-      }
       const responseData = await response.json();
+      if (!response.ok) {
+        toast.warning(responseData)
+        return
+      }
       setPages(responseData.pages)
       setOrders(responseData.orderDetails);
     } catch (error) {
@@ -152,7 +153,7 @@ const OrdersAdmin = () => {
                   className="join-item btn"
                   onClick={() => handlePageChange(pageNumber - 1)}
                 >«</button>
-                <button className="join-item no-animation btn">{pageNumber}. oldal</button>
+                <button className="join-item no-animation btn">{pageNumber}/{pages} oldal</button>
                 <button
                   disabled={pageNumber >= (pages || 0)}
                   className="join-item btn"

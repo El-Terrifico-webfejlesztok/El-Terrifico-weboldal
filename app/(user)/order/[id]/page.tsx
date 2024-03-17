@@ -131,7 +131,7 @@ const UserOrder = ({ params }: { params: { id: string } }) => {
                 </p>
                 {/** Ha a rendelés csak létre van hozva akkor még le lehet mondani */}
                 {orderData.status === 'created' ?
-                  <button className="mt-4 btn btn-sm btn-warning">Rendelés lemondása</button>
+                  <button className="mt-4 btn btn-sm btn-warning" onClick={cancelOrder}>Rendelés lemondása</button>
                   :
                   /** Ha a rendelés le lett mondva akkor... */
                   orderData.status === 'canceled' ?
