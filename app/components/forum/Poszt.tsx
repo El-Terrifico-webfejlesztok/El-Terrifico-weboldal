@@ -52,7 +52,7 @@ const Poszt: React.FC<props> = ({ post, reload }) => {
 
   const deletePost = async (postId: number) => {
     const toastId = toast.loading("Poszt törlése...")
-    const isConfirmed = window.confirm(`Biztosan törölni a posztot (${post.title})`);
+    const isConfirmed = window.confirm(`Biztosan törlöd a posztot? (${post.title})`);
     if (!isConfirmed) {
       updateToast(toastId, 'info', 'Poszt törlése félbeszakítva')
       return;
