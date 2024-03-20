@@ -5,6 +5,7 @@ import styles from "./cart.module.css";
 import { useState } from "react";
 import useCartService from "@/lib/hooks/useCartStore";
 import AddToCartSmall from "./AddToCartSmall";
+import Image from "next/image";
 
 interface props {
   nev: string;
@@ -55,7 +56,7 @@ function CartKartya({ nev, kategoriak, ar, image, item }: props) {
                 </div>
                 <div className="sm:w-1/6 mt-3 sm:mr-5">
                   <div className={styles.kep}>
-                    <img src={image} className="" alt={nev} />
+                    <Image width={768} height={768} src={image} className="" alt={nev} />
                   </div>
                 </div>
                 <div className="sm:w-3/6 ">

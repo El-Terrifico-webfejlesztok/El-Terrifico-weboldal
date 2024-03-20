@@ -1,5 +1,9 @@
 import type { Config } from "tailwindcss";
 
+// Az első téma ami itt meg van adva az alapértelmezett.
+// Sütiben tárolódik a kiválasztott téma
+export const themes = ["retro", "luxury", "cyberpunk", "aqua", "black"]
+
 const config: Config = {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
@@ -17,7 +21,7 @@ const config: Config = {
   },
   plugins: [require("daisyui")],
   daisyui: {
-    themes: ["retro", "luxury"],
+    themes: themes,
   },
 };
 export default config;

@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import React, { useState, useEffect } from 'react';
 
 interface Props {
@@ -34,10 +35,14 @@ const Carousel: React.FC<Props> = ({ title, images }) => {
                             className={`carousel-item w-full h-full absolute transition-opacity duration-700 ${index === currentItem ? 'opacity-100' : 'opacity-0'
                                 }`}
                         >
-                            <img
+                            <Image
                                 src={img}
                                 className="w-full h-full object-cover rounded-xl"
                                 alt={`${title} ${index + 1}. Kép`}
+                                height={768}
+                                width={768}
+                                loading='lazy'
+                                quality={75}
                             />
                         </div>
                     ))}
