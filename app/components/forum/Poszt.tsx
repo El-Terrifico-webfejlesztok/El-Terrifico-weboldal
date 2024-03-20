@@ -172,7 +172,7 @@ const Poszt: React.FC<props> = ({ post, reload }) => {
       <div className="collapse-content max-w-[100vw] overflow-hidden">
         <div className="bg-neutral-content  border-2 border-grey p-1 sm:p-3 rounded-lg">
 
-          <p className=" text-black break-words whitespace-pre-wrap">{post.text}</p>
+          <p className="text-neutral  break-words whitespace-pre-wrap">{post.text}</p>
 
         </div>
         <div className="divider divider-start text-lg font-medium my-5 ml-2 pr-3">Hozzászólások:</div>

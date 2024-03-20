@@ -3,6 +3,7 @@ import UserProfileEditForm from './UserProfileEditForm';
 import ChangePasswordForm from './ChangePasswordForm';
 import { User } from '@prisma/client';
 import ProfilePictureChooser from './ProfilePictureChooser';
+import ThemeChooser from './ThemeChooser';
 
 // User a prisma schamból akinek csak a biztonságosan megosztható adatai vannak meg (nincs password például)
 export type UserView = Omit<Omit<User, 'is_active'>, 'password'>;
@@ -12,7 +13,7 @@ interface UserProfileViewProps {
     reload?: Function;
 }
 
-type Mode = 'editProfile' | 'changePassword' | 'changePicture';
+type Mode = 'editProfile' | 'changePassword' | 'changePicture' | 'changeTheme';
 
 const UserProfileSettings: React.FC<UserProfileViewProps> = ({ user, reload }) => {
     const [mode, setMode] = useState<Mode | null>(null);
@@ -52,10 +53,19 @@ const UserProfileSettings: React.FC<UserProfileViewProps> = ({ user, reload }) =
                         Profilkép megváltoztatása
                     </button>
                 </div>
+                <div>
+                    <button
+                        className={`btn btn-${mode === 'changeTheme' ? 'neutral' : 'info'} btn-sm`}
+                        onClick={() => handleButtonClick('changeTheme')}
+                    >
+                        Témaválasztás<span className="align-middle badge badge-warning">Teszt</span>
+                    </button>
+                </div>
             </div>
             {mode === 'editProfile' && <UserProfileEditForm user={user} onCancel={handleCancelClick} reload={reload} />}
             {mode === 'changePassword' && <ChangePasswordForm onCancel={handleCancelClick} />}
             {mode === 'changePicture' && <ProfilePictureChooser onCancel={handleCancelClick} />}
+            {mode === 'changeTheme' && <ThemeChooser/>}
 
         </div>
     );
