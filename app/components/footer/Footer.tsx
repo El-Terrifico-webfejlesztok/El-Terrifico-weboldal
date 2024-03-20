@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { FaFacebook, FaInstagram, FaYoutube } from "react-icons/fa";
+import { FaFacebook, FaInstagram, FaYoutube, FaTiktok } from "react-icons/fa";
 
 const Footer = () => {
   return (
@@ -67,7 +67,7 @@ const Footer = () => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <img src="/tiktokIcon.png" alt="Tiktok" className="mx-2 size-9" />
+            <FaTiktok className="mx-2 size-9" />
           </a>
         </div>
       </div>

@@ -1,7 +1,9 @@
 import updateToast from '@/lib/helper functions/updateToast';
 import { ProductImage } from '@prisma/client';
+import Image from 'next/image';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
+
 
 interface ExistingImagesProps {
   images: ProductImage[];
@@ -56,7 +58,9 @@ const ExistingImages: React.FC<ExistingImagesProps> = ({ images, reload }) => {
               <div key={preview.id} className={loadingimage === preview.id ? 'skeleton' : ''}>
 
                 <li className='border-solid border-2 rounded-md p-1 border-accent border-opacity-75'>
-                  <img
+                  <Image
+                  height={256}
+                  width={256}
                     src={`https://terrifico.zapto.org/${preview.image_path}`}
                     alt={`Preview ${preview.id}`}
                     className='rounded-md object-scale-down w-full lg:h-52'
