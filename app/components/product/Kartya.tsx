@@ -2,8 +2,6 @@ import { Product } from "@prisma/client";
 import AddToCart from "../cart/AddToCart";
 import Carousel from "../Carousel";
 import KartyaCheckbox from "./KartyaCheckbox";
-import KartyaErtekeles from "./KartyaErtekeles";
-import KartyaKosarba from "./KartyaKosarba";
 import styles from "./product.module.css";
 import { useSession } from 'next-auth/react'
 import Link from "next/link";
