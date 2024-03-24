@@ -101,7 +101,8 @@ const Forum = () => {
       const fetchedCategories = await getPostCategories();
       setPostCategories(fetchedCategories);
     } catch (error) {
-      console.error(error);
+      toast.error("Nem sikerült a kategóriákat betölteni")
+      //console.error(error);
     }
   };
 
@@ -153,13 +154,14 @@ const Forum = () => {
       );
       if (!response.ok) {
         toast.error('Valami hiba történt')
+        return
       }
       const responseData: PostType[] = await response.json();
       setPosts(responseData);
       queryParams ? setPath(queryParams) : null;
     } catch (error) {
       toast.error('A szerver nem érhető el')
-      console.error(error);
+      //console.error(error);
     } finally {
       setLoading(false);
     }
@@ -170,7 +172,7 @@ const Forum = () => {
     setLoading(true);
     const toastId = toast.loading("Poszt feltöltése...")
 
-    console.log(title, text, category);
+    //console.log(title, text, category);
     try {
       if (!title || !text || !category) {
         handleFeedback(false);
@@ -194,6 +196,7 @@ const Forum = () => {
         const responseData: string = await response.json();
         updateToast(toastId, 'error', responseData)
         setPostErrorMessage(responseData);
+        return
       }
       searchPosts(buildForumQuery(title));
       clearInputs();
@@ -309,7 +312,7 @@ const Forum = () => {
         {/* Poszt létrehozása */}
         {isExpanded && (
           <div className="absolute inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-30">
-            <div className="bg-neutral-content rounded-lg shadow-md p-4 md:w-1/2 lg:1/3">
+            <div className="bg-base-300 rounded-lg shadow-md p-4 md:w-1/2 lg:1/3">
               <h3 className="text-lg font-semibold mb-2">
                 Új poszt létrehozása
               </h3>
@@ -368,13 +371,13 @@ const Forum = () => {
                     toggleExpand();
                     clearInputs();
                   }}
-                  className="text-blue-500 hover:underline mt-2"
+                  className="text-info hover:underline mt-2"
                 >
                   Bezárás
                 </button>
                 <p className="mt-2 text-error">{postErrorMessage}</p>
                 <button
-                  className="text-white hover:underline mt-2 btn btn-info "
+                  className="hover:underline mt-2 btn btn-info "
                   onClick={() => {
                     createPost(postTitle, postContent, postCategory);
                   }}

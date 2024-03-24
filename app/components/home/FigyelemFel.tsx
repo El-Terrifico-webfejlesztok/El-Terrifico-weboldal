@@ -4,7 +4,7 @@ function FigyelemFel() {
   return (
     <div
       className="bg-cover bg-center h-screen flex items-center justify-center"
-      style={{ backgroundImage: "url('/HomeKep.jpg')" }}
+      style={{ backgroundImage: "url('/HomeKep.webp')" }}
     >
       <h1 className={`${textclass} bg-green-500`}>
         Éhes vagy?

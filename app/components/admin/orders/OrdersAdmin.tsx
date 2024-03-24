@@ -131,7 +131,7 @@ const OrdersAdmin = () => {
         {orders && orders.length > 0 ? (
           <>
             {/* Pagination Controls */}
-            <div className="flex justify-center space-x-4 mt-4 ">
+            <div className="flex flex-col items-center md:flex-row justify-center space-y-2 md:space-y-0 md:space-x-4  md:mt-4 ">
 
               <select
                 name="ordersPerPage"
