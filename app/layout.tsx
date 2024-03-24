@@ -29,7 +29,7 @@ export default async function RootLayout({
       <body className={inter.className}>
         <SessionProvider session={session}>
           <NavBar />
-          <main>{children}</main>
+          main>{children}</main>
         </SessionProvider>
         {/** Toast container a toasthoz */}
         <ToastContainer
