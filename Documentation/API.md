@@ -1,8 +1,4 @@
-
-
-
 # Termék APIk
-
 Termék Keresési API
 ---------------------------
 **Végpont:** `GET /api/product/request`
@@ -106,6 +102,7 @@ Ez az API végpont lehetővé teszi egy termék részleteinek lekérését az az
 			{
 				"id": 1,
 				"url": "https://example.com/image1.jpg"
+			//khmkhm
 			},
 			// ... További képek
 		],
@@ -308,93 +305,164 @@ Ez az API végpont lehetővé teszi új termékek feltöltését vagy meglévő 
 	};
 	```
 
-Termék Képfeltöltési API
+Termékkép Feltöltése API
 ---------------------------
 
-**Végpont:** `POST /api/product/uploadimage`
+**Végpont:** `POST /api/product/image`
 
-**Leírás:**  
-Ez a API végpont lehetővé teszi termékhez tartozó képek feltöltését.
+**Leírás:**\
+Ez az API végpont lehetővé teszi egy termékkép feltöltését a termékazonosító megadásával
 
 **Hitelesítés:**
 
--  **Szükséges:** Adminisztrátor: Csak az admin szerepű felhasználó használhatja (next-auth-al ellenőrizve).
+-   **Szükséges:** Adminisztrátor.
 
 **Kérés:**
 
 -   **Metódus:** POST
--   **Végpont:** `/api/product/uploadimage`
--   **Adatok (HTTP multipart request):**
-    -   `product_id`: A termék azonosítója, amelyhez a képet csatolni kívánjuk.
-    -   `file`: A feltöltendő képfájl.
+-   **Végpont:** `/api/product/image`
+-   **Multipart Form adatok:**
+	-   `product_id`: A termék azonosítója, amelyhez a kép tartozik.
+	-   `file`: A feltöltendő képfájl.
 
 **Válasz:**
+
 -   **Sikeres Válasz (HTTP Státuszkód: 201 Created):**
 	```json
 	{
-		"product_id": 123,
-		"image_path": "public/product_images/abc123_image.jpg"
+		"id": 123,
+		"product_id": 456,
+		// Az adatbázisban így vannak tárolva a képútvonalak
+		"image_path": "public/product_images/uniqueid_filename.jpg"
+		
 	}
 	```
+
 -   **Hiba Válaszok:**
-    -   **HTTP Státuszkód: 400 Bad Request:**
-		```json
-		"Product ID vagy kép hiányzik a requestből" 
-		```
+
 	-   **HTTP Státuszkód: 401 Unauthorized:**
 		```json
 		"Unauthorized"
 		```
 	-   **HTTP Státuszkód: 400 Bad Request:**
 		```json
-		"A kép túllépi a 10MB képméret határt"
-		// Ha a képméret határ változna, az API válasz tükrözné azt
+		"Product ID vagy kép hiányzik a requestből"
+		// Vagy
+		"A kép túllépi a {MAX_FILE_SIZE_MB}MB képméret határt"
+		// Jelenleg 10MB, de a jövőben változhat
 		```
 	-   **HTTP Státuszkód: 500 Internal Server Error:**
 		```json
-		"Hiba a termékkép feltöltése közben"
+		"Hiba a termékkép feltöltése közben"`
 		```
-**Példa használatra**:
+
+**Példa Használat**:
+
+- **Formdata létrehozása:**
+	```typescript
+	const productId = 123; 
+	const fileInput = document.getElementById('fileInput') as HTMLInputElement; 
+	const file = fileInput.files[0];
+
+	const formData = new FormData();
+	formData.append('product_id', productId.toString());
+	formData.append('file', file);
+	```
 
 -   **Kérés:**
-    
-	```typescript
-	const uploadImage = async (productId: number, file: File) => {
-	      try {
-	        const formData = new FormData();
-	        formData.append('product_id', productId.toString());
-	        formData.append('file', file);
-	    
-	        const response = await fetch('/api/product/uploadimage', {
-	          method: 'POST',
-	          body: formData,
-	        });
-	    
-	        if (!response.ok) {
-	          throw new Error("Sikertelen képfeltöltés!");
-	        }
-	    
-	        const responseData = await response.json();
-	        console.log(responseData);
-	      }
-	      catch (error) {
-	        console.error("A szerver nem érhető el", error);
-	      }
-	    };
-	```
--   **HTML példa:**
-	```html
-	<input type="file" id="fileInput" accept="image/*">
-	<button onclick="uploadImage()">Képfeltöltés</button>
-	<script> 
-		const uploadImage = async () => {
-		    const fileInput = document.getElementById('fileInput');
-		    const file = fileInput.files[0];
-		    const productId = 123; // Az aktuális termék azonosítója
 
-		    await uploadImage(productId, file);
-		}; 
-	</script>
+	```typescript
+	// Fontos hogy az API csak egy képet tud egyszerre feltölteni. Több kép esetében a frontenden kell megoldani több kép küldését egymás után
+	async function uploadProductImage(productId: number, file: File) {
+		try {
+			// Prepare the FormData
+			const formData = new FormData();
+			formData.append('product_id', productId.toString());
+			formData.append('file', file);
+
+			// Make the API request
+			const response = await fetch(`/api/product/image`, {
+				method: 'POST',
+				body: formData,
+			});
+
+			// Check if the request was successful
+			if (!response.ok) {
+				throw new Error(`Sikertelen termékkép feltöltés`);
+			}
+
+			// Parse and log the response data
+			const responseData = await response.json();
+			console.log(responseData);
+		} catch (error) {
+			console.error('Hiba a termékkép feltöltésekor:', error);
+		}
+	}
+	```
+
+Termék Kép Törlése API
+---------------------------
+
+**Végpont:** `DELETE /api/product/image`
+
+**Leírás:**
+Ez a API végpont lehetővé teszi egy termékhez tartozó kép törlését. 
+**Hitelesítés:**
+-   **Szükséges:** Adminisztrátor.
+
+**Kérés:**
+-   **Metódus:** DELETE
+-   **Végpont:** `/api/product/image`
+-   **URL Paraméterek:**
+    -   `id`: A törlendő kép azonosítója.
+
+**Válasz:**
+-   **Sikeres Válaszok:**
+    **HTTP Státuszkód: 200 OK:**
+	```json
+	"Kép sikeresen törölve"
+	```
+-   **Hiba Válaszok:**
+    -   **HTTP Státuszkód: 400 Bad Request:**
+		```json
+		"Nincs kép ID megadva a kérésben"
+		```
+	-   **HTTP Státuszkód: 401 Unauthorized:**
+		```json
+		"Csak admin törlhet termékképeket"
+		```
+	-   **HTTP Státuszkód: 404 Not Found:**
+		```json
+		"Nem létezik ilyen kép"
+		```
+	-   **HTTP Státuszkód: 500 Internal Server Error:**
+		```json
+		"Hiba a kép törlése közben"
+		```
+
+**Példa Használat**:
+
+-   **Kérés:**
+	```typescript
+	const deleteImage = async (imageId: number) => {
+	    try {
+	        const response = await fetch(`/api/product/image?id=${imageId}`, {
+	            method: 'DELETE',
+	            headers: {
+	                'Content-Type': 'application/json',
+	            },
+	        });
+
+	        if (!response.ok) {
+	            throw new Error("Sikertelen képtörlés");
+	        }
+
+	        const responseBody = await response.json();
+	        console.log(responseBody);
+	    } catch (error) {
+	        console.error("A szerver nem érhető el", error);
+	    }
+	};
 	```
 
 Termék Inaktívvá Tétele API
@@ -497,6 +565,488 @@ Ez a API végpont lehetővé teszi egy termék aktiválását az azonosítója a
       }
   };
   ```
+
+# Rendelés APIk
+
+Rendelés Létrehozó API
+---------------------------
+
+**Végpont:** `POST /api/order`
+
+**Leírás:**\
+Ez az API végpont lehetővé teszi egy rendelés létrehozását megadott termékekkel és szállítási címmel.
+
+**Hitelesítés:**
+
+-   **Szükséges:** Bejelentkezés.
+
+**Kérés:**
+
+-   **Metódus:** POST
+-   **Végpont:** `/api/order`
+-   **Kérés Body (JSON):**
+	```json
+	{
+		"shippingAddressId": 456,
+		"orderItems": [
+			{ "productId": 789, "quantity": 2 },
+			{ "productId": 101, "quantity": 1 }
+		]
+	}
+	```
+
+**Válasz:**
+
+-   **Sikeres Válasz (HTTP Státuszkód: 201 Created):**
+
+	```json
+	{
+		"orderId": 987,
+		"totalPrice": 150.00,
+		"createdAt": "2024-02-20T12:30:45Z",
+		"OrderItems": [
+			// Létrehozott rendelés termékeinek részletei
+		]
+	}
+	```
+
+    -   **Hiba Válaszok:**
+
+		-   **HTTP Státuszkód: 401 Unauthorized:**
+
+			```json
+			"A rendeléshez be kell jelentkeznie"
+			```	
+		-   **HTTP Státuszkód: 404 Not Found:**
+			```json
+			"Nem található a kiválasztott szállítási cím"
+			```
+		-   **HTTP Státuszkód: 400 Bad Request:**
+
+			```json
+			"Nincs termék a rendelésben"
+			```
+		-   **HTTP Státuszkód: 500 Internal Server Error:**
+
+			```json
+			"Hiba a rendelés felvétele közben"
+			```
+
+**Példa Használat**:
+
+-   **Kérés:**
+    ```typescript
+	const createOrder = async (orderData: OrderData) => {
+		try {
+		const response = await fetch('/api/order', {
+			method: 'POST',
+			headers: {
+			'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+			shippingAddressId: orderData.shippingAddressId,
+			orderItems: orderData.orderItems.map(item => ({
+				id: item.id,
+				quantity: item.quantity,
+			})),
+			}),
+		});
+
+		if (!response.ok) {
+			throw new Error("Sikertelen rendelés létrehozás");
+		}
+
+		const responseData = await response.json();
+		console.log(responseData);
+		} catch (error) {
+		console.error("A szerver nem érhető el", error);
+		}
+	};
+	```
+
+Rendelési Adatok Lekérdezése API
+---------------------------
+
+**Végpont:** `GET /api/order`
+
+**Leírás:**\
+Ez az API végpont lehetővé teszi egy rendelés részleteinek lekérdezését azonosító alapján, beleértve az OrderItemeket, a felhasználó pár adatát, és a szállítási címet is.
+
+**Hitelesítés:**
+
+-   **Szükséges:** A felhasználónak be kell jelentkeznie (next-auth segítségével ellenőrzött).
+
+**Kérés:**
+
+-   **Metódus:** GET
+-   **Végpont:** `/api/order`
+-   **Kérés Body (JSON):**
+
+	```json
+	{
+		"orderId": 987
+	}
+	```
+**Válasz:**
+
+-   **Sikeres Válasz (HTTP Státuszkód: 200 OK):**
+	```json
+	{
+		"orderId": 987,
+		"totalPrice": 150.00,
+		"status": "created",
+		"createdAt": "2024-02-20T12:30:45Z",
+		"updatedAt": "2024-02-20T12:30:45Z",
+		"OrderItems": [
+			{
+				"id": 1,
+				"name": "Product A",
+				"quantity": 2,
+				"price": 100.00
+			},
+			{
+				"id": 2,
+				"name": "Product B",
+				"quantity": 1,
+				"price": 50.00
+			}
+			// ... További OrderItem részletek
+		],
+		"User": {
+			"id": 123,
+			"username": "felhasznalonev",
+			"email": "felhasznalo@email.com"
+		},
+		"ShippingAddress": {
+			"id": 1,
+			"recipient_name": "John Doe",
+			"street_address": "123 Main Street",
+			"city": "Cityville",
+			"postal_code": "12345"
+		}
+
+	}
+
+	```
+-   **Hiba Válaszok:**
+
+	-   **HTTP Státuszkód: 401 Unauthorized:**
+
+		```json
+		"A rendelési adatok lekéréséhez be kell jelentkeznie"
+		```
+	-   **HTTP Státuszkód: 404 Not Found:**
+
+		```json
+		"Nem található rendelés az azonosítóval: 987"
+		```
+	-   **HTTP Státuszkód: 500 Internal Server Error:**
+
+		```json
+		"Hiba a rendelési adatok lekérdezése közben"
+		```
+**Példa Használat**:
+
+-   **Kérés:**
+
+	```typescript
+	const getOrderDetails = async (orderId: number) => {
+		try {
+			const response = await fetch(`/api/order?id=${orderId}`, {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			});
+
+			if (!response.ok) {
+			throw new Error("Sikertelen rendelési adat lekérdezés");
+			}
+
+			const responseData = await response.json();
+			console.log(responseData);
+		}
+		catch (error) {
+			console.error(error);
+		}
+	};
+	```
+
+Összes Rendelés Lekérése API
+---------------------------
+**Végpont:** `GET /api/order/getall`
+
+**Leírás:**\
+Ez az API végpont lehetővé teszi az összes rendelés lekérdezését. Csak adminisztrátori jogosultsággal rendelkező felhasználók használhatják.
+
+**Hitelesítés:**
+
+-   **Szükséges:** Adminisztrátor: Csak az admin szerepű felhasználó használhatja (next-auth-al ellenőrizve).
+
+**Kérés:**
+
+-   **Metódus:** GET
+-   **Végpont:** `/api/order/getall`
+-   **URL Paraméterek:**
+    -   `page` (Opcionális): Az oldal száma (alapértelmezett: 1).
+	-	`count` (Opcionális): A visszaadott rendelések száma oldalanként (alapértelmezett: 1)
+    -   `type` (Opcionális): A rendelés típusa, érvényes értékek: 'created', 'preparing', 'shipping', 'completed', 'canceled' (alapértelmezett: 'created'). (Ha hibás a típus akkor az alapértelemezett típussal rendelkező rendeléseket adja vissza)
+
+**Válasz:**
+
+-   **Sikeres Válasz (HTTP Státuszkód: 200 OK):**
+	```json
+	[
+		{
+			"id": 1,
+			"total_price": 150.00,
+			"created_at": "2024-02-20T12:30:45Z",
+			"status": "created",
+			"OrderItem": [
+				{
+					"id": 1,
+					"name": "Product A",
+					"quantity": 2,
+					"price": 100.00,
+					"product_id": 65,
+				},
+				{
+					"id": 2,
+					"name": "Product B",
+					"quantity": 1,
+					"price": 50.00,
+					"product_id": 31,
+				}
+				// ... További rendelésitemek
+			]
+		},
+		// ... További rendelések részletei
+	]
+	```
+-   **Hiba Válaszok:**
+
+	-   **HTTP Státuszkód: 401 Unauthorized:**
+		```json
+		"Csak adminos bejelentkezéssel lehet lekérni rendeléseket"
+		```
+	-   **HTTP Státuszkód: 404 Not Found:**
+		```json
+		"Nem található ilyen rendelés"
+		```
+	-   **HTTP Státuszkód: 500 Internal Server Error:**
+		```json
+		"Hiba a rendelési adatok lekérdezése közben"
+		```
+**Példa Használat**:
+
+-   **Kérés:**
+	```typescript
+	const getAllOrders = async (page = 1, type = 'created', count= 5) => {
+		try {
+		const response = await fetch(`/api/order/getall?page=${page}&type=${type}&count=${count}`, {
+			method: 'GET',
+			headers: {
+			'Content-Type': 'application/json',
+			},
+		});
+		if (!response.ok) {
+			throw new Error("Sikertelen a rendelések lekérdezése");
+		}
+		const responseData = await response.json();
+		console.log(responseData);
+		}
+		catch (error) {
+		console.error(error);
+		}
+	};
+	```
+
+Rendelés Státusz Módosítása API
+---------------------------
+**Végpont:** `PUT /api/order/update`
+
+**Leírás:**\
+Ez az API végpont lehetővé teszi egy státusz frissítését (pl. elküldve, feldolgozás alatt, szállítás alatt stb.).
+
+**Hitelesítés:**
+
+-   **Szükséges:** Adminisztrátor: Csak az admin szerepű felhasználó használhatja (next-auth-al ellenőrizve).
+
+**Kérés:**
+
+-   **Metódus:** PUT
+-   **Végpont:** `/api/order/update`
+-   **Kérés Body (JSON):**
+	```json
+	{
+		"orderId": 987,
+		"newStatus": "completed"
+		/*
+			Lehetséges státuszok:
+			- created
+			- preparing
+			- shipping
+			- completed
+			- canceled
+ 		*/
+	}
+	```
+**Válasz:**
+
+-   **Sikeres Válasz (HTTP Státuszkód: 200 OK):**
+
+	```json
+	{
+		"order": {
+			"orderId": 987,
+			"totalPrice": 150.00,
+			"createdAt": "2024-02-20T12:30:45Z",
+			"status": "shipped",
+			"OrderItems": [
+				{
+					"id": 1,
+					"name": "Product A",
+					"quantity": 2,
+					"price": 100.00
+				},
+				{
+					"id": 2,
+					"name": "Product B",
+					"quantity": 1,
+					"price": 50.00
+				}
+				// ... További rendelésitemek
+			]
+		},
+	}
+	```
+
+-   **Hiba Válaszok:**
+    -   **HTTP Státuszkód: 401 Unauthorized:**
+		```json
+		"Csak adminisztrátorok módosíthatják a rendelés státuszát"
+		```
+
+    -   **HTTP Státuszkód: 404 Not Found:**
+		```json
+		"Nem található rendelés az azonosítóval: 987"
+		```
+
+
+    -   **HTTP Státuszkód: 400 Bad Request:**
+		```json
+		"Érvénytelen státusz: shipped"
+		```
+
+
+    -   **HTTP Státuszkód: 500 Internal Server Error:**
+		```json
+		"Hiba a rendelés státuszának frissítése közben"
+		```
+
+
+**Példa Használat:**
+
+-   **Kérés:**
+	```typescript
+	const updateOrderStatus = async (orderId: number, newStatus: string) => {
+		try {
+			const response = await fetch('/api/order/update', {
+				method: 'PUT',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({
+					orderId,
+					newStatus,
+				}),
+			});
+
+			if (!response.ok) {
+				throw new Error("Sikertelen rendelés státusz frissítés");
+			}
+
+			const responseData = await response.json();
+			console.log(responseData);
+		} catch (error) {
+			console.error("A szerver nem érhető el", error);
+		}
+	};
+	```
+
+Rendelés Lemondása API
+----------------------
+**Végpont:** `PUT /api/order/cancel`
+
+**Leírás:**\
+Ez az API végpont lehetővé teszi egy rendelés lemondását az azonosító alapján. A lemondás után a rendelés státusza "canceled" lesz.
+
+**Hitelesítés:**
+
+-   **Szükséges:** Bejelentkezés, adminisztrátorral bárki rendelését le lehet mondani
+
+**Kérés:**
+
+-   **Metódus:** PUT
+-   **Végpont:** `/api/order/cancel`
+-   **Kérés Body (JSON):**
+	```json
+	{
+		"orderId": 987
+	}
+	```
+
+**Válasz:**
+
+-   **Sikeres Válasz (HTTP Státuszkód: 200 OK):**
+	```json
+	"A rendelés sikeresen lemondva"
+	```
+-   **Hiba Válaszok:**
+
+    -   **HTTP Státuszkód: 401 Unauthorized:**
+		```json
+		"A rendelés lemondásához be kell jelentkeznie"
+		```
+
+    -   **HTTP Státuszkód: 404 Not Found:**
+		```json
+		"A rendelés nem lemondható: 987"
+		```
+
+    -   **HTTP Státuszkód: 500 Internal Server Error:**
+		```json
+		"Hiba a rendelés lemondása közben"
+		```
+
+**Példa Használat**:
+
+-   **Kérés:**
+	```typescript
+	const cancelOrder = async (orderId: number) => {
+		try {
+		const response = await fetch('/api/order/cancel', {
+			method: 'PUT',
+			headers: {
+			'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				orderId,
+			}),
+		});
+
+		if (!response.ok) {
+			throw new Error("Sikertelen rendelés lemondás");
+		}
+
+		const responseData = await response.json();
+		console.log(responseData);
+		} catch (error) {
+		console.error("A szerver nem érhető el", error);
+		}
+	};
+	```
+
 
 # Felhasználó APIk
 Regisztrációs API
@@ -1262,519 +1812,7 @@ Ez az API végpont lehetővé teszi egy poszt törlését az azonosítója alapj
 	};
 	```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# BESOROLANDÓ
-
-Rendelés Létrehozó API
----------------------------
-
-**Végpont:** `POST /api/order`
-
-**Leírás:**\
-Ez az API végpont lehetővé teszi egy rendelés létrehozását megadott termékekkel és szállítási címmel.
-
-**Hitelesítés:**
-
--   **Szükséges:** Bejelentkezés.
-
-**Kérés:**
-
--   **Metódus:** POST
--   **Végpont:** `/api/order`
--   **Kérés Body (JSON):**
-	```json
-	{
-		"shippingAddressId": 456,
-		"orderItems": [
-			{ "productId": 789, "quantity": 2 },
-			{ "productId": 101, "quantity": 1 }
-		]
-	}
-	```
-
-**Válasz:**
-
--   **Sikeres Válasz (HTTP Státuszkód: 201 Created):**
-
-	```json
-	{
-		"orderId": 987,
-		"totalPrice": 150.00,
-		"createdAt": "2024-02-20T12:30:45Z",
-		"OrderItems": [
-			// Létrehozott rendelés termékeinek részletei
-		]
-	}
-	```
-
-    -   **Hiba Válaszok:**
-
-		-   **HTTP Státuszkód: 401 Unauthorized:**
-
-			```json
-			"A rendeléshez be kell jelentkeznie"
-			```	
-		-   **HTTP Státuszkód: 404 Not Found:**
-			```json
-			"Nem található a kiválasztott szállítási cím"
-			```
-		-   **HTTP Státuszkód: 400 Bad Request:**
-
-			```json
-			"Nincs termék a rendelésben"
-			```
-		-   **HTTP Státuszkód: 500 Internal Server Error:**
-
-			```json
-			"Hiba a rendelés felvétele közben"
-			```
-
-**Példa Használat**:
-
--   **Kérés:**
-    ```typescript
-	const createOrder = async (orderData: OrderData) => {
-		try {
-		const response = await fetch('/api/order', {
-			method: 'POST',
-			headers: {
-			'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({
-			shippingAddressId: orderData.shippingAddressId,
-			orderItems: orderData.orderItems.map(item => ({
-				id: item.id,
-				quantity: item.quantity,
-			})),
-			}),
-		});
-
-		if (!response.ok) {
-			throw new Error("Sikertelen rendelés létrehozás");
-		}
-
-		const responseData = await response.json();
-		console.log(responseData);
-		} catch (error) {
-		console.error("A szerver nem érhető el", error);
-		}
-	};
-	```
-
-Rendelési Adatok Lekérdezése API
----------------------------
-
-**Végpont:** `GET /api/order`
-
-**Leírás:**\
-Ez az API végpont lehetővé teszi egy rendelés részleteinek lekérdezését azonosító alapján, beleértve az OrderItemeket, a felhasználó pár adatát, és a szállítási címet is.
-
-**Hitelesítés:**
-
--   **Szükséges:** A felhasználónak be kell jelentkeznie (next-auth segítségével ellenőrzött).
-
-**Kérés:**
-
--   **Metódus:** GET
--   **Végpont:** `/api/order`
--   **Kérés Body (JSON):**
-
-	```json
-	{
-		"orderId": 987
-	}
-	```
-**Válasz:**
-
--   **Sikeres Válasz (HTTP Státuszkód: 200 OK):**
-	```json
-	{
-		"orderId": 987,
-		"totalPrice": 150.00,
-		"status": "created",
-		"createdAt": "2024-02-20T12:30:45Z",
-		"updatedAt": "2024-02-20T12:30:45Z",
-		"OrderItems": [
-			{
-				"id": 1,
-				"name": "Product A",
-				"quantity": 2,
-				"price": 100.00
-			},
-			{
-				"id": 2,
-				"name": "Product B",
-				"quantity": 1,
-				"price": 50.00
-			}
-			// ... További OrderItem részletek
-		],
-		"User": {
-			"id": 123,
-			"username": "felhasznalonev",
-			"email": "felhasznalo@email.com"
-		},
-		"ShippingAddress": {
-			"id": 1,
-			"recipient_name": "John Doe",
-			"street_address": "123 Main Street",
-			"city": "Cityville",
-			"postal_code": "12345"
-		}
-
-	}
-
-	```
--   **Hiba Válaszok:**
-
-	-   **HTTP Státuszkód: 401 Unauthorized:**
-
-		```json
-		"A rendelési adatok lekéréséhez be kell jelentkeznie"
-		```
-	-   **HTTP Státuszkód: 404 Not Found:**
-
-		```json
-		"Nem található rendelés az azonosítóval: 987"
-		```
-	-   **HTTP Státuszkód: 500 Internal Server Error:**
-
-		```json
-		"Hiba a rendelési adatok lekérdezése közben"
-		```
-**Példa Használat**:
-
--   **Kérés:**
-
-	```typescript
-	const getOrderDetails = async (orderId: number) => {
-		try {
-			const response = await fetch(`/api/order?id=${orderId}`, {
-			method: 'GET',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			});
-
-			if (!response.ok) {
-			throw new Error("Sikertelen rendelési adat lekérdezés");
-			}
-
-			const responseData = await response.json();
-			console.log(responseData);
-		}
-		catch (error) {
-			console.error(error);
-		}
-	};
-	```
-
-Összes Rendelés Lekérése API
----------------------------
-**Végpont:** `GET /api/order/getall`
-
-**Leírás:**\
-Ez az API végpont lehetővé teszi az összes rendelés lekérdezését. Csak adminisztrátori jogosultsággal rendelkező felhasználók használhatják.
-
-**Hitelesítés:**
-
--   **Szükséges:** Adminisztrátor: Csak az admin szerepű felhasználó használhatja (next-auth-al ellenőrizve).
-
-**Kérés:**
-
--   **Metódus:** GET
--   **Végpont:** `/api/order/getall`
--   **URL Paraméterek:**
-    -   `page` (Opcionális): Az oldal száma (alapértelmezett: 1).
-	-	`count` (Opcionális): A visszaadott rendelések száma oldalanként (alapértelmezett: 1)
-    -   `type` (Opcionális): A rendelés típusa, érvényes értékek: 'created', 'preparing', 'shipping', 'completed', 'canceled' (alapértelmezett: 'created'). (Ha hibás a típus akkor az alapértelemezett típussal rendelkező rendeléseket adja vissza)
-
-**Válasz:**
-
--   **Sikeres Válasz (HTTP Státuszkód: 200 OK):**
-	```json
-	[
-		{
-			"id": 1,
-			"total_price": 150.00,
-			"created_at": "2024-02-20T12:30:45Z",
-			"status": "created",
-			"OrderItem": [
-				{
-					"id": 1,
-					"name": "Product A",
-					"quantity": 2,
-					"price": 100.00,
-					"product_id": 65,
-				},
-				{
-					"id": 2,
-					"name": "Product B",
-					"quantity": 1,
-					"price": 50.00,
-					"product_id": 31,
-				}
-				// ... További rendelésitemek
-			]
-		},
-		// ... További rendelések részletei
-	]
-	```
--   **Hiba Válaszok:**
-
-	-   **HTTP Státuszkód: 401 Unauthorized:**
-		```json
-		"Csak adminos bejelentkezéssel lehet lekérni rendeléseket"
-		```
-	-   **HTTP Státuszkód: 404 Not Found:**
-		```json
-		"Nem található ilyen rendelés"
-		```
-	-   **HTTP Státuszkód: 500 Internal Server Error:**
-		```json
-		"Hiba a rendelési adatok lekérdezése közben"
-		```
-**Példa Használat**:
-
--   **Kérés:**
-	```typescript
-	const getAllOrders = async (page = 1, type = 'created', count= 5) => {
-		try {
-		const response = await fetch(`/api/order/getall?page=${page}&type=${type}&count=${count}`, {
-			method: 'GET',
-			headers: {
-			'Content-Type': 'application/json',
-			},
-		});
-		if (!response.ok) {
-			throw new Error("Sikertelen a rendelések lekérdezése");
-		}
-		const responseData = await response.json();
-		console.log(responseData);
-		}
-		catch (error) {
-		console.error(error);
-		}
-	};
-	```
-
-Rendelés Státusz Módosítása API
----------------------------
-**Végpont:** `PUT /api/order/update`
-
-**Leírás:**\
-Ez az API végpont lehetővé teszi egy státusz frissítését (pl. elküldve, feldolgozás alatt, szállítás alatt stb.).
-
-**Hitelesítés:**
-
--   **Szükséges:** Adminisztrátor: Csak az admin szerepű felhasználó használhatja (next-auth-al ellenőrizve).
-
-**Kérés:**
-
--   **Metódus:** PUT
--   **Végpont:** `/api/order/update`
--   **Kérés Body (JSON):**
-	```json
-	{
-		"orderId": 987,
-		"newStatus": "completed"
-		/*
-			Lehetséges státuszok:
-			- created
-			- preparing
-			- shipping
-			- completed
-			- canceled
- 		*/
-	}
-	```
-**Válasz:**
-
--   **Sikeres Válasz (HTTP Státuszkód: 200 OK):**
-
-	```json
-	{
-		"order": {
-			"orderId": 987,
-			"totalPrice": 150.00,
-			"createdAt": "2024-02-20T12:30:45Z",
-			"status": "shipped",
-			"OrderItems": [
-				{
-					"id": 1,
-					"name": "Product A",
-					"quantity": 2,
-					"price": 100.00
-				},
-				{
-					"id": 2,
-					"name": "Product B",
-					"quantity": 1,
-					"price": 50.00
-				}
-				// ... További rendelésitemek
-			]
-		},
-	}
-	```
-
--   **Hiba Válaszok:**
-    -   **HTTP Státuszkód: 401 Unauthorized:**
-		```json
-		"Csak adminisztrátorok módosíthatják a rendelés státuszát"
-		```
-
-    -   **HTTP Státuszkód: 404 Not Found:**
-		```json
-		"Nem található rendelés az azonosítóval: 987"
-		```
-
-
-    -   **HTTP Státuszkód: 400 Bad Request:**
-		```json
-		"Érvénytelen státusz: shipped"
-		```
-
-
-    -   **HTTP Státuszkód: 500 Internal Server Error:**
-		```json
-		"Hiba a rendelés státuszának frissítése közben"
-		```
-
-
-**Példa Használat:**
-
--   **Kérés:**
-	```typescript
-	const updateOrderStatus = async (orderId: number, newStatus: string) => {
-		try {
-			const response = await fetch('/api/order/update', {
-				method: 'PUT',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({
-					orderId,
-					newStatus,
-				}),
-			});
-
-			if (!response.ok) {
-				throw new Error("Sikertelen rendelés státusz frissítés");
-			}
-
-			const responseData = await response.json();
-			console.log(responseData);
-		} catch (error) {
-			console.error("A szerver nem érhető el", error);
-		}
-	};
-	```
-
-Rendelés Lemondása API
-----------------------
-**Végpont:** `PUT /api/order/cancel`
-
-**Leírás:**\
-Ez az API végpont lehetővé teszi egy rendelés lemondását az azonosító alapján. A lemondás után a rendelés státusza "canceled" lesz.
-
-**Hitelesítés:**
-
--   **Szükséges:** Bejelentkezés, adminisztrátorral bárki rendelését le lehet mondani
-
-**Kérés:**
-
--   **Metódus:** PUT
--   **Végpont:** `/api/order/cancel`
--   **Kérés Body (JSON):**
-	```json
-	{
-		"orderId": 987
-	}
-	```
-
-**Válasz:**
-
--   **Sikeres Válasz (HTTP Státuszkód: 200 OK):**
-	```json
-	"A rendelés sikeresen lemondva"
-	```
--   **Hiba Válaszok:**
-
-    -   **HTTP Státuszkód: 401 Unauthorized:**
-		```json
-		"A rendelés lemondásához be kell jelentkeznie"
-		```
-
-    -   **HTTP Státuszkód: 404 Not Found:**
-		```json
-		"A rendelés nem lemondható: 987"
-		```
-
-    -   **HTTP Státuszkód: 500 Internal Server Error:**
-		```json
-		"Hiba a rendelés lemondása közben"
-		```
-
-**Példa Használat**:
-
--   **Kérés:**
-	```typescript
-	const cancelOrder = async (orderId: number) => {
-		try {
-		const response = await fetch('/api/order/cancel', {
-			method: 'PUT',
-			headers: {
-			'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({
-				orderId,
-			}),
-		});
-
-		if (!response.ok) {
-			throw new Error("Sikertelen rendelés lemondás");
-		}
-
-		const responseData = await response.json();
-		console.log(responseData);
-		} catch (error) {
-		console.error("A szerver nem érhető el", error);
-		}
-	};
-	```
-
-
-
-Komment Létrehozása API
+Komment/hozzászólás Létrehozása API
 ---------------------------
 **Végpont:** `POST /api/comment`
 
@@ -1865,8 +1903,7 @@ Ez az API végpont lehetővé teszi új Komment létrehozását egy adott poszth
 	};
 	```
 
-
-Hozzászólás Törlése API
+Komment/hozzászólás Törlése API
 ---------------------------
 **Végpont:** `DELETE /api/post/comment`
 
@@ -1936,163 +1973,13 @@ Ez az API végpont lehetővé teszi egy komment törlését az azonosítója ala
 	};
 	```
 
-Termékkép Feltöltése API
----------------------------
 
-**Végpont:** `POST /api/product/image`
 
-**Leírás:**\
-Ez az API végpont lehetővé teszi egy termékkép feltöltését a termékazonosító megadásával
 
-**Hitelesítés:**
 
--   **Szükséges:** Adminisztrátor.
 
-**Kérés:**
 
--   **Metódus:** POST
--   **Végpont:** `/api/product/image`
--   **Multipart Form adatok:**
-	-   `product_id`: A termék azonosítója, amelyhez a kép tartozik.
-	-   `file`: A feltöltendő képfájl.
 
-**Válasz:**
 
--   **Sikeres Válasz (HTTP Státuszkód: 201 Created):**
-	```json
-	{
-		"id": 123,
-		"product_id": 456,
-		// Az adatbázisban így vannak tárolva a képútvonalak
-		"image_path": "public/product_images/uniqueid_filename.jpg"
-		
-	}
-	```
 
--   **Hiba Válaszok:**
-
-	-   **HTTP Státuszkód: 401 Unauthorized:**
-		```json
-		"Unauthorized"
-		```
-	-   **HTTP Státuszkód: 400 Bad Request:**
-		```json
-		"Product ID vagy kép hiányzik a requestből"
-		// Vagy
-		"A kép túllépi a {MAX_FILE_SIZE_MB}MB képméret határt"
-		// Jelenleg 10MB, de a jövőben változhat
-		```
-	-   **HTTP Státuszkód: 500 Internal Server Error:**
-		```json
-		"Hiba a termékkép feltöltése közben"`
-		```
-
-**Példa Használat**:
-
-- **Formdata létrehozása:**
-	```typescript
-	const productId = 123; 
-	const fileInput = document.getElementById('fileInput') as HTMLInputElement; 
-	const file = fileInput.files[0];
-
-	const formData = new FormData();
-	formData.append('product_id', productId.toString());
-	formData.append('file', file);
-	```
-
--   **Kérés:**
-
-	```typescript
-	// Fontos hogy az API csak egy képet tud egyszerre feltölteni. Több kép esetében a frontenden kell megoldani több kép küldését egymás után
-	async function uploadProductImage(productId: number, file: File) {
-		try {
-			// Prepare the FormData
-			const formData = new FormData();
-			formData.append('product_id', productId.toString());
-			formData.append('file', file);
-
-			// Make the API request
-			const response = await fetch(`/api/product/image`, {
-				method: 'POST',
-				body: formData,
-			});
-
-			// Check if the request was successful
-			if (!response.ok) {
-				throw new Error(`Sikertelen termékkép feltöltés`);
-			}
-
-			// Parse and log the response data
-			const responseData = await response.json();
-			console.log(responseData);
-		} catch (error) {
-			console.error('Hiba a termékkép feltöltésekor:', error);
-		}
-	}
-	```
-
-Termék Kép Törlése API
----------------------------
-
-**Végpont:** `DELETE /api/product/image`
-
-**Leírás:**
-Ez a API végpont lehetővé teszi egy termékhez tartozó kép törlését. 
-**Hitelesítés:**
--   **Szükséges:** Adminisztrátor.
-
-**Kérés:**
--   **Metódus:** DELETE
--   **Végpont:** `/api/product/image`
--   **URL Paraméterek:**
-    -   `id`: A törlendő kép azonosítója.
-
-**Válasz:**
--   **Sikeres Válaszok:**
-    **HTTP Státuszkód: 200 OK:**
-	```json
-	"Kép sikeresen törölve"
-	```
--   **Hiba Válaszok:**
-    -   **HTTP Státuszkód: 400 Bad Request:**
-		```json
-		"Nincs kép ID megadva a kérésben"
-		```
-	-   **HTTP Státuszkód: 401 Unauthorized:**
-		```json
-		"Csak admin törlhet termékképeket"
-		```
-	-   **HTTP Státuszkód: 404 Not Found:**
-		```json
-		"Nem létezik ilyen kép"
-		```
-	-   **HTTP Státuszkód: 500 Internal Server Error:**
-		```json
-		"Hiba a kép törlése közben"
-		```
-
-**Példa Használat**:
-
--   **Kérés:**
-	```typescript
-	const deleteImage = async (imageId: number) => {
-	    try {
-	        const response = await fetch(`/api/product/image?id=${imageId}`, {
-	            method: 'DELETE',
-	            headers: {
-	                'Content-Type': 'application/json',
-	            },
-	        });
-
-	        if (!response.ok) {
-	            throw new Error("Sikertelen képtörlés");
-	        }
-
-	        const responseBody = await response.json();
-	        console.log(responseBody);
-	    } catch (error) {
-	        console.error("A szerver nem érhető el", error);
-	    }
-	};
-	```
 
