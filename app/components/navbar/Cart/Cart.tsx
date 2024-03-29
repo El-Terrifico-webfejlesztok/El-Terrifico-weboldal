@@ -38,7 +38,7 @@ const Cart: React.FC = () => {
                 </div>
             </summary>
 
-            <div tabIndex={0} className="mt-3 z-[1] card card-compact dropdown-content w-72 bg-base-100 shadow max-h-[calc(100vh-32px)] overflow-y-auto">
+            <div tabIndex={0} className="mt-3 z-[1] card card-compact dropdown-content w-72 bg-base-100 shadow max-h-[calc(100vh-68px)] overflow-y-auto">
                 <div className="card-body">
                     {items.length !== 0 && (
                         <>

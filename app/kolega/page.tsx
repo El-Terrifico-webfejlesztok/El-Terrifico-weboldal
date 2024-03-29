@@ -3,53 +3,62 @@ import React from 'react'
 const page = () => {
     return (
         <>
-            <div className='grid grid-cols-2 max-w-screen-xl mx-auto'>
-
-
-                <div className="lg:col-span-1 lg:max-h-[calc(50vh-32px)] col-span-2 card bg-base-100 shadow-xl ">
-                    <figure><img src="https://daisyui.com/images/stock/photo-1494232410401-ad00d5433cfa.jpg" alt="Album" /></figure>
-                    <div className="card-body">
-                        <h2 className="card-title text-center">New album is released!</h2>
-                        <p>Click the button to listen on Spotiwhy app.</p>
-                        <div className="card-actions justify-end">
-                            <button className="btn btn-primary">Listen</button>
+            <div className='grid grid-cols-2 mx-auto min-h-fit'>
+                <div className='flex justify-center items-center shadow-inner lg:col-span-1 lg:h-[calc(50vh-32px)] p-2 col-span-2'>
+                    <a href='https://halozatconfig.sytes.net/Army_Webshop/army-project/dist/index.html' target='_blank' className="flex-col justify-center items-center bg-base-100" >
+                        <div className='w-96 h-56 p-5 mx-auto mb-8 flex justify-center'>
+                            <img className='object-contain' src="/kolegak/army_logo.png" alt="Album" />
                         </div>
-                    </div>
+                        <div className="">
+                            <h1 className='text-center text-2xl font-bold leading-5'>Army Webshop</h1>
+                            <p className='text-center text-sm'><i>🐘🐘 I ❤️ PHP 🐘🐘</i></p>
+                            <p className='text-center mt-4'>A legjobb billenyűzetkereskedés e vidéken</p>
+                        </div>
+                    </a>
                 </div>
 
-                <div className="lg:col-span-1 lg:max-h-[calc(50vh-32px)] col-span-2 card bg-base-100 shadow-xl ">
-                    <figure><img src="https://daisyui.com/images/stock/photo-1494232410401-ad00d5433cfa.jpg" alt="Album" /></figure>
-                    <div className="card-body">
-                        <h2 className="card-title">New album is released!</h2>
-                        <p>Click the button to listen on Spotiwhy app.</p>
-                        <div className="card-actions justify-end">
-                            <button className="btn btn-primary">Listen</button>
+                <div className='flex justify-center items-center shadow-inner lg:col-span-1 lg:h-[calc(50vh-32px)] p-2 col-span-2'>
+                    <a href='https://darido.pythonanywhere.com/' target='_blank' className="flex-col justify-center items-center bg-base-100" >
+                        <div className='w-96 h-56 p-5 mx-auto mb-8 flex justify-center'>
+                            <img className='object-contain' src="/kolegak/darido.png" alt="Album" />
                         </div>
-                    </div>
-                </div>
-                
-                <div className="lg:col-span-1 lg:max-h-[calc(50vh-32px)] col-span-2 card bg-base-100 shadow-xl ">
-                    <figure><img src="https://daisyui.com/images/stock/photo-1494232410401-ad00d5433cfa.jpg" alt="Album" /></figure>
-                    <div className="card-body">
-                        <h2 className="card-title">New album is released!</h2>
-                        <p>Click the button to listen on Spotiwhy app.</p>
-                        <div className="card-actions justify-end">
-                            <button className="btn btn-primary">Listen</button>
+                        <div className="">
+                            <h1 className='text-center text-2xl font-bold leading-5'>Dáridó</h1>
+                            <p className='text-center text-sm'><i>The digital store</i></p>
+                            <p className='text-center mt-4'>A magyar Elit kedvenc áruháza</p>
                         </div>
-                    </div>
+                    </a>
                 </div>
-                
-                <div className="lg:col-span-1 lg:max-h-[calc(50vh-32px)] col-span-2 card bg-base-100 shadow-xl ">
-                    <figure><img src="https://daisyui.com/images/stock/photo-1494232410401-ad00d5433cfa.jpg" alt="Album" /></figure>
-                    <div className="card-body">
-                        <h2 className="card-title">New album is released!</h2>
-                        <p>Click the button to listen on Spotiwhy app.</p>
-                        <div className="card-actions justify-end">
-                            <button className="btn btn-primary">Listen</button>
+
+                <div className='flex justify-center items-center shadow-inner lg:col-span-1 lg:h-[calc(50vh-32px)] p-2 col-span-2'>
+                    <a href='https://rosszfogas.pythonanywhere.com/' target='_blank' className="flex-col justify-center items-center bg-base-100" >
+                        <div className='w-96 h-56 p-5 mx-auto mb-8 flex justify-center'>
+                            <img className='object-contain' src="/kolegak/rosszfogas.png" alt="Album" />
                         </div>
-                    </div>
+                        <div className="">
+                            <h1 className='text-center text-2xl font-bold leading-5'>Rosszfogás</h1>
+                            <p className='text-center text-sm'><i>Csak óvatosan!</i></p>
+                            <p className='text-center mt-4'>Minden is eladó, akármi is kapható</p>
+                        </div>
+                    </a>
                 </div>
-                
+
+                <div className='flex justify-center items-center shadow-inner lg:col-span-1 lg:h-[calc(50vh-32px)] p-2 col-span-2'>
+                    <a href='https://terrifico.zapto.org/' target='_blank' className="flex-col justify-center items-center bg-base-100" >
+                        <div className='w-96 h-56 p-5 mx-auto mb-8 flex justify-center'>
+                            <img className='object-contain' src="/kolegak/terrifico.png" alt="Album" />
+                        </div>
+                        <div className="">
+                            <h1 className='text-center text-2xl font-bold leading-5'>El Terrifico</h1>
+                            <p className='text-center text-sm'><i>Sergio Franco</i></p>
+                            <p className='text-center mt-4'>Mintha már láttam volna valahol</p>
+                        </div>
+                    </a>
+                </div>
+
+
+
+
             </div>
         </>
     )
