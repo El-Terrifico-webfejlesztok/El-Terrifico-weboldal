@@ -153,7 +153,7 @@ const OrdersAdmin = () => {
                   className="join-item btn"
                   onClick={() => handlePageChange(pageNumber - 1)}
                 >«</button>
-                <button className="join-item no-animation btn">{pageNumber}/{pages} oldal</button>
+                <button className="join-item no-animation btn"><p className={`${loading? "h-10 loading loading-infinity" : null} text-center w-20`}>{pageNumber}/{pages} oldal</p></button>
                 <button
                   disabled={pageNumber >= (pages || 0)}
                   className="join-item btn"
@@ -173,14 +173,29 @@ const OrdersAdmin = () => {
               </select>
 
             </div>
-            {orders.map((order) => (
-              <OrdersViewAdmin
-                key={order.id}
-                order={order}
-                reload={getAllOrders}
-                updateOrderStatus={updateOrderStatus}
-              />
-            ))}
+            <table className={`mt-2 table table-pin-rows`}>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Státusz</th>
+                  <th>Rendelve</th>
+                  <th>Teljes ár</th>
+                </tr>
+              </thead>
+              <tbody>
+
+                {orders.map((order) => (
+                  <OrdersViewAdmin
+                    key={order.id}
+                    order={order}
+                    reload={getAllOrders}
+                    updateOrderStatus={updateOrderStatus}
+                  />
+                ))}
+
+              </tbody>
+            </table>
+
 
 
             {/**

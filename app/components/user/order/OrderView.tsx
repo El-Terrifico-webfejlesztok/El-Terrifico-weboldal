@@ -23,7 +23,6 @@ const OrderView: React.FC<{ order: Order | OrderDetail; reload: Function }> = ({
   return (
     <>
       <>
-
         <tr onClick={handleRowClick}
           className={
             `cursor-pointer hover rounded-lg active:brightness-75 w-full h-16 md:h-auto text-lg 
@@ -35,9 +34,9 @@ const OrderView: React.FC<{ order: Order | OrderDetail; reload: Function }> = ({
           <td className='truncate'>{formattedDate}</td>
           <td className='truncate'><strong>{order.total_price.toString()}</strong> Ft.</td>
         </tr>
-
       </>
-      {/** 
+
+      {/* 
         <div className='grid grid-cols-12 gap-4 my-1'>
         <p className='sm:col-span-4 col-span-6'>
           <span className='whitespace-nowrap'>Státusz:</span>
