@@ -20,6 +20,7 @@ const UserProfileSettings: React.FC<UserProfileViewProps> = ({ user, reload }) =
 
     const handleButtonClick = (newMode: Mode) => {
         setMode((prevMode) => (prevMode === newMode ? null : newMode));
+        window.location.href = "#settings";
     };
 
     const handleCancelClick = () => {

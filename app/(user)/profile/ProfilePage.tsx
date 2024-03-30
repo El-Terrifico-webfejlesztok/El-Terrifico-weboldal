@@ -196,7 +196,7 @@ const ProfilePage = () => {
                 :
                 <></>}
 
-
+            <div id='settings'></div>
         </div>
     );
 }
