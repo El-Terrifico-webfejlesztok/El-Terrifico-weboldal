@@ -40,6 +40,7 @@ const Form = () => {
   return (
     <div>
       <form
+        autoComplete="on"
         onSubmit={handleSubmit}
         className="flex flex-col gap-4 mx-auto max-w-md mt-12 p-2"
       >
@@ -49,7 +50,6 @@ const Form = () => {
           </div>
           <input
             required
-            autoComplete="email"
             type="email"
             name="email"
             placeholder="bestfood@terrifico.com"
@@ -62,7 +62,6 @@ const Form = () => {
           </div>
           <input
             required
-            autoComplete="current-password"
             type="password"
             name="password"
             placeholder="Super_spicy_password"
