@@ -86,7 +86,9 @@ video {
 }
 
 .fooldal {
-  background: url("/Hatter.jpg");
+  background: url("/Hatter.webp");
+  background-size: 100% auto;
+  background-repeat: repeat-y;
 }
 
 @media screen and (max-width: 420px) {

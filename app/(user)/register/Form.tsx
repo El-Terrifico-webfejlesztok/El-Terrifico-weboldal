@@ -79,7 +79,7 @@ const Form = () => {
 
     return (
         <>
-            <form onSubmit={handleSubmit} className='flex flex-col gap-4 mx-auto max-w-md mt-12 p-2'>
+            <form autoComplete='off' onSubmit={handleSubmit} className='flex flex-col gap-4 mx-auto max-w-md mt-12 p-2'>
 
                 <label className="form-control w-full max-w-s">
                     <div className="label">
