@@ -49,6 +49,7 @@ const Form = () => {
           </div>
           <input
             required
+            autoComplete="email"
             type="email"
             name="email"
             placeholder="bestfood@terrifico.com"
@@ -61,6 +62,7 @@ const Form = () => {
           </div>
           <input
             required
+            autoComplete="current-password"
             type="password"
             name="password"
             placeholder="Super_spicy_password"

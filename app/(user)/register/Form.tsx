@@ -85,28 +85,28 @@ const Form = () => {
                     <div className="label">
                         <span className="label-text">E-mail*</span>
                     </div>
-                    <input required type="email" name="email" placeholder="bestfood@terrifico.com" className={formstyle} />
+                    <input required autoComplete='email' type="email" name="email" placeholder="bestfood@terrifico.com" className={formstyle} />
                 </label>
 
                 <label className="form-control w-full max-w-s">
                     <div className="label">
                         <span className="label-text">Felhasználónév*</span>
                     </div>
-                    <input required type="text" name="username" placeholder="Tasty123" className={formstyle} />
+                    <input required autoComplete='username' type="text" name="username" placeholder="Tasty123" className={formstyle} />
                 </label>
 
                 <label className="form-control w-full max-w-s">
                     <div className="label">
                         <span className="label-text">Jelszó*</span>
                     </div>
-                    <input required type="password" name="password" placeholder="Sup3r_sp1cy_passw@rd" className={formstyle} />
+                    <input required autoComplete='new-password' type="password" name="password" placeholder="Sup3r_sp1cy_passw@rd" className={formstyle} />
                 </label>
 
                 <label className="form-control w-full max-w-s">
                     <div className="label">
                         <span className="label-text">Jelszó mégegyszer*</span>
                     </div>
-                    <input required type="password" name="passwordverify" placeholder="Sup3r_sp1cy_passw@rd" className={formstyle} />
+                    <input required autoComplete='new-password' type="password" name="passwordverify" placeholder="Sup3r_sp1cy_passw@rd" className={formstyle} />
                 </label>
 
                 <button type='submit' className={button}>{buttonText}</button>
