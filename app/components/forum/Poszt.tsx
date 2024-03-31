@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import updateToast from "@/lib/helper functions/updateToast";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 interface props {
   post: PostType,
@@ -52,7 +53,7 @@ const Poszt: React.FC<props> = ({ post, reload }) => {
 
   const deletePost = async (postId: number) => {
     const toastId = toast.loading("Poszt törlése...")
-    const isConfirmed = window.confirm(`Biztosan törölni a posztot (${post.title})`);
+    const isConfirmed = window.confirm(`Biztosan törlöd a posztot? (${post.title})`);
     if (!isConfirmed) {
       updateToast(toastId, 'info', 'Poszt törlése félbeszakítva')
       return;
@@ -112,7 +113,7 @@ const Poszt: React.FC<props> = ({ post, reload }) => {
     <div className="collapse sm:max-w-screen-2xl collapse-arrow bg-base-300 sm:w-5/6 w-full mx-auto sm:mb-3 mb-5">
       <input type="checkbox" />
       <div className="collapse-title max-w-full text-xl font-medium grid grid-cols-12 justify-between items-center">
-        
+
         {/** Cím bal odal */}
         <div className="sm:mr-0 col-span-8">
           {/** Cím */}
@@ -154,7 +155,9 @@ const Poszt: React.FC<props> = ({ post, reload }) => {
           {/** Kep */}
           <div tabIndex={0} className="circle avatar mr-2 hidden sm:inline-block">
             <div className="w-10 rounded-full max-h-10">
-              <img
+              <Image
+                height={40}
+                width={40}
                 alt="Profilkép"
                 title={post.user.username}
                 src={post.user.image ? `https://terrifico.zapto.org/${post.user.image}` : 'https://terrifico.zapto.org/public/profile_images/defaultpfp.png'}
@@ -163,13 +166,13 @@ const Poszt: React.FC<props> = ({ post, reload }) => {
           </div>
         </div>
 
-        
+
       </div>
       {/** Poszt body */}
       <div className="collapse-content max-w-[100vw] overflow-hidden">
         <div className="bg-neutral-content  border-2 border-grey p-1 sm:p-3 rounded-lg">
 
-          <p className=" text-black break-words whitespace-pre-wrap">{post.text}</p>
+          <p className="text-neutral  break-words whitespace-pre-wrap">{post.text}</p>
 
         </div>
         <div className="divider divider-start text-lg font-medium my-5 ml-2 pr-3">Hozzászólások:</div>
@@ -187,7 +190,9 @@ const Poszt: React.FC<props> = ({ post, reload }) => {
           <div className="flex p-1">
             <div tabIndex={0} className="circle avatar mr-4 hidden sm:inline-block">
               <div className="w-12 rounded-full max-h-12">
-                <img
+                <Image
+                  width={48}
+                  height={48}
                   alt="Profilkép"
                   title={post.user.username}
                   src={session?.user ? session.user.image ?? 'https://terrifico.zapto.org/public/profile_images/defaultpfp.png' : 'https://terrifico.zapto.org/public/profile_images/defaultpfp.png'} />

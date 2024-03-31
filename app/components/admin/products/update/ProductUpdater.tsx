@@ -215,7 +215,7 @@ const ProductUpdater: React.FC<{ product: ProductData, reload: Function }> = ({ 
                     </p>
                     <p className='text-info'><b>Képek száma: </b>{product.ProductImage.length}</p>
                     <hr className='h-px my-1 bg-accent opacity-30 border-0' />
-                    <p className='text-info'><b>Feltöltve: </b>{formatDate(product.updated_at)}</p>
+                    <p className='text-info'><b>Feltöltve: </b>{formatDate(product.created_at)}</p>
                     <p className='text-info'><b>Utolsó frissítés: </b>{formatDate(product.updated_at)}</p>
                 </div>
                 <div>

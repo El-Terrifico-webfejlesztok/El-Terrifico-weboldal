@@ -2,6 +2,7 @@ import { CommentType } from "@/app/forum/page";
 import formatDate from "@/lib/helper functions/formatDate";
 import updateToast from "@/lib/helper functions/updateToast";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 import { toast } from "react-toastify";
 
 interface props {
@@ -46,7 +47,9 @@ const Komment: React.FC<props> = ({ comment, reload }) => {
     <div className=" border-2 rounded-md border-grey sm:w-3/4 w-full bg-stone-100 mx-auto p-1 mb-2 flex">
       <div tabIndex={0} className="circle avatar ">
         <div className="w-10 mt-[2px] rounded-full max-h-10">
-          <img
+          <Image
+            height={40}
+            width={40}
             alt="Profilkép"
             title={comment.User.username}
             src={comment.User.image ? `https://terrifico.zapto.org/${comment.User.image}` : 'https://terrifico.zapto.org/public/profile_images/defaultpfp.png'}

@@ -1,19 +1,27 @@
-// Jelenleg nem használt, csak prototípus
-import create from 'zustand';
 
-interface Theme {
-  name: string;
-  // Add any other properties relevant to your theme
+// Nincs használatba véve
+import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
+import { themes } from '@/tailwind.config'
+
+type Theme = typeof themes[number];
+
+const initialState: Theme = themes[0]
+
+export const themeStore = create<Theme>()(
+  persist(() => initialState, {
+    name: 'themeStore'
+  })
+)
+
+export default function usePageTheme() {
+  const theme = themeStore();
+
+  return {
+    theme,
+
+    setTheme: (theme: Theme) => {
+      themeStore.setState(theme)
+    }
+  }
 }
-
-interface ThemeStore {
-  currentTheme: Theme;
-  setTheme: (newTheme: Theme) => void;
-}
-
-const useThemeStore = create<ThemeStore>((set) => ({
-  currentTheme: { name: 'light' }, // Initial theme, you can set it to any predefined theme
-  setTheme: (newTheme) => set({ currentTheme: newTheme }),
-}));
-
-export default useThemeStore;

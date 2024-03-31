@@ -26,7 +26,7 @@ const ProfileStats: React.FC<StatProps> = ({ userdata }) => {
                 <div className="stat">
                     <div className="stat-title">Kommentek</div>
                     <div className="stat-value">{userdata.Comment.length}</div>
-                    <div className="stat-desc">Az értékeléseid száma</div>
+                    <div className="stat-desc">Az kommenteid száma</div>
                 </div>
 
                 <div className="stat">

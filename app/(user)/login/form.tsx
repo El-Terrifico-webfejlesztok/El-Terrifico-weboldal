@@ -40,6 +40,7 @@ const Form = () => {
   return (
     <div>
       <form
+        autoComplete="on"
         onSubmit={handleSubmit}
         className="flex flex-col gap-4 mx-auto max-w-md mt-12 p-2"
       >

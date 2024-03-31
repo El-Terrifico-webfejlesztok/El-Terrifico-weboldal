@@ -11,6 +11,7 @@ const Links = () => {
         { name: 'Fórum', href: '/forum' },
         { name: 'Rólunk', href: '/aboutus' },
         { name: 'Útmutató', href: '/tutorial' },
+        { name: 'Kollégák', href: '/kolega' },
     ];
 
     const linkclass = ''
