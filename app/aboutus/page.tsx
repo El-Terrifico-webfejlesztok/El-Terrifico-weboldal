@@ -8,8 +8,8 @@ const AboutUs: React.FC = () => {
   return (
     <>
       <div className="rolunk mx-auto px-4 py-8">
-        <div className="flex items-center justify-center">
-          <h1 className="sections cim py-3 px-24 text-7xl font-bold mb-4">
+        <div className="flex justify-center">
+          <h1 className="sections py-3 px-11 text-7xl font-bold mb-4">
             Rólunk
           </h1>
         </div>
