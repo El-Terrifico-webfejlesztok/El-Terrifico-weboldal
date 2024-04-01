@@ -151,12 +151,12 @@ const ProductList = () => {
           <h1 className={styles.focim}>Termékeink</h1>
         </div>
         <form onSubmit={handleSubmit}>
-          <div className="join flex items-center justify-center pt-20">
+          <div className="join max-w-[95%] mx-auto flex items-center justify-center pt-20">
             <input
               type="text"
               name="name"
               placeholder="Keresés..."
-              className="max-w-[95%] w-96 input input-bordered join-item" />
+              className="w-96 input input-bordered join-item" />
             <button className="btn btn-success join-item w-20 ">
               <p className={loading ? "loading" : ""}>Keresés</p>
             </button>
