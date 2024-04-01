@@ -37,6 +37,7 @@ function EtteremTortenete () {
     </div>
     <div className="md:w-2/4 flex items-center justify-center">
       <Image
+        loading="lazy"
         src="/HomeRestaurant.jpg"
         alt="Étterem régen"
         title="Étterem régen"
