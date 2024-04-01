@@ -1,8 +1,12 @@
-## Disclaimers
-**This is a school project. Nothing on this site should be taken seriously.**
+Disclaimers
+--------------
+
+⚠️ **This is a school project. Nothing on this site should be taken seriously.** ⚠️
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`]
-## A projekt fejlesztésének elkezdése
+
+A projekt fejlesztésének elkezdése
+--------------
 
 1. Telepítsd a [node.js-t](https://nodejs.org/)
   
@@ -13,7 +17,7 @@ git clone https://github.com/El-Terrifico-webfejlesztok/El-Terrifico-weboldal.gi
 3. Telepítsd a szükséges node csomagokat:
 ```bash
 cd El-Terrifico-weboldal
-npm install
+npm install --include=dev
 ```
 4. Végül futtasd a development servert:
 ```bash
@@ -25,20 +29,19 @@ Az oldal automatikusan frissít ahogy változtatod a kódot.
 
 A saját branchedbe dolgozz, **NE A MAINBE**
 
-## Hosztolás
-A projekt jelenleg [Vercelben](https://vercel.com/fulop-krisztians-projects/el-terrifico-weboldal) van hosztolva
-[El Terrifico](https://terrifico.vercel.app/)
+Hosztolás
+--------------
 
-## Learn More
-To learn more about Next.js, take a look at the following resources:
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+A Terrifico Jelenleg egy saját szerveren van hosztolva. A main branch alapján hosztol
+[El Terrifico](https://terrifico.zapto.org/)
 
-## Project Dependencies
+
+Project Main Dependencies / Stack
+--------------
 
 -  **Next.js:** React framework for web apps.
 
--  **React:** JavaScript UI library.
+-  **Next-Auth:** Auth library
 
 -  **TypeScript:** JavaScript+, több bugot kap el.
 
@@ -47,3 +50,5 @@ To learn more about Next.js, take a look at the following resources:
 -  **DaisyUI:** Bootstraphoz hasonló library a Tailwind CSS-hez.
 
 -  **Zustand:** State management library
+
+-  **Prisma:** Object Relational Mapper

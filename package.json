@@ -1,6 +1,6 @@
 {
-  "name": "nextproject",
-  "version": "0.1.0",
+  "name": "el-terrifico-weboldal",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@prisma/client": "^5.8.1",
-    "@types/nodemailer": "^6.4.14",
     "bcrypt": "^5.1.1",
     "handlebars": "^4.7.8",
     "next": "14.1.0",
@@ -35,6 +34,7 @@
     "typescript": "^5"
   },
   "devDependencies": {
+    "@types/nodemailer": "^6.4.14",
     "@types/bcrypt": "^5.0.2",
     "@types/node": "^20",
     "@types/react": "^18",
