@@ -2,7 +2,8 @@ import type { Config } from "tailwindcss";
 
 // Az első téma ami itt meg van adva az alapértelmezett.
 // Sütiben tárolódik a kiválasztott téma
-export const themes = ["retro", "luxury", "cyberpunk", "aqua", "black"]
+export const themes = ["retro", "black", "luxury", "cmyk", "cyberpunk",
+  "synthwave", "aqua",]
 
 const config: Config = {
   content: [

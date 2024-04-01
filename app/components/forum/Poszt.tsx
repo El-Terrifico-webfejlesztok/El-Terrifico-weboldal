@@ -8,6 +8,7 @@ import updateToast from "@/lib/helper functions/updateToast";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import Linkify from 'linkify-react';
 
 interface props {
   post: PostType,
@@ -172,7 +173,7 @@ const Poszt: React.FC<props> = ({ post, reload }) => {
       <div className="collapse-content max-w-[100vw] overflow-hidden">
         <div className="bg-neutral-content  border-2 border-grey p-1 sm:p-3 rounded-lg">
 
-          <p className="text-neutral  break-words whitespace-pre-wrap">{post.text}</p>
+          <p className="text-neutral  break-words whitespace-pre-wrap [&>a]:link"><Linkify options={{target: "_blankw"}}>{post.text}</Linkify></p>
 
         </div>
         <div className="divider divider-start text-lg font-medium my-5 ml-2 pr-3">Hozzászólások:</div>

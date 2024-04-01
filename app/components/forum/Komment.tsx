@@ -1,6 +1,7 @@
 import { CommentType } from "@/app/forum/page";
 import formatDate from "@/lib/helper functions/formatDate";
 import updateToast from "@/lib/helper functions/updateToast";
+import Linkify from "linkify-react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { toast } from "react-toastify";
@@ -69,7 +70,7 @@ const Komment: React.FC<props> = ({ comment, reload }) => {
             </button> :
             null}
         </div>
-        <p className="ml-3 text-sm break-words whitespace-pre-wrap text-black">{comment.text}</p>
+        <p className="ml-3 text-sm break-words whitespace-pre-wrap text-black [&>a]:link"><Linkify options={{target: "_blankw"}}>{comment.text}</Linkify></p>
       </div>
     </div>
   );

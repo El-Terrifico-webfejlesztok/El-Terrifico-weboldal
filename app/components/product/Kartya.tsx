@@ -26,12 +26,12 @@ const Kartya: React.FC<props> = ({
   product,
 }) => {
 
-  const { data: session} = useSession()
+  const { data: session } = useSession()
 
 
   return (
     <div className={styles.kartya}>
-      <div className="card lg:card-side bg-base-100 shadow-xl">
+      <div className="rounded-none card lg:card-side bg-base-100 shadow-xl">
         <div className="card-body">
           <h1 className="card-title text-3xl">{title}</h1>
           {session?.user?.role === 'admin' ? <Link className="btn btn-xs w-min whitespace-nowrap btn-info" href={`/admin/products/update/${product.id}`}>Termék módosítása</Link> : <></>}
