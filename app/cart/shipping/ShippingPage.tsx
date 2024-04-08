@@ -1,5 +1,4 @@
 "use client";
-import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import {
   Order,
@@ -10,7 +9,6 @@ import {
 } from "@prisma/client";
 import ShippingAddressViewCart from "@/app/components/cart/shipping/ShippingAddressViewCart";
 import ShippingAddressFormCart from "@/app/components/cart/shipping/ShippingAddressFormCart";
-import UserProfileSettings from "@/app/components/user/profile/UserProfileSettings";
 import { UserView } from "@/app/components/user/profile/UserProfileSettings";
 import CartSteps from "@/app/components/cart/CartSteps";
 

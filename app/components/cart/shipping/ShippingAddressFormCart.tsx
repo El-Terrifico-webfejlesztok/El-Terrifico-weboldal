@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import Link from "next/link";
+import { toast } from "react-toastify";
+import updateToast from "@/lib/helper functions/updateToast";
 
 const ShippingAddressFormCart = ({
   shippingAddress,
@@ -35,6 +37,7 @@ const ShippingAddressFormCart = ({
   const [loading, setLoading] = useState<boolean>(false);
   const [feedback, setFeedfback] = useState<string | undefined>(undefined);
   const [buttoncolor, setButtonColor] = useState<string | undefined>(undefined);
+  const [data, setData] = useState<string | undefined>()
   const router = useRouter();
 
   useEffect(() => {
@@ -46,8 +49,10 @@ const ShippingAddressFormCart = ({
   const inputlook = "input input-bordered w-full input-sm";
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    setLoading(true);
     event.preventDefault();
+
+    setLoading(true);
+    const toastId = toast.loading("Szállítási cím feltöltése...")
 
     try {
       const addressToSend = {
@@ -61,19 +66,22 @@ const ShippingAddressFormCart = ({
       };
       // ugly but works
       if (!recipientName) {
+        updateToast(toastId, 'warning', 'Nincs név megadva')
         return setFeedfback("Nincs név megadva");
       }
       if (!postalCode) {
+        updateToast(toastId, 'warning', 'Nincs irányítószám megadva')
         return setFeedfback("Nincs irányítószám megadva");
       }
       if (!city) {
+        updateToast(toastId, 'warning', 'Nincs város megadva')
         return setFeedfback("Nincs város megadva");
       }
       if (!streetAddress) {
+        updateToast(toastId, 'warning', 'Nincs cím megadva')
         return setFeedfback("Nincs cím megadva");
       }
 
-      console.log(JSON.stringify(addressToSend));
       // Send product data to create a new product
       const response = await fetch("/api/user/address/upload", {
         method: "POST",
@@ -84,12 +92,16 @@ const ShippingAddressFormCart = ({
       });
 
       const responseBody = await response.json();
+      console.log(responseBody)
 
       if (!response.ok) {
         setButtonColor("btn-error");
+        updateToast(toastId, 'error', 'Sikertelen feltöltés')
         setFeedfback(`Sikertelen feltöltés: ${responseBody}`);
         return;
       }
+      setData(recipientName + "_" + postalCode + "_" + city + "_" + streetAddress + "_" + responseBody.id)
+      updateToast(toastId, 'success', 'Sikeres szállítási cím feltöltés')
       setButtonColor("btn-success");
       setFeedfback("Tovább");
       if (reload !== undefined) {
@@ -97,14 +109,13 @@ const ShippingAddressFormCart = ({
       }
     } catch (error) {
       setButtonColor("btn-warning");
+      setFeedfback("Valami hiba történt");
+      updateToast(toastId, 'warning', 'Valami hiba történt')
       console.error("A szerver nem érhető el", error);
     } finally {
       setLoading(false);
     }
   };
-
-  const data =
-    recipientName + "_" + postalCode + "_" + city + "_" + streetAddress + "_" + shippingAddress.id;
 
   return (
     <>
