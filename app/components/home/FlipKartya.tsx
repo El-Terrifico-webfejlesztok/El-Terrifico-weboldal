@@ -40,6 +40,7 @@ const FlipKartya = ({ video, szoveg }: props) => {
           <div className="flip-card-back">
             <div className="content-wrapper bg-warning-content rounded-3xl border-8 border-warning">
               <video
+              preload="none"
                 id="myVideo"
                 controls
                 loop
