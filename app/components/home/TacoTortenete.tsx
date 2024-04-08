@@ -4,6 +4,7 @@ function TacoTortenete () {
     return (<div id="taco" className="md:flex reszek">
     <div className="md:w-2/4 flex items-center justify-center">
       <Image
+        loading="lazy"
         src="/HomeTaco.jpg"
         alt="Taco"
         title="Taco"

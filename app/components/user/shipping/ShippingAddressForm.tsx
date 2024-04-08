@@ -1,5 +1,7 @@
+import updateToast from '@/lib/helper functions/updateToast';
 import { ShippingAddress } from '@prisma/client';
 import React, { useState } from 'react';
+import { toast } from 'react-toastify';
 
 const ShippingAddressForm = ({ shippingAddress, onCancel, reload }: { shippingAddress: ShippingAddress, onCancel?: () => void, reload?: Function }) => {
     // Adatok összegyűjtése éredkében
@@ -17,8 +19,10 @@ const ShippingAddressForm = ({ shippingAddress, onCancel, reload }: { shippingAd
     const inputlook = 'input input-bordered w-full input-sm';
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-        setLoading(true)
         event.preventDefault();
+
+        setLoading(true)
+        const toastId = toast.loading("Szállítási cím feltöltése...")
 
         try {
 
@@ -32,12 +36,23 @@ const ShippingAddressForm = ({ shippingAddress, onCancel, reload }: { shippingAd
                 postal_code: postalCode,
             }
             // ugly but works
-            if (!recipientName) { return setFeedfback('Nincs név megadva') }
-            if (!postalCode) { return setFeedfback('Nincs irányítószám megadva') }
-            if (!city) { return setFeedfback('Nincs város megadva') }
-            if (!streetAddress) { return setFeedfback('Nincs cím megadva') }
+            if (!recipientName) {
+                updateToast(toastId, 'warning', 'Nincs név megadva')
+                return setFeedfback("Nincs név megadva");
+            }
+            if (!postalCode) {
+                updateToast(toastId, 'warning', 'Nincs irányítószám megadva')
+                return setFeedfback("Nincs irányítószám megadva");
+            }
+            if (!city) {
+                updateToast(toastId, 'warning', 'Nincs város megadva')
+                return setFeedfback("Nincs város megadva");
+            }
+            if (!streetAddress) {
+                updateToast(toastId, 'warning', 'Nincs cím megadva')
+                return setFeedfback("Nincs cím megadva");
+            }
 
-            console.log(JSON.stringify(addressToSend))
             // Send product data to create a new product
             const response = await fetch('/api/user/address/upload', {
                 method: 'POST',
@@ -51,16 +66,19 @@ const ShippingAddressForm = ({ shippingAddress, onCancel, reload }: { shippingAd
 
             if (!response.ok) {
                 setButtonColor('btn-error')
+                updateToast(toastId, 'error', 'Sikertelen feltöltés')
                 setFeedfback(`Sikertelen feltöltés: ${responseBody}`)
                 return;
             }
             setButtonColor('btn-success')
+            updateToast(toastId, 'success', 'Sikeres szállítási cím feltöltés')
             setFeedfback('Sikeres feltöltés')
-            if (reload !== undefined){
+            if (reload !== undefined) {
                 reload()
             }
         } catch (error) {
             setButtonColor('btn-warning')
+            updateToast(toastId, 'warning', 'Valami hiba történt')
             console.error('A szerver nem érhető el', error);
         }
         finally {

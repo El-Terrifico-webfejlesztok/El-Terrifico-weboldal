@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import ShippingAddressForm from './ShippingAddressForm'; // Import your ShippingAddressForm component
 import { ShippingAddress } from '@prisma/client';
+import { toast } from 'react-toastify';
+import updateToast from '@/lib/helper functions/updateToast';
 
 const ShippingAddressView = ({ address, reload }: { address: ShippingAddress, reload: Function }) => {
     const [isEditing, setIsEditing] = useState(false);
@@ -24,6 +26,7 @@ const ShippingAddressView = ({ address, reload }: { address: ShippingAddress, re
             return;
         }
 
+        const toastId = toast.loading("Szállítási cím törlése...")
         setDeleteLoading(true);
 
         try {
@@ -38,14 +41,13 @@ const ShippingAddressView = ({ address, reload }: { address: ShippingAddress, re
             const responseBody = await response.json();
 
             if (!response.ok) {
-                console.error(`Hiba a cím törlése közben: ${responseBody.error}`);
-                // Handle error appropriately, e.g., show an error message to the user
+                updateToast(toastId, 'error', `Hiba a cím törlése közben: ${responseBody}`)
             } else {
-                console.log('Cím sikeresen törölve');
-                // Az oldal frissítése
+                updateToast(toastId, 'success', `Sikeres címtörlés`)
                 reload();
             }
         } catch (error) {
+            updateToast(toastId, 'warning', `Valami hiba történt`)
             console.error('A szerver nem elérhető:', error);
             // Handle the error appropriately, e.g., show a general error message
         } finally {
