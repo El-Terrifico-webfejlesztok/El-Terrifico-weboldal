@@ -14,6 +14,7 @@ import ReklamVideo from "./components/home/ReklamVideo";
 export default function Home() {
   return (
     <div className="fooldal">
+      <h1 className="hidden">El Terrifico</h1>
       <FigyelemFel />
       <Koszonto />
       <Bemutatkozas />

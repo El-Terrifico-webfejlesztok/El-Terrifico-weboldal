@@ -68,7 +68,7 @@ function Szurok({ kategoriak }: props) {
               setIsCollepsed(!isCollepsed);
             }}
           >
-            <h1 className="btn btn-sm">Részletes keresés</h1>
+            <p className="btn btn-sm">Részletes keresés</p>
           </a>
         </div>
       </>
@@ -84,15 +84,15 @@ function Szurok({ kategoriak }: props) {
               setIsCollepsed(!isCollepsed);
             }}
           >
-            <h1 className="btn btn-success btn-sm">Részletes keresés</h1>
+            <p className="btn btn-success btn-sm">Részletes keresés</p>
           </a>
         </div>
         <div className={styles.szurodoboz}>
           <div className="sm:flex bg-orange-300">
             <div className="sm:w-1/2 items-center justify-center pb-3">
-              <h1 className=" text-center text-1xl text-black font-bold mb-4 pt-4">
+              <p className=" text-center text-1xl text-black font-bold mb-4 pt-4">
                 Árak
-              </h1>
+              </p>
               {errorMessage && (
                 <div role="alert" className="alert alert-error">
                   <span className=" text-white justify-center text-center">
@@ -121,9 +121,9 @@ function Szurok({ kategoriak }: props) {
             </div>
 
             <div className="sm:w-1/2 sm:border-l-4 sm:border-t-0 border-t-4 border-l-0 pb-3">
-              <h1 className="flex justify-center text-center text-1xl text-black font-bold mb-4 mt-4">
+              <p className="flex justify-center text-center text-1xl text-black font-bold mb-4 mt-4">
                 Kategóriák
-              </h1>
+              </p>
               <div className=" h-52 overflow-x-auto whitespace-no-wrap">
                   {kategoriak.map((category, index) => (
                     <SzuroCheckbox key={index} name="category" cim={category} />
