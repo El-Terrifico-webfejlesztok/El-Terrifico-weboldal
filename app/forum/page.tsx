@@ -219,7 +219,7 @@ const Forum = () => {
               className="sm:text-lg text-md text-white font-bold uppercase sm:ml-4"
               href="/forum"
             >
-              Colegauno
+              <h1>Colegauno</h1>
             </a>
           </div>
           <div className="navbar-center hidden lg:flex">
