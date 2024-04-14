@@ -36,28 +36,29 @@ export type PostType = {
 const Forum = () => {
   const router = useRouter();
   const URLsearchParams = useSearchParams();
-  {
-    /** Popup */
-  }
+
+  /** Popup */
   const [isSuccessAlertOpen, setIsSuccessAlertOpen] = useState(false);
   const [isWarningAlertOpen, setIsWarningAlertOpen] = useState(false);
-
   const [isExpanded, setIsExpanded] = useState(false);
 
-  {
-    /** Posztfeltöltés adatai */
-  }
+
+  /** Posztfeltöltés adatai */
   const [postTitle, setPostTitle] = useState("");
   const [postContent, setPostContent] = useState("");
   const [postCategory, setPostCategory] = useState("");
   const [postErrorMessage, setPostErrorMessage] = useState("");
 
-  {
-    /** Posztkereséssel kapcsolatos változók */
-  }
+
+  /** Posztkereséssel kapcsolatos változók */
   const [posts, setPosts] = useState<PostType[] | null>();
   const [postCategories, setPostCategories] = useState<string[] | null>();
   const [loading, setLoading] = useState<boolean>(false);
+
+  /** Paginationhoz kellő változók */
+  const [pageNumber, setPageNumber] = useState<number>(parseInt(URLsearchParams.get("page") as string || '1'));
+  const [count, setCount] = useState<number>(parseInt(URLsearchParams.get("count") as string || '50'));
+
 
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
@@ -106,6 +107,14 @@ const Forum = () => {
     }
   };
 
+  useEffect(() => {
+    const query = URLsearchParams.get('query') || undefined
+    const category = URLsearchParams.get('category') || undefined
+    const searchparams = buildForumQuery(query, category, count, pageNumber)
+    setPath(searchparams)
+    searchPosts(searchparams)
+  }, [pageNumber, count])
+
   const setPath = (queryParams: URLSearchParams) => {
     // Build new URL with updated parameters
     const newUrl = `/forum?${queryParams.toString()}`;
@@ -135,9 +144,13 @@ const Forum = () => {
     const formData = new FormData(event.currentTarget);
     const query = formData.get("query") as string;
     const category = formData.get("category") as string;
+    const count = parseInt(formData.get("count") as string || '50');
+    const page = parseInt(formData.get("page") as string || '1');
+
+
 
     // Jelenleg 50 posztot ad vissza az első oldalról defaultból, majd lehet ezt változtatni
-    const queryParams = buildForumQuery(query, category, 50, 1);
+    const queryParams = buildForumQuery(query, category, count, page);
     searchPosts(queryParams);
   };
   const searchPosts = async (queryParams?: URLSearchParams) => {
@@ -210,6 +223,15 @@ const Forum = () => {
     }
   };
 
+  function handlePageChange(pageNumber: number): void {
+    pageNumber >= 1 ? setPageNumber(pageNumber) : null;
+  }
+
+  function changeCount(event: React.ChangeEvent<HTMLSelectElement>): void {
+    setCount(parseInt(event.target.value))
+    setPageNumber(1)
+  }
+
   return (
     <>
       <div className={styles.forumOldal}>
@@ -218,6 +240,7 @@ const Forum = () => {
             <a
               className="sm:text-lg text-md text-white font-bold uppercase sm:ml-4"
               href="/forum"
+              id="top"
             >
               <h1>Colegauno</h1>
             </a>
@@ -305,9 +328,36 @@ const Forum = () => {
           {/**Posztok renderelése */}
           {posts ? posts.length > 0 ?
             (posts.map((post) => <Poszt key={post.id} post={post} reload={reload} />))
-            : <p className="mx-auto mt-4 max-w-md text-center text-3xl font-bold bg-base-300 outline p-2 rounded-sm">Nem található ilyen poszt</p>
+            : <p className="mx-auto my-4 max-w-md text-center text-3xl font-bold bg-base-300 outline p-2 rounded-sm">Nem található ilyen poszt</p>
             : (<div className="flex flex-grow mx-auto w-[50%] loading loading-ball bg-base-100"></div>)}
+          {/**Pagination */}
+          <div className="mx-auto flex justify-evenly items-center">
+            <div className="join">
+              <button
+                className="join-item btn"
+                
+                onClick={() => handlePageChange(pageNumber - 1)}
+              >«</button>
+              <button className="join-item no-animation btn"><p className={`${loading ? "h-10 loading loading-infinity" : null} text-center w-20`}>{pageNumber}. oldal</p></button>
+              <button
+                className="join-item btn"
+                onClick={() => handlePageChange(pageNumber + 1)}
+              >»</button>
+            </div>
+
+            <select
+              name="ordersPerPage"
+              value={count}
+              className="select select-bordered max-w-xs"
+              onChange={(event) => changeCount(event)}>
+              <option value={5}>5</option>
+              <option value={10}>10</option>
+              <option value={25}>25</option>
+              <option value={50}>50</option>
+            </select>
+          </div>
         </div>
+
 
         {/* Poszt létrehozása */}
         {isExpanded && (
@@ -432,6 +482,7 @@ const Forum = () => {
           </div>
         )}
       </div>
+
       <Footer />
     </>
   );
