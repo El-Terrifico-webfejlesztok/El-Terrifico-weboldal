@@ -242,7 +242,7 @@ const Forum = () => {
               href="/forum"
               id="top"
             >
-              Colegauno
+              <h1>Colegauno</h1>
             </a>
           </div>
           <div className="navbar-center hidden lg:flex">
