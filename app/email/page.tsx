@@ -6,10 +6,10 @@ export default function EmailProba() {
   const send = async () => {
     "use server";
     await sendMail({
-      to: "barni.nagy2004@gmail.com",
-      name: "Barni",
-      subject: "Test Email",
-      body: compileRegisterTemplate("Barni", "barni.nagy2004@gmail.com", "Cím", "Szöveg"),
+      to: "solet.tamas@students.jedlik.eu",
+      name: "Söli",
+      subject: "Szopd ki Söli",
+      body: compileRegisterTemplate("Söli", "solet.tamas@students.jedlik.eu", "Cím", "Szöveg"),
     });
   };
   return (
