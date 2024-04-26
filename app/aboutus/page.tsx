@@ -3,6 +3,13 @@ import Section from '../components/aboutus/section';
 import TeamMemberCard from '../components/aboutus/teamCard';
 import "./aboutus.css"
 import Footer from '../components/footer/Footer';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: "Rólunk",
+  description: "Az El Terrifico elkövetőiről",
+  keywords: ["about", "rólunk"]
+};
 
 const AboutUs: React.FC = () => {
   return (

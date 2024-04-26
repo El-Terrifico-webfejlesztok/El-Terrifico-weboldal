@@ -10,6 +10,7 @@ import {
   ReadonlyURLSearchParams,
 } from "next/navigation";
 import Footer from "../components/footer/Footer";
+import { Metadata } from "next";
 
 interface Product {
   id: number;
@@ -26,6 +27,12 @@ interface ProductFilter {
   maxPrice?: string;
   categories?: string[];
 }
+
+export const metadata: Metadata = {
+  title: "Termékek",
+  description: "Az El Terrifico kínálata",
+  keywords: ["terrifico", "el terrifico", "termékek", "products", "shop", "rendelés"]
+};
 
 const ProductList = () => {
   // Az URLsearchParams egy változó ami tükrözi a kérdőjel után lévő részt az URL-ben, automatikusan updatel

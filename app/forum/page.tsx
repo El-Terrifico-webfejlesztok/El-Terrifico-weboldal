@@ -9,6 +9,7 @@ import { getPostCategories } from "../server";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "react-toastify";
 import updateToast from "@/lib/helper functions/updateToast";
+import { Metadata } from "next";
 
 export type UserType = {
   id: number;
@@ -31,6 +32,12 @@ export type PostType = {
   comments: CommentType[];
   created_at: Date;
   updated_at: Date;
+};
+
+export const metadata: Metadata = {
+  title: "Colegauno",
+  description: "Az El Terrifico különleges Coluegauno fóruma",
+  keywords: ["colegauno", "fórum", "forum"]
 };
 
 const Forum = () => {

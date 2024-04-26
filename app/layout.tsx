@@ -14,7 +14,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "El Terrifico",
-  description: "The best food on the world wide web",
+  description: "A legjobb mexikói eledelek a világhálón",
 };
 
 export default async function RootLayout({

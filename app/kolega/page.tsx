@@ -1,4 +1,10 @@
+import { Metadata } from 'next';
 import React from 'react'
+
+export const metadata: Metadata = {
+    title: "Kolegák",
+    description: "Az El Terrifico társcsapatjai"
+  };
 
 const page = () => {
     return (

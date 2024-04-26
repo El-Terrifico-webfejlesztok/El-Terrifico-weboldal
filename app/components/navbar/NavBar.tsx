@@ -4,7 +4,6 @@ import ProfileButton from './ProfileButton';
 import Cart from './Cart/Cart';
 import LoadingBar from './LoadingBar';
 import Links from './Links';
-import { useRouter } from 'next/router';
 import DropdownButton from './DropdownButton';
 
 const NavBar = () => {
